@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="interstitial_unit_id">/9339935/Interstitiel_appli</string>
+    <string name="banner_unit_id">/9339935/Bloc_appli</string>
+</resources>

@@ -48,7 +48,7 @@ public class Sofoot extends Activity implements AdListener {
 
 	@Override
 	public void onDismissScreen(Ad ad) {		
-		
+		Log.d(Sofoot.MY_LOG_TAG, "onDismissScreen");
 	}
 
 	@Override
@@ -60,18 +60,17 @@ public class Sofoot extends Activity implements AdListener {
 	@Override
 	public void onLeaveApplication(Ad ad) {
 		// TODO Auto-generated method stub
-		
+		Log.d(Sofoot.MY_LOG_TAG, "onLeaveApplication");
 	}
 
 	@Override
 	public void onPresentScreen(Ad ad) {
 		// TODO Auto-generated method stub
-		
+		Log.d(Sofoot.MY_LOG_TAG, "onPresentScreen");
 	}
 
 	@Override
 	public void onReceiveAd(Ad ad) {
-		Log.d(Sofoot.MY_LOG_TAG, "Ad received");
-		
+		Log.d(Sofoot.MY_LOG_TAG, "Ad received");		
 	}
 }

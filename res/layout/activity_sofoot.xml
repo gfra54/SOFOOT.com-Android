@@ -19,5 +19,5 @@
         android:layout_height="wrap_content"
         ads:adSize="BANNER"
         ads:adUnitId="/9339935/Bloc_appli"
-        ads:loadAdOnCreate="true" />
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>
