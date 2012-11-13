@@ -1,0 +1,5 @@
+<resources>
+    <string name="ws_hostname">http://www.sofoot.com</string>
+    <string name="ws_api_key_name">WS_KEY</string>
+    <string name="ws_api_key_value">sofoot2012</string>
+</resources>

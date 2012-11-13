@@ -1,0 +1,9 @@
+<resources>
+    <string name="ga_api_key"></string>
+    <bool name="ga_debug">true</bool>
+    <bool name="ga_dryRun">true</bool>
+    <bool name="ga_anonymizeIp">false</bool>
+    <string name="ga_sampleRate">100</string>
+    <string name="ga_dispatchPeriod">60</string>
+    <bool name="ga_auto_activity_tracking">false</bool>
+</resources>
