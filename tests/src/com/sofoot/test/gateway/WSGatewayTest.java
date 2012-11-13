@@ -61,7 +61,6 @@ public class WSGatewayTest extends AndroidTestCase
 		Assert.assertEquals("clé invalide", data);
 	}
 
-
 	public void testWsParametersList() throws GatewayException
 	{
 		final ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();

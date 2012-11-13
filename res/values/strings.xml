@@ -5,8 +5,5 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_sofoot">Sofoot</string>
-    
-    <string name="dfp_id">9339935</string>
-    <string name="dfp_id_bloc">div-gpt-ad-1352477591525-0</string>
-
+       
 </resources>
