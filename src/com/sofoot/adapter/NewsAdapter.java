@@ -5,18 +5,13 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sofoot.R;
-import com.sofoot.Sofoot;
-import com.sofoot.domain.Collection;
-import com.sofoot.domain.Criteria;
 import com.sofoot.domain.model.News;
 
 public class NewsAdapter extends BaseAdapter {
@@ -28,9 +23,6 @@ public class NewsAdapter extends BaseAdapter {
     public NewsAdapter(final Activity context) {
         this.context = context;
         this.newsList = new ArrayList<News>();
-
-        final NewsFetcher newsFetcher = new NewsFetcher(context);
-        newsFetcher.execute();
     }
 
     @Override
@@ -63,6 +55,10 @@ public class NewsAdapter extends BaseAdapter {
         this.newsList.addAll(list);
     }
 
+    public void clear() {
+        this.newsList.clear();
+    }
+
     @Override
     public int getCount() {
         return this.newsList.size();
@@ -78,53 +74,6 @@ public class NewsAdapter extends BaseAdapter {
         return position;
     }
 
-
-
-
-    private class NewsFetcher extends AsyncTask<Criteria, Void, Collection<News>> {
-
-        private final Activity context;
-
-        private Exception exception;
-
-        public NewsFetcher(final Activity context) {
-            this.context = context;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            this.context.setProgressBarIndeterminateVisibility(true);
-        }
-
-        @Override
-        protected Collection<News> doInBackground(final Criteria... params) {
-            try {
-                return ((Sofoot)this.context.getApplicationContext()).getNewsMapper().findNews();
-            } catch (final Exception exception) {
-                this.exception = exception;
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(final Collection<News> result) {
-            super.onPostExecute(result);
-
-            this.context.setProgressBarIndeterminateVisibility(false);
-
-            if (this.exception != null) {
-                Toast.makeText(this.context, "Oops.. une erreur s'est produite", Toast.LENGTH_LONG).show();
-            }
-
-            if (result != null) {
-                NewsAdapter.this.addAll(result);
-                NewsAdapter.this.notifyDataSetChanged();
-            }
-        }
-    }
 
     private class ViewHolder {
         TextView titre;

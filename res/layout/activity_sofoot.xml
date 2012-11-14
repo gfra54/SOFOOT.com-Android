@@ -1,18 +1,26 @@
-<RelativeLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    
-    <ImageView 
-        android:id="@+id/logo"
-        android:src="@drawable/logonew"
-        android:layout_width="wrap_content"
+    android:layout_height="match_parent" >
+
+    <include
+        android:id="@+id/header_logo"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-        />
+        layout="@layout/header_logo" />
+
+    <include
+        android:id="@+id/footer_ad_banner"
+        layout="@layout/footer_ad_banner" />
+
+    <ListView
+        android:id="@+id/newsList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/footer_ad_banner"
+        android:layout_below="@id/header_logo"
+        android:scrollbars="none" />
 
     <ProgressBar
         android:id="@+id/empty"
@@ -21,22 +29,5 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone" />
-
-    <com.google.ads.doubleclick.DfpAdView
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_unit_id" />
- 
-    <ListView android:id="@+id/newsList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/logo"
-        android:layout_above="@id/adView"
-        android:scrollbars="vertical"
-        >
-    </ListView>
 
 </RelativeLayout>

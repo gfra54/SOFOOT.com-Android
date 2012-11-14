@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.sofoot.R;
-import com.sofoot.SplashscreenActivity;
+import com.sofoot.activity.SplashscreenActivity;
 
 public class SplashscreenActivityTest extends ActivityInstrumentationTestCase2<SplashscreenActivity> {
 

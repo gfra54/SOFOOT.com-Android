@@ -2,12 +2,12 @@ package com.sofoot.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.sofoot.HomeActivity;
+import com.sofoot.activity.TabsActivity;
 
-public class HomeActivityTest extends ActivityInstrumentationTestCase2<HomeActivity> {
+public class HomeActivityTest extends ActivityInstrumentationTestCase2<TabsActivity> {
 
     public HomeActivityTest() {
-        super(HomeActivity.class);
+        super(TabsActivity.class);
     }
 
 }

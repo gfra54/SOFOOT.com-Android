@@ -3,7 +3,7 @@ package com.sofoot.domain;
 public class Criteria {
 
 
-    private int page;
+    private int offset;
 
     private int limit;
 
@@ -12,17 +12,17 @@ public class Criteria {
     {
         final Criteria criteria = new Criteria();
         criteria.setLimit(20);
-        criteria.setPage(1);
+        criteria.setOffset(0);
 
         return criteria;
     }
 
-    public int getPage() {
-        return this.page;
+    public int getOffset() {
+        return this.offset;
     }
 
-    public void setPage(final int offset) {
-        this.page = offset;
+    public void setOffset(final int offset) {
+        this.offset = offset;
     }
 
     public int getLimit() {
@@ -32,7 +32,5 @@ public class Criteria {
     public void setLimit(final int limit) {
         this.limit = limit;
     }
-
-
 
 }

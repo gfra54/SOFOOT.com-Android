@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpGet;
@@ -55,8 +56,6 @@ public class WSGateway {
 
     public String fetchData(final String uri, final List< ? extends NameValuePair> params) throws GatewayException
     {
-        throw new GatewayException("cocou");
-        /*
         try {
             final HttpRequest request = this.buildGetRequest(uri, params);
             this.lastHttpResponse = this.httpClient.execute(this.httpHost, request);
@@ -73,7 +72,6 @@ public class WSGateway {
         } catch (final IOException ioe) {
             throw new GatewayException(ioe);
         }
-         */
     }
 
     public HttpGet buildGetRequest(final String path, final List< ? extends NameValuePair> parameters)

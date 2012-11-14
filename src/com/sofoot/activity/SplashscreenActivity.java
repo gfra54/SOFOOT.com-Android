@@ -1,4 +1,4 @@
-package com.sofoot;
+package com.sofoot.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,10 @@ import com.google.ads.AdListener;
 import com.google.ads.AdRequest;
 import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.doubleclick.DfpInterstitialAd;
+import com.sofoot.R;
+import com.sofoot.Sofoot;
+import com.sofoot.R.layout;
+import com.sofoot.R.string;
 
 public class SplashscreenActivity extends Activity implements AdListener{
 
@@ -40,7 +44,7 @@ public class SplashscreenActivity extends Activity implements AdListener{
 
     public void startHomeActivity()
     {
-        this.startActivity(new Intent(this, HomeActivity.class));
+        this.startActivity(new Intent(this, TabsActivity.class));
     }
 
     @Override

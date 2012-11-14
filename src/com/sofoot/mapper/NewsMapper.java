@@ -32,7 +32,7 @@ public class NewsMapper extends Mapper {
     {
         final ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>(this.defaultWSParams);
         params.add(new BasicNameValuePair("mode", "articles"));
-        params.add(new BasicNameValuePair("page", String.valueOf(criteria.getPage())));
+        params.add(new BasicNameValuePair("debut", String.valueOf(criteria.getOffset())));
         params.add(new BasicNameValuePair("qte", String.valueOf(criteria.getLimit())));
 
         final String result = this.gateway.fetchData("/ws.php", params);
