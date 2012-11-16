@@ -19,57 +19,57 @@ import com.sofoot.gateway.WSGateway;
 
 public class WSGatewayTest extends AndroidTestCase
 {
-	private ConnectivityManager connectivityManager;
+    private ConnectivityManager connectivityManager;
 
-	private WSGateway gateway;
+    private WSGateway gateway;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
 
-		this.connectivityManager = (ConnectivityManager)
-				this.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        this.connectivityManager = (ConnectivityManager)
+                this.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
-		this.gateway = new WSGateway(
-				this.connectivityManager,
-				this.getContext().getString(R.string.app_name) + "/" + this.getContext().getString(R.string.app_version),
-				new HttpHost("www.sofoot.com", 80)
-				);
-	}
+        this.gateway = new WSGateway(
+                this.connectivityManager,
+                this.getContext().getString(R.string.app_name) + "/" + this.getContext().getString(R.string.app_version),
+                new HttpHost("www.sofoot.com", 80)
+                );
+    }
 
-	public void testGetRequestAcceptGzip()
-	{
-		final Header[] headers = this.gateway.buildGetRequest("/ws.php", new ArrayList<NameValuePair>()).getHeaders("Accept-Encoding");
-		Assert.assertTrue(headers.length > 0);
-	}
+    public void testGetRequestAcceptGzip()
+    {
+        final Header[] headers = this.gateway.buildGetRequest("/ws.php", new ArrayList<NameValuePair>()).getHeaders("Accept-Encoding");
+        Assert.assertTrue(headers.length > 0);
+    }
 
 
-	public void testCanBeAccessed() throws GatewayException
-	{
-		if (false == this.gateway.isConnected()) {
-			Assert.assertTrue(true);
-			return;
-		}
+    public void testCanBeAccessed() throws GatewayException
+    {
+        if (false == this.gateway.isConnected()) {
+            Assert.assertTrue(true);
+            return;
+        }
 
-		this.gateway.fetchData("/ws.php");
-		Assert.assertEquals(this.gateway.getLastHttpResponse().getStatusLine().getStatusCode(), 200);
-	}
+        this.gateway.fetchData("/ws.php");
+        Assert.assertEquals(this.gateway.getLastHttpResponse().getStatusLine().getStatusCode(), 200);
+    }
 
-	public void testWsWithoutKey() throws GatewayException
-	{
-		final String data = this.gateway.fetchData("/ws.php");
-		Assert.assertEquals("clé invalide", data);
-	}
+    public void testWsWithoutKey() throws GatewayException
+    {
+        final String data = this.gateway.fetchData("/ws.php");
+        Assert.assertTrue(data.contains("invalide"));
+    }
 
-	public void testWsParametersList() throws GatewayException
-	{
-		final ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
-		params.add(new BasicNameValuePair(
-				this.getContext().getString(R.string.ws_api_key_name),
-				this.getContext().getString(R.string.ws_api_key_value)
-				));
+    public void testWsParametersList() throws GatewayException
+    {
+        final ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
+        params.add(new BasicNameValuePair(
+                this.getContext().getString(R.string.ws_api_key_name),
+                this.getContext().getString(R.string.ws_api_key_value)
+                ));
 
-		final String data = this.gateway.fetchData("/ws.php", params);
-		Assert.assertTrue(data.startsWith("<div class=\"debugmessage\""));
-	}
+        final String data = this.gateway.fetchData("/ws.php", params);
+        Assert.assertTrue(data.startsWith("<div class=\"debugmessage\""));
+    }
 }

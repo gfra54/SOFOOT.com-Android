@@ -8,4 +8,7 @@
     
     <string name="newsloader_error">Oops&#8230; une erreur s\'est produite.</string>
     <string name="no_news">Aucune actualité.</string>
+    
+    <string name="resultatloader_error">Oops&#8230; une erreur s\'est produite.</string>
+    <string name="no_resultat">Aucun résultat.</string>
 </resources>

@@ -8,8 +8,7 @@ import org.json.JSONObject;
 
 public class NewsFactory {
 
-    static private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
+    final static private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     static public News createFromJsonObject(final JSONObject json) throws JSONException, ParseException{
 

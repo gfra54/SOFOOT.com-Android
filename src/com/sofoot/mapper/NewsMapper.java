@@ -2,6 +2,8 @@ package com.sofoot.mapper;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -15,41 +17,78 @@ import com.sofoot.domain.model.NewsFactory;
 import com.sofoot.gateway.GatewayException;
 import com.sofoot.gateway.WSGateway;
 
-public class NewsMapper extends Mapper {
-
-    private final WSGateway gateway;
+public class NewsMapper extends SofootWsMapper<News> {
 
     public NewsMapper(final WSGateway gateway, final String wsKeyName, final String wsKeyValue) {
-        super(wsKeyName, wsKeyValue);
-        this.gateway = gateway;
+        super(gateway, wsKeyName, wsKeyValue);
     }
 
-    public Collection<News> findNews() throws GatewayException, JSONException, ParseException {
-        return this.findNews(Criteria.defaultCriteria());
-    }
+    @Override
+    public News find(final Criteria criteria) throws MapperException {
+        try {
+            final ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>(this.defaultWSParams);
+            params.add(new BasicNameValuePair("mode", "article"));
+            params.add(new BasicNameValuePair("id",criteria.getParam("id")));
 
-    public Collection<News> findNews(final Criteria criteria) throws GatewayException, JSONException, ParseException
-    {
-        final ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>(this.defaultWSParams);
-        params.add(new BasicNameValuePair("mode", "articles"));
-        params.add(new BasicNameValuePair("debut", String.valueOf(criteria.getOffset())));
-        params.add(new BasicNameValuePair("qte", String.valueOf(criteria.getLimit())));
+            final String result = this.gateway.fetchData("/ws.php", params);
+            final JSONObject json = new JSONObject(result);
 
-        final String result = this.gateway.fetchData("/ws.php", params);
-        final JSONObject json = new JSONObject(result);
-
-        final Collection<News> newsList = new Collection<News>();
-
-        if (json.has("articles") == true) {
-            final JSONObject articles = json.getJSONObject("articles");
-
-            final Iterator<?> keys = articles.keys();
-            while (keys.hasNext() == true) {
-                final String key = (String)keys.next();
-                newsList.add(NewsFactory.createFromJsonObject(articles.getJSONObject(key)));
+            if ((json.has("article") == true) && (json.get("article") instanceof JSONObject)) {
+                return NewsFactory.createFromJsonObject(json.getJSONObject("article"));
             }
-        }
 
-        return newsList;
+            return null;
+
+        } catch (final JSONException jsone) {
+            throw new MapperException(jsone);
+        } catch (final ParseException pe) {
+            throw new MapperException(pe);
+        } catch (final GatewayException ge) {
+            throw new MapperException(ge);
+        }
+    }
+
+    @Override
+    public Collection<News> findAll(final Criteria criteria) throws MapperException
+    {
+        try {
+            final ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>(this.defaultWSParams);
+            params.add(new BasicNameValuePair("mode", "articles"));
+            params.add(new BasicNameValuePair("debut", String.valueOf(criteria.getOffset())));
+            params.add(new BasicNameValuePair("qte", String.valueOf(criteria.getLimit())));
+
+            final String result = this.gateway.fetchData("/ws.php", params);
+            final JSONObject json = new JSONObject(result);
+
+            final Collection<News> newsList = new Collection<News>();
+
+            if ((json.has("articles") == true) && (json.get("articles") instanceof JSONObject)) {
+                final JSONObject articles = json.getJSONObject("articles");
+
+                final Iterator<?> keys = articles.keys();
+                while (keys.hasNext() == true) {
+                    final String key = (String)keys.next();
+                    newsList.add(NewsFactory.createFromJsonObject(articles.getJSONObject(key)));
+                }
+            }
+
+            Collections.sort(newsList, new Comparator<News>() {
+
+                @Override
+                public int compare(final News lhs, final News rhs) {
+                    return rhs.getPublication().compareTo(lhs.getPublication());
+                }
+
+            });
+
+            return newsList;
+
+        } catch (final JSONException jsone) {
+            throw new MapperException(jsone);
+        } catch (final ParseException pe) {
+            throw new MapperException(pe);
+        } catch (final GatewayException ge) {
+            throw new MapperException(ge);
+        }
     }
 }

@@ -1,12 +1,15 @@
 package com.sofoot.domain;
 
-public class Criteria {
+import java.util.HashMap;
+import java.util.Map;
 
+public class Criteria {
 
     private int offset;
 
     private int limit;
 
+    private final Map<String, String> params;
 
     static public Criteria defaultCriteria()
     {
@@ -15,6 +18,10 @@ public class Criteria {
         criteria.setOffset(0);
 
         return criteria;
+    }
+
+    public Criteria() {
+        this.params = new HashMap<String, String>();
     }
 
     public int getOffset() {
@@ -33,4 +40,16 @@ public class Criteria {
         this.limit = limit;
     }
 
+    public String getParam(final String name) {
+        return this.getParam(name, null);
+    }
+
+    public String getParam(final String name, final String defaultValue)
+    {
+        return (this.params.containsKey(name)) ? this.params.get(name) : defaultValue;
+    }
+
+    public void setParam(final String name, final String value) {
+        this.params.put(name, value);
+    }
 }

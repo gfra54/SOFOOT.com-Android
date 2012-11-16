@@ -22,7 +22,7 @@ public class NewsMapperTest extends AndroidTestCase
 
         this.criteria = Criteria.defaultCriteria();
         this.criteria.setLimit(8);
-        this.collection = ((Sofoot)this.getContext().getApplicationContext()).getNewsMapper().findNews(this.criteria);
+        this.collection = ((Sofoot)this.getContext().getApplicationContext()).getNewsMapper().findAll(this.criteria);
     }
 
     public void testNbNewsInCollection()

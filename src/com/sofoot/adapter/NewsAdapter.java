@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sofoot.R;
@@ -16,40 +17,64 @@ import com.sofoot.domain.model.News;
 
 public class NewsAdapter extends BaseAdapter {
 
+    static private final int ITEM_NEWS = 1;
+
+    static private final int ITEM_LOADER = 0;
+
     private final Activity context;
 
-    private final ArrayList<News> newsList;
+    private final ArrayList<News> newsList = new ArrayList<News>();
+
 
     public NewsAdapter(final Activity context) {
         this.context = context;
-        this.newsList = new ArrayList<News>();
     }
 
     @Override
     public View getView(final int position, final View convertView, final ViewGroup parent) {
+        final int type = this.getItemViewType(position);
+
+        if (type == NewsAdapter.ITEM_LOADER) {
+            return this.getLoaderView(position, convertView, parent);
+        } else if (type == NewsAdapter.ITEM_NEWS) {
+            return this.getNewsView(position, convertView, parent);
+        }
+
+        return null;
+    }
+
+
+    private View getNewsView(final int position, final View convertView, final ViewGroup parent) {
         View row = convertView;
-        ViewHolder viewHolder;
 
         if (row == null) {
-
             final LayoutInflater layoutInflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = layoutInflater.inflate(R.layout.news_list_item, null);
-
-            viewHolder = new ViewHolder();
-            row.setTag(viewHolder);
-
-            viewHolder.titre = (TextView)row.findViewById(R.id.news_title);
-            row.setTag(viewHolder);
-        }
-        else {
-            viewHolder = (ViewHolder)convertView.getTag();
+            row.setTag(new ViewHolder(row));
         }
 
         final News news = this.getItem(position);
+
+        final ViewHolder viewHolder = (ViewHolder)row.getTag();
         viewHolder.titre.setText(news.getTitre());
+        viewHolder.chapo.setText(news.getChapo());
+        //viewHolder.icon.setTag(news.getUrl());
+        //new ImageLoader(viewHolder.icon):
 
         return row;
     }
+
+    private View getLoaderView(final int position, final View convertView, final ViewGroup parent) {
+        View row = convertView;
+
+        if (row == null) {
+            final LayoutInflater layoutInflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            row = layoutInflater.inflate(R.layout.news_list_item_loading, null);
+        }
+
+        return row;
+    }
+
 
     public void addAll(final List<News> list) {
         this.newsList.addAll(list);
@@ -61,7 +86,7 @@ public class NewsAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return this.newsList.size();
+        return this.newsList.size() + 1;
     }
 
     @Override
@@ -74,9 +99,26 @@ public class NewsAdapter extends BaseAdapter {
         return position;
     }
 
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    @Override
+    public int getItemViewType(final int position) {
+        return (position >= this.newsList.size()) ? NewsAdapter.ITEM_LOADER : NewsAdapter.ITEM_NEWS;
+    }
 
     private class ViewHolder {
         TextView titre;
+        ImageView icon;
+        TextView chapo;
+
+        public ViewHolder(final View view) {
+            this.titre = (TextView)view.findViewById(android.R.id.title);
+            this.icon = (ImageView)view.findViewById(android.R.id.icon);
+            this.chapo = (TextView)view.findViewById(android.R.id.text1);
+        }
     }
 
 }

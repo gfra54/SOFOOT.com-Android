@@ -1,17 +1,14 @@
 package com.sofoot.mapper;
 
-import java.util.ArrayList;
+import com.sofoot.domain.Collection;
+import com.sofoot.domain.Criteria;
+import com.sofoot.domain.Object;
 
-import org.apache.http.message.BasicNameValuePair;
+public abstract class Mapper<O extends Object> {
 
-public abstract class Mapper {
+    abstract public Collection<O> findAll(Criteria criteria) throws MapperException;
 
-    protected final ArrayList<BasicNameValuePair> defaultWSParams;
+    abstract public O find(Criteria criteria) throws MapperException;
 
-    public Mapper(final String wsKeyName, final String wsKeyValue)
-    {
-        this.defaultWSParams = new ArrayList<BasicNameValuePair>();
-        this.defaultWSParams.add(new BasicNameValuePair(wsKeyName, wsKeyValue));
-    }
 
 }

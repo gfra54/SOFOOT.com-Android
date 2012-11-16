@@ -1,14 +1,23 @@
 package com.sofoot;
 
+import java.net.URL;
+
 import org.apache.http.HttpHost;
 
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.support.v4.util.LruCache;
+import android.util.Log;
 
 import com.sofoot.gateway.WSGateway;
+import com.sofoot.mapper.ClassementMapper;
+import com.sofoot.mapper.LigueMapper;
 import com.sofoot.mapper.NewsMapper;
+import com.sofoot.mapper.ResultatMapper;
 
 public class Sofoot extends Application {
 
@@ -20,7 +29,16 @@ public class Sofoot extends Application {
 
     private NewsMapper newsMapper;
 
+    private LigueMapper ligueMapper;
+
+    private ClassementMapper classementMapper;
+
+    private ResultatMapper resultatMapper;
+
     private WSGateway wsGateway;
+
+    private LruCache<URL, Bitmap> bitmapCache;
+
 
     @Override
     public void onCreate() {
@@ -63,6 +81,45 @@ public class Sofoot extends Application {
         return this.newsMapper;
     }
 
+    public LigueMapper getLigueMapper()
+    {
+        if (this.ligueMapper == null) {
+            this.ligueMapper = new LigueMapper(
+                    this.getWSGateway(),
+                    this.getString(R.string.ws_api_key_name),
+                    this.getString(R.string.ws_api_key_value)
+                    );
+        }
+
+        return this.ligueMapper;
+    }
+
+
+    public ClassementMapper getClassementMapper()
+    {
+        if (this.classementMapper == null) {
+            this.classementMapper = new ClassementMapper(
+                    this.getWSGateway(),
+                    this.getString(R.string.ws_api_key_name),
+                    this.getString(R.string.ws_api_key_value)
+                    );
+        }
+
+        return this.classementMapper;
+    }
+
+    public ResultatMapper getResultatMapper()
+    {
+        if (this.resultatMapper == null) {
+            this.resultatMapper = new ResultatMapper(
+                    this.getWSGateway(),
+                    this.getString(R.string.ws_api_key_name),
+                    this.getString(R.string.ws_api_key_value)
+                    );
+        }
+
+        return this.resultatMapper;
+    }
 
     private WSGateway getWSGateway()
     {
@@ -78,4 +135,17 @@ public class Sofoot extends Application {
     }
 
 
+    public LruCache<URL, Bitmap>getBitmapCache()
+    {
+        if (this.bitmapCache == null) {
+            final int memClass = ((ActivityManager) this.getSystemService(
+                    Context.ACTIVITY_SERVICE)).getMemoryClass();
+
+            Log.d("MAX_MEMORY_AVAILABLE", "" + memClass);
+
+            this.bitmapCache = new LruCache<URL, Bitmap>(memClass / 8);
+        }
+
+        return this.bitmapCache;
+    }
 }

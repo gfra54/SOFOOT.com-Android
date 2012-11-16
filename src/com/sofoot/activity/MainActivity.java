@@ -22,9 +22,11 @@ import com.google.ads.AdRequest;
 import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.doubleclick.DfpAdView;
 import com.sofoot.R;
+import com.sofoot.fragment.ClassementFragment;
 import com.sofoot.fragment.NewsListFragment;
+import com.sofoot.fragment.ResultatListFragment;
 
-public class TabsActivity extends FragmentActivity implements AdListener {
+public class MainActivity extends FragmentActivity implements AdListener {
 
     private TabHost mTabHost;
     ViewPager  mViewPager;
@@ -38,7 +40,7 @@ public class TabsActivity extends FragmentActivity implements AdListener {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.setContentView(R.layout.fragment_tabs);
+        this.setContentView(R.layout.main_activity);
         this.mTabHost = (TabHost)this.findViewById(android.R.id.tabhost);
         this.mTabHost.setup();
 
@@ -53,9 +55,14 @@ public class TabsActivity extends FragmentActivity implements AdListener {
                 NewsListFragment.class, null);
 
         final View tabIndicator2 = this.getLayoutInflater().inflate(R.layout.tab_indicator, null);
-        ((TextView) tabIndicator2.findViewById(android.R.id.title)).setText("Résultas");
+        ((TextView) tabIndicator2.findViewById(android.R.id.title)).setText("Résultats");
         this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("resultat").setIndicator(tabIndicator2),
-                NewsListFragment.class, null);
+                ResultatListFragment.class, null);
+
+        final View tabIndicator3 = this.getLayoutInflater().inflate(R.layout.tab_indicator, null);
+        ((TextView) tabIndicator3.findViewById(android.R.id.title)).setText("Classement");
+        this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("classement").setIndicator(tabIndicator3),
+                ClassementFragment.class, null);
 
         this.adView = (DfpAdView)this.findViewById(R.id.adView);
 
@@ -88,30 +95,30 @@ public class TabsActivity extends FragmentActivity implements AdListener {
 
     @Override
     public void onDismissScreen(final Ad ad) {
-        Log.d(TabsActivity.MY_LOG_TAG, "onDismissScreen");
+        Log.d(MainActivity.MY_LOG_TAG, "onDismissScreen");
     }
 
     @Override
     public void onFailedToReceiveAd(final Ad add, final ErrorCode code) {
-        Log.d(TabsActivity.MY_LOG_TAG, "Ad failed to received");
+        Log.d(MainActivity.MY_LOG_TAG, "Ad failed to received");
 
     }
 
     @Override
     public void onLeaveApplication(final Ad ad) {
         // TODO Auto-generated method stub
-        Log.d(TabsActivity.MY_LOG_TAG, "onLeaveApplication");
+        Log.d(MainActivity.MY_LOG_TAG, "onLeaveApplication");
     }
 
     @Override
     public void onPresentScreen(final Ad ad) {
         // TODO Auto-generated method stub
-        Log.d(TabsActivity.MY_LOG_TAG, "onPresentScreen");
+        Log.d(MainActivity.MY_LOG_TAG, "onPresentScreen");
     }
 
     @Override
     public void onReceiveAd(final Ad ad) {
-        Log.d(TabsActivity.MY_LOG_TAG, "Ad received");
+        Log.d(MainActivity.MY_LOG_TAG, "Ad received");
     }
 
 

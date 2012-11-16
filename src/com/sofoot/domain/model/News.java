@@ -22,7 +22,7 @@ public class News extends com.sofoot.domain.Object {
 
     private String legende;
 
-    private String legende_home;
+    private String legendeHome;
 
     private String url;
 
@@ -84,6 +84,10 @@ public class News extends com.sofoot.domain.Object {
         this.descriptif = descriptif;
     }
 
+    public boolean hasChapo() {
+        return this.chapo != null;
+    }
+
     public String getChapo() {
         return this.chapo;
     }
@@ -109,11 +113,11 @@ public class News extends com.sofoot.domain.Object {
     }
 
     public String getLegende_home() {
-        return this.legende_home;
+        return this.legendeHome;
     }
 
     public void setLegendeHome(final String legende_home) {
-        this.legende_home = legende_home;
+        this.legendeHome = legende_home;
     }
 
     public String getUrl() {

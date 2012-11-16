@@ -5,49 +5,53 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.sofoot.Sofoot;
-import com.sofoot.domain.Collection;
+import com.sofoot.domain.Criteria;
 import com.sofoot.domain.model.News;
 
-public class NewsLoader extends AsyncTaskLoader<Collection<News>> {
+public class NewsLoader extends AsyncTaskLoader<News> {
 
     private Exception lastException;
 
     final static private String MY_LOG_TAG = "NewsLoader";
 
-    private Collection<News> data;
+    private News news;
 
-    public NewsLoader( final Context context) {
+    final private Criteria criteria;
+
+    public NewsLoader(final Context context, final int id) {
         super(context);
 
         Log.d(NewsLoader.MY_LOG_TAG, context.toString());
+
+        this.criteria = new Criteria();
+        this.criteria.setParam("id", String.valueOf(id));
     }
 
     @Override
-    public Collection<News> loadInBackground() {
+    public News loadInBackground() {
         this.lastException = null;
-        this.data = null;
+        this.news = null;
 
         Log.d(NewsLoader.MY_LOG_TAG, "loadInbackground");
 
         try {
-            this.data = ((Sofoot)this.getContext().getApplicationContext()).getNewsMapper().findNews();
+            this.news = ((Sofoot)this.getContext().getApplicationContext()).getNewsMapper().find(this.criteria);
             //throw new GatewayException("toto");
         } catch (final Exception exception) {
             this.lastException = exception;
-            this.data = null;
+            this.news = null;
         }
 
-        return this.data;
+        return this.news;
     }
 
     @Override
     protected void onStartLoading() {
-        Log.d(NewsLoader.MY_LOG_TAG, "onStartLoading");
-
-        // TODO Auto-generated method stub
         super.onStartLoading();
 
-        if (this.takeContentChanged() || (this.data == null)) {
+        Log.d(NewsLoader.MY_LOG_TAG, "onStartLoading");
+
+        if (this.takeContentChanged() || (this.news == null)) {
             this.forceLoad();
         }
     }
@@ -55,4 +59,5 @@ public class NewsLoader extends AsyncTaskLoader<Collection<News>> {
     public Exception getLastException() {
         return this.lastException;
     }
+
 }

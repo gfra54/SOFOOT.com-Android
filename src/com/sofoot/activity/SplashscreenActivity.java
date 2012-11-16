@@ -44,7 +44,7 @@ public class SplashscreenActivity extends Activity implements AdListener{
 
     public void startHomeActivity()
     {
-        this.startActivity(new Intent(this, TabsActivity.class));
+        this.startActivity(new Intent(this, MainActivity.class));
     }
 
     @Override
