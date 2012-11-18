@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 public class RencontreFactory
 {
-    final static private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+    final static private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     static public Rencontre createFromJsonObject(final JSONObject json) throws JSONException,
     MalformedURLException, ParseException {
@@ -21,11 +21,19 @@ public class RencontreFactory
         }
 
         if (json.has("score1")) {
-            rencontre.setScore1(json.getInt("score1"));
+            try {
+                rencontre.setScore1(json.getInt("score1"));
+            } catch(final JSONException jsone) {
+                rencontre.setScore1(-1);
+            }
         }
 
         if (json.has("score2")) {
-            rencontre.setScore2(json.getInt("score2"));
+            try {
+                rencontre.setScore2(json.getInt("score2"));
+            } catch(final JSONException jsone) {
+                rencontre.setScore2(-1);
+            }
         }
 
         if (json.has("club1")) {

@@ -49,7 +49,7 @@ public class NewsAdapter extends BaseAdapter {
 
         if (row == null) {
             final LayoutInflater layoutInflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = layoutInflater.inflate(R.layout.news_list_item, null);
+            row = layoutInflater.inflate(R.layout.news_list_item, parent, false);
             row.setTag(new ViewHolder(row));
         }
 
@@ -69,7 +69,7 @@ public class NewsAdapter extends BaseAdapter {
 
         if (row == null) {
             final LayoutInflater layoutInflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = layoutInflater.inflate(R.layout.news_list_item_loading, null);
+            row = layoutInflater.inflate(R.layout.news_list_item_loading, parent, false);
         }
 
         return row;
@@ -109,6 +109,17 @@ public class NewsAdapter extends BaseAdapter {
         return (position >= this.newsList.size()) ? NewsAdapter.ITEM_LOADER : NewsAdapter.ITEM_NEWS;
     }
 
+    public String[] getNewsIds()
+    {
+        final String[] ids = new String[this.newsList.size()];
+
+        for (int i = 0; i < ids.length; i++) {
+            ids[i] = String.valueOf(this.newsList.get(i).getId());
+        }
+
+        return ids;
+    }
+
     private class ViewHolder {
         TextView titre;
         ImageView icon;
@@ -120,5 +131,4 @@ public class NewsAdapter extends BaseAdapter {
             this.chapo = (TextView)view.findViewById(android.R.id.text1);
         }
     }
-
 }

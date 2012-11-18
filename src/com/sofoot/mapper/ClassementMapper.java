@@ -34,16 +34,12 @@ public class ClassementMapper extends SofootWsMapper<Classement> {
 
             final Collection<Classement> classements = new Collection<Classement>();
 
-            if ((json.has("classement") == true) && (json.get("classement") instanceof JSONObject)) {
-                final JSONObject jsonClassement = json.getJSONObject("classement");
+            if ((json.has("classement") == true) && (json.get("classement") instanceof JSONArray)) {
+                final JSONArray jsonClassement = json.getJSONArray("classement");
 
-                if (jsonClassement.has(ligue) && (jsonClassement.get(ligue) instanceof JSONArray)) {
-                    final JSONArray jsonClassementLigue = jsonClassement.getJSONArray(ligue);
-
-                    final int length = jsonClassementLigue.length();
-                    for (int i = 0; i < length; i++) {
-                        classements.add(ClassementFactory.createFromJsonObject(jsonClassementLigue.getJSONObject(i)));
-                    }
+                final int length = jsonClassement.length();
+                for (int i = 0; i < length; i++) {
+                    classements.add(ClassementFactory.createFromJsonObject(jsonClassement.getJSONObject(i)));
                 }
             }
 

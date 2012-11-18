@@ -76,7 +76,7 @@ public class WSGateway {
 
     public HttpGet buildGetRequest(final String path, final List< ? extends NameValuePair> parameters)
     {
-        final String uri= path + "?" + URLEncodedUtils.format(parameters, "utf-8");
+        final String uri= path + "?" + URLEncodedUtils.format(parameters, "utf-8") + "&refresh";
         Log.d("QUERY_STRING", uri);
         final HttpGet get = new HttpGet(uri);
         AndroidHttpClient.modifyRequestToAcceptGzipResponse(get);

@@ -23,6 +23,11 @@ public class ClubFactory
         if (json.has("url")) {
             club.setUrl(new URL(json.getString("url")));
         }
+
+        if (json.has("logo")) {
+            club.setLogo(new URL(json.getString("logo")));
+        }
+
         return club;
     }
 }

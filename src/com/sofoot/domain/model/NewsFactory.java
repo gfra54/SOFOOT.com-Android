@@ -1,16 +1,21 @@
 package com.sofoot.domain.model;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.sofoot.domain.model.News.ImageSize;
+
 public class NewsFactory {
 
     final static private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    static public News createFromJsonObject(final JSONObject json) throws JSONException, ParseException{
+    static public News createFromJsonObject(final JSONObject json) throws JSONException, ParseException,
+    MalformedURLException{
 
         final News news = new News();
 
@@ -38,6 +43,9 @@ public class NewsFactory {
         if (json.has("auteur") == true) {
             news.setAuteur(json.getString("auteur").trim());
         }
+        if (json.has("texte") == true) {
+            news.setTexte(json.getString("texte").trim());
+        }
         if (json.has("legende") == true) {
             news.setLegende(json.getString("legende").trim());
         }
@@ -61,6 +69,22 @@ public class NewsFactory {
         }
         if (json.has("id_rubrique") == true) {
             news.setIdRubrique(json.getInt("id_rubrique"));
+        }
+
+        if (json.has("logo") == true) {
+            final JSONObject logos = json.getJSONObject("logo");
+
+            news.addImage(ImageSize.SMALL, new URL(logos.getString("100x100").trim()));
+            news.addImage(ImageSize.NORMAL, new URL(logos.getString("w300").trim()));
+            news.addImage(ImageSize.LARGE, new URL(logos.getString("w600").trim()));
+        }
+
+        if (json.has("logo_home") == true) {
+            final JSONObject logos = json.getJSONObject("logo_home");
+
+            news.addImage(ImageSize.SMALL, new URL(logos.getString("100x100").trim()));
+            news.addImage(ImageSize.NORMAL, new URL(logos.getString("w300").trim()));
+            news.addImage(ImageSize.LARGE, new URL(logos.getString("w600").trim()));
         }
 
         return news;

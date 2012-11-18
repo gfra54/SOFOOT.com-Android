@@ -5,9 +5,9 @@
     android:orientation="vertical" >
 
     <include layout="@layout/header_logo" />
-    
+        
     <android.support.v4.view.ViewPager
-            android:id="@+id/newsPager"
+            android:id="@+id/liguesPager"
             android:layout_width="match_parent"
             android:layout_height="0px"
             android:layout_weight="1">

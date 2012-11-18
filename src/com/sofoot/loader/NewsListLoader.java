@@ -15,34 +15,31 @@ public class NewsListLoader extends AsyncTaskLoader<Collection<News>> {
 
     final static private String MY_LOG_TAG = "NewsListLoader";
 
-    private Collection<News> data;
+    private Collection<News> newsList;
 
     final private Criteria criteria;
 
     public NewsListLoader(final Context context) {
         super(context);
-
         this.criteria = Criteria.defaultCriteria();
-
-        Log.d(NewsListLoader.MY_LOG_TAG, context.toString());
     }
 
     @Override
     public Collection<News> loadInBackground() {
         this.lastException = null;
-        this.data = null;
+        this.newsList = null;
 
         Log.d(NewsListLoader.MY_LOG_TAG, "loadInbackground");
 
         try {
-            this.data = ((Sofoot)this.getContext().getApplicationContext()).getNewsMapper().findAll(this.criteria);
+            this.newsList = ((Sofoot)this.getContext().getApplicationContext()).getNewsMapper().findAll(this.criteria);
             //throw new GatewayException("toto");
         } catch (final Exception exception) {
             this.lastException = exception;
-            this.data = null;
+            this.newsList = null;
         }
 
-        return this.data;
+        return this.newsList;
     }
 
     @Override
@@ -51,7 +48,7 @@ public class NewsListLoader extends AsyncTaskLoader<Collection<News>> {
 
         Log.d(NewsListLoader.MY_LOG_TAG, "onStartLoading");
 
-        if (this.takeContentChanged() || (this.data == null)) {
+        if (this.takeContentChanged() || (this.newsList == null)) {
             this.forceLoad();
         }
     }

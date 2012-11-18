@@ -21,7 +21,6 @@ public class ClassementLoader extends AsyncTaskLoader<Collection<Classement>> {
 
     public ClassementLoader(final Context context) {
         super(context);
-        Log.d(ClassementLoader.MY_LOG_TAG, context.toString());
         this.criteria = new Criteria();
     }
 

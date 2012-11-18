@@ -47,19 +47,21 @@ implements LoaderManager.LoaderCallbacks<Collection<Rencontre>>
         Log.d(ResultatListFragment.MY_LOG_TAG, "ResultatListFragment onResume");
     }
 
+
     @Override
     public Loader<Collection<Rencontre>> onCreateLoader(final int id, final Bundle args) {
         Log.d(ResultatListFragment.MY_LOG_TAG, "onCreateLoader");
         this.resultatLoader = new ResultatLoader(this.getActivity());
+        this.resultatLoader.setLigue(this.getArguments().getString("ligue"));
         return this.resultatLoader;
     }
 
     @Override
     public void onLoadFinished(final Loader<Collection<Rencontre>> loader, final Collection<Rencontre> result) {
-        Log.d(ResultatListFragment.MY_LOG_TAG, "onLoadFinish");
+        Log.d(ResultatListFragment.MY_LOG_TAG, "Resultats are loaded : " + result);
 
         if (this.resultatLoader.getLastException() != null) {
-            Toast.makeText(this.getActivity(), this.getString(R.string.resultatloader_error), Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getActivity(), this.getString(R.string.resultatsloader_error), Toast.LENGTH_LONG).show();
         }
 
         if (result != null) {

@@ -1,5 +1,8 @@
 package com.sofoot.test.mapper;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.text.ParseException;
 
 import junit.framework.Assert;
@@ -10,6 +13,7 @@ import org.json.JSONObject;
 import android.test.AndroidTestCase;
 
 import com.sofoot.domain.model.News;
+import com.sofoot.domain.model.News.ImageSize;
 import com.sofoot.domain.model.NewsFactory;
 
 public class NewsFactoryTest extends AndroidTestCase {
@@ -20,18 +24,26 @@ public class NewsFactoryTest extends AndroidTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        this.json = new JSONObject("{\"id\":\"163786\",\"publication\":\"2012-11-13 11:11:00\",\"surtitre\":\"\","  +
-                "\"titre\":\"Photo : Totti au Masters de Londres \",\"soustitre\":\"\",\"descriptif\":\"\"," +
-                "\"chapo\":\"\",\"auteur\":\"\",\"legende\":\"\",\"legende_home\":\"\"," +
-                "\"url\":\"http://www.sofoot.com/photo-totti-au-masters-de-londres-163786.html\",\"votes\":null," +
-                "\"note\":null,\"commentaires\":\"0\",\"id_parent\":\"4\",\"id_rubrique\":\"4\"}");
+        final BufferedReader br  = new BufferedReader(new InputStreamReader(this.getContext().getAssets().open("news.json")));
+
+        final StringBuilder builder = new StringBuilder();
+        String line;
+        while((line = br.readLine()) != null) {
+            builder.append(line);
+        }
+
+        this.json = new JSONObject(builder.toString());
     }
 
-    public void testCreateFromJson() throws JSONException, ParseException
+    public void testCreateFromJson() throws JSONException, ParseException, MalformedURLException
     {
         final News news = NewsFactory.createFromJsonObject(this.json);
 
-        Assert.assertEquals(163786, news.getId());
-        Assert.assertEquals("Photo : Totti au Masters de Londres", news.getTitre());
+        Assert.assertEquals(163852, news.getId());
+        Assert.assertEquals("International - Match amical - Russie/USA (2-2)", news.getSurtitre());
+        Assert.assertEquals("Klinsmann kiffe la Russie", news.getTitre());
+        Assert.assertTrue(news.getTexte().startsWith("2-2 un peu chateux hier"));
+        Assert.assertEquals("http://i.sofoot.com/IMG/img-jurgen-klinsmann-selectionneur-des-etats-unis-1352980068_x300_articles-163852.jpg", news.getImage(ImageSize.NORMAL).toString());
+        Assert.assertEquals("http://i.sofoot.com/IMG/img-jurgen-klinsmann-selectionneur-des-etats-unis-1352980068_100_100_true_articles-163852.jpg", news.getImageHome(ImageSize.SMALL).toString());
     }
 }

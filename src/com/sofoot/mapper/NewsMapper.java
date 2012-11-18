@@ -1,12 +1,13 @@
 package com.sofoot.mapper;
 
+import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,6 +46,8 @@ public class NewsMapper extends SofootWsMapper<News> {
             throw new MapperException(pe);
         } catch (final GatewayException ge) {
             throw new MapperException(ge);
+        } catch (final MalformedURLException mue) {
+            throw new MapperException(mue);
         }
     }
 
@@ -62,13 +65,12 @@ public class NewsMapper extends SofootWsMapper<News> {
 
             final Collection<News> newsList = new Collection<News>();
 
-            if ((json.has("articles") == true) && (json.get("articles") instanceof JSONObject)) {
-                final JSONObject articles = json.getJSONObject("articles");
+            if ((json.has("articles") == true) && (json.get("articles") instanceof JSONArray)) {
+                final JSONArray articles = json.getJSONArray("articles");
+                final int length = articles.length();
 
-                final Iterator<?> keys = articles.keys();
-                while (keys.hasNext() == true) {
-                    final String key = (String)keys.next();
-                    newsList.add(NewsFactory.createFromJsonObject(articles.getJSONObject(key)));
+                for (int i = 0; i < length; i++) {
+                    newsList.add(NewsFactory.createFromJsonObject(articles.getJSONObject(i)));
                 }
             }
 
@@ -89,6 +91,8 @@ public class NewsMapper extends SofootWsMapper<News> {
             throw new MapperException(pe);
         } catch (final GatewayException ge) {
             throw new MapperException(ge);
+        } catch (final MalformedURLException mue) {
+            throw new MapperException(mue);
         }
     }
 }

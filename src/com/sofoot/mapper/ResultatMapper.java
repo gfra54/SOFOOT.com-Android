@@ -3,7 +3,6 @@ package com.sofoot.mapper;
 import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -39,37 +38,13 @@ public class ResultatMapper extends SofootWsMapper<Rencontre> {
             final Collection<Rencontre> resultat = new Collection<Rencontre>();
 
             if ((json.has("resultats") == true) && (json.get("resultats") instanceof JSONObject)) {
-                JSONObject tmp = json.getJSONObject("resultats");
+                final JSONObject tmp = json.getJSONObject("resultats");
+                if (tmp.has("rencontres") && (tmp.get("rencontres") instanceof JSONArray)) {
+                    final JSONArray rencontres = tmp.getJSONArray("rencontres");
+                    final int length = rencontres.length();
 
-                if (tmp.has(ligue) && (tmp.get(ligue) instanceof JSONObject)) {
-                    tmp = tmp.getJSONObject(ligue);
-
-                    if (tmp.has("journees") && (tmp.get("journees") instanceof JSONObject)) {
-                        tmp = tmp.getJSONObject("journees");
-
-                        if (tmp.length() > 0) {
-                            final Iterator iterator = tmp.keys();
-                            String j = null;
-
-                            while (iterator.hasNext()) {
-                                final String key = (String)iterator.next();
-                                if (key.equals("journees") == false) {
-                                    j = key;
-                                }
-                            }
-
-                            if (j != null) {
-                                tmp = tmp.getJSONObject(j);
-                                if (tmp.has("rencontres") && (tmp.get("rencontres") instanceof JSONArray)) {
-                                    final JSONArray rencontres = tmp.getJSONArray("rencontres");
-                                    final int length = rencontres.length();
-
-                                    for (int i = 0; i < length; i++) {
-                                        resultat.add(RencontreFactory.createFromJsonObject(rencontres.getJSONObject(i)));
-                                    }
-                                }
-                            }
-                        }
+                    for (int i = 0; i < length; i++) {
+                        resultat.add(RencontreFactory.createFromJsonObject(rencontres.getJSONObject(i)));
                     }
                 }
             }

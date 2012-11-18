@@ -1,8 +1,15 @@
 package com.sofoot.domain.model;
 
+import java.net.URL;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class News extends com.sofoot.domain.Object {
+
+    public enum ImageSize {
+        SMALL, NORMAL, LARGE
+    }
 
     private int id;
 
@@ -36,6 +43,17 @@ public class News extends com.sofoot.domain.Object {
 
     private int idRubrique;
 
+    private final Map<ImageSize, URL> images;
+
+    private final Map<ImageSize, URL> imagesHome;
+
+    private String texte;
+
+    public News() {
+        this.images = new HashMap<ImageSize, URL>();
+        this.imagesHome = new HashMap<ImageSize, URL>();
+    }
+
     public int getId() {
         return this.id;
     }
@@ -52,6 +70,11 @@ public class News extends com.sofoot.domain.Object {
         this.publication = publication;
     }
 
+    public boolean hasSurtitre()
+    {
+        return this.surtitre != null;
+    }
+
     public String getSurtitre() {
         return this.surtitre;
     }
@@ -66,6 +89,11 @@ public class News extends com.sofoot.domain.Object {
 
     public void setTitre(final String titre) {
         this.titre = titre;
+    }
+
+    public boolean hasSoustitre()
+    {
+        return this.soustitre != null;
     }
 
     public String getSoustitre() {
@@ -96,12 +124,23 @@ public class News extends com.sofoot.domain.Object {
         this.chapo = chapo;
     }
 
+    public boolean hasAuteur()
+    {
+        return this.auteur != null;
+    }
+
     public String getAuteur() {
         return this.auteur;
     }
 
     public void setAuteur(final String auteur) {
         this.auteur = auteur;
+    }
+
+
+    public boolean hasLegende()
+    {
+        return this.legende != null;
     }
 
     public String getLegende() {
@@ -112,7 +151,12 @@ public class News extends com.sofoot.domain.Object {
         this.legende = legende;
     }
 
-    public String getLegende_home() {
+    public boolean hasLegendeHome()
+    {
+        return this.legendeHome != null;
+    }
+
+    public String getLegendeHome() {
         return this.legendeHome;
     }
 
@@ -168,8 +212,38 @@ public class News extends com.sofoot.domain.Object {
         this.idRubrique = idRubrique;
     }
 
+    public void addImage(final ImageSize size, final URL url) {
+        this.images.put(size, url);
+    }
+
+    public void addImageHome(final ImageSize size, final URL url) {
+        this.imagesHome.put(size, url);
+    }
+
+    public URL getImageHome(final ImageSize size){
+        if (this.imagesHome.containsKey(size)) {
+            return this.imagesHome.get(size);
+        }
+
+        return this.getImage(size);
+    }
+
+    public URL getImage(final ImageSize size){
+        return this.images.get(size);
+    }
+
     @Override
     public String toString() {
         return "News #" + this.id + " : " + this.titre;
     }
+
+    public String getTexte() {
+        return this.texte;
+    }
+
+    public void setTexte(final String texte) {
+        this.texte = texte;
+    }
+
+
 }

@@ -8,11 +8,10 @@ import android.support.v4.view.ViewPager;
 
 import com.sofoot.R;
 import com.sofoot.adapter.ListFragmentStatePagerAdapter;
-import com.sofoot.fragment.NewsFragment;
+import com.sofoot.fragment.ClassementFragment;
 
-public class NewsActivity extends FragmentActivity
+public class ClassementActivity extends FragmentActivity
 {
-
     private MyAdapter mAdapter;
 
     private ViewPager mPager;
@@ -20,15 +19,15 @@ public class NewsActivity extends FragmentActivity
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.news);
+        this.setContentView(R.layout.classement);
 
         this.mAdapter = new MyAdapter(
                 this.getSupportFragmentManager(),
-                this.getIntent().getExtras().getStringArray("newsIds"),
+                this.getIntent().getExtras().getStringArray("liguesIds"),
                 this.getIntent().getExtras().getInt("relPosition")
                 );
 
-        this.mPager = (ViewPager)this.findViewById(R.id.newsPager);
+        this.mPager = (ViewPager)this.findViewById(R.id.liguesPager);
         this.mPager.setAdapter(this.mAdapter);
     }
 
@@ -40,11 +39,11 @@ public class NewsActivity extends FragmentActivity
         }
 
         @Override
-        protected Fragment getFragment(final String id) {
+        protected Fragment getFragment(final String ligue) {
             final Bundle args = new Bundle(1);
-            args.putInt("id", Integer.parseInt(id));
+            args.putString("ligue", ligue);
 
-            final Fragment f =  new NewsFragment();
+            final Fragment f =  new ClassementFragment();
             f.setArguments(args);
             return f;
         }

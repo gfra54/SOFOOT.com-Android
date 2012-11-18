@@ -44,8 +44,8 @@ public class ClassementFactory
             classement.setNbButsContre(json.getInt("bc"));
         }
 
-        if (json.has("club")) {
-            classement.setClub(ClubFactory.createFromJsonObject(json.getJSONObject("club")));
+        if (json.has("equipe")) {
+            classement.setClub(ClubFactory.createFromJsonObject(json.getJSONObject("equipe")));
         }
 
         return classement;

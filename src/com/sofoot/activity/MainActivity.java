@@ -22,9 +22,8 @@ import com.google.ads.AdRequest;
 import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.doubleclick.DfpAdView;
 import com.sofoot.R;
-import com.sofoot.fragment.ClassementFragment;
+import com.sofoot.fragment.LiguesFragment;
 import com.sofoot.fragment.NewsListFragment;
-import com.sofoot.fragment.ResultatListFragment;
 
 public class MainActivity extends FragmentActivity implements AdListener {
 
@@ -55,14 +54,18 @@ public class MainActivity extends FragmentActivity implements AdListener {
                 NewsListFragment.class, null);
 
         final View tabIndicator2 = this.getLayoutInflater().inflate(R.layout.tab_indicator, null);
+        final Bundle args2 = new Bundle();
+        args2.putBoolean("resultats", true);
         ((TextView) tabIndicator2.findViewById(android.R.id.title)).setText("Résultats");
         this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("resultat").setIndicator(tabIndicator2),
-                ResultatListFragment.class, null);
+                LiguesFragment.class, args2);
 
         final View tabIndicator3 = this.getLayoutInflater().inflate(R.layout.tab_indicator, null);
+        final Bundle args3 = new Bundle();
+        args3.putBoolean("classement", true);
         ((TextView) tabIndicator3.findViewById(android.R.id.title)).setText("Classement");
         this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("classement").setIndicator(tabIndicator3),
-                ClassementFragment.class, null);
+                LiguesFragment.class, args3);
 
         this.adView = (DfpAdView)this.findViewById(R.id.adView);
 
@@ -87,9 +90,11 @@ public class MainActivity extends FragmentActivity implements AdListener {
 
     @Override
     public void onDestroy() {
+
         if (this.adView != null) {
             this.adView.destroy();
         }
+
         super.onDestroy();
     }
 

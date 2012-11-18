@@ -6,9 +6,18 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_sofoot">Sofoot</string>
     
-    <string name="newsloader_error">Oops&#8230; une erreur s\'est produite.</string>
-    <string name="no_news">Aucune actualité.</string>
+    <string name="loader_error">Oops&#8230; une erreur s\'est produite.</string>
+    <string name="nodata">Aucune donnée.</string>
     
-    <string name="resultatloader_error">Oops&#8230; une erreur s\'est produite.</string>
-    <string name="no_resultat">Aucun résultat.</string>
+    <string name="newslistloader_error">@string/loader_error</string>
+    <string name="no_newslist">@string/nodata</string>
+    
+    <string name="liguesloader_error">@string/loader_error</string>
+    <string name="no_ligue">@string/nodata</string>
+    
+    <string name="newsloader_error">@string/loader_error</string>
+    <string name="no_news">@string/nodata</string>
+    
+    <string name="resultatsloader_error">@string/loader_error</string>
+    <string name="no_resultat">@string/nodata</string>
 </resources>

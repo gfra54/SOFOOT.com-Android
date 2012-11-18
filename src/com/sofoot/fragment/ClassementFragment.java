@@ -22,19 +22,21 @@ implements LoaderManager.LoaderCallbacks<Collection<Classement>>
 {
 
     @Override
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.classement_fragment, container, false);
+    };
+
+    @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.classement, container, false);
-    };
-
-    @Override
     public Loader<Collection<Classement>> onCreateLoader(final int id, final Bundle args) {
-        return new ClassementLoader(this.getActivity());
+        final ClassementLoader classementLoader =  new ClassementLoader(this.getActivity());
+        classementLoader.setLigue(this.getArguments().getString("ligue"));
+        return classementLoader;
     }
 
     @Override

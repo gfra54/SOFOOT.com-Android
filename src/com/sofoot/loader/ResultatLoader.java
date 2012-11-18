@@ -21,7 +21,6 @@ public class ResultatLoader extends AsyncTaskLoader<Collection<Rencontre>> {
 
     public ResultatLoader(final Context context) {
         super(context);
-        Log.d(ResultatLoader.MY_LOG_TAG, context.toString());
         this.criteria = new Criteria();
     }
 

@@ -12,6 +12,8 @@ public class Club extends Object
 
     private URL url;
 
+    private URL logo;
+
     public int getId() {
         return this.id;
     }
@@ -36,5 +38,12 @@ public class Club extends Object
         this.url = url;
     }
 
+    public URL getLogo() {
+        return this.logo;
+    }
+
+    public void setLogo(final URL logo) {
+        this.logo = logo;
+    }
 
 }

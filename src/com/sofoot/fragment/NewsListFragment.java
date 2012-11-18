@@ -8,6 +8,7 @@ import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
@@ -20,7 +21,7 @@ import com.sofoot.domain.model.News;
 import com.sofoot.loader.NewsListLoader;
 
 public class NewsListFragment extends ListFragment
-implements LoaderManager.LoaderCallbacks<Collection<News>>, AbsListView.OnScrollListener, OnItemClickListener
+implements LoaderManager.LoaderCallbacks<Collection<News>>, OnScrollListener, OnItemClickListener
 {
     final static private String MY_LOG_TAG = "NewsListFragment";
 
@@ -67,7 +68,7 @@ implements LoaderManager.LoaderCallbacks<Collection<News>>, AbsListView.OnScroll
         Log.d(NewsListFragment.MY_LOG_TAG, "onLoadFinish");
 
         if (this.newsLoader.getLastException() != null) {
-            Toast.makeText(this.getActivity(), this.getString(R.string.newsloader_error), Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getActivity(), this.getString(R.string.newslistloader_error), Toast.LENGTH_LONG).show();
         }
 
         if (result != null) {
@@ -105,9 +106,9 @@ implements LoaderManager.LoaderCallbacks<Collection<News>>, AbsListView.OnScroll
     public void onItemClick(final AdapterView<?> adapterView, final View v, final int position, final long arg) {
         Log.d(NewsListFragment.MY_LOG_TAG, "onItemClick : " + position);
 
-        final News news = (News)adapterView.getItemAtPosition(position);
         final Intent intent = new Intent(this.getActivity(), NewsActivity.class);
-        intent.putExtra("id", news.getId());
+        intent.putExtra("relPosition", position);
+        intent.putExtra("newsIds", this.mAdapter.getNewsIds());
         this.startActivity(intent);
     }
 

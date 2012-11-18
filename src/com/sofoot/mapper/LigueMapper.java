@@ -1,9 +1,9 @@
 package com.sofoot.mapper;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,14 +32,11 @@ public class LigueMapper extends SofootWsMapper<Ligue> {
             final Collection<Ligue> ligues = new Collection<Ligue>();
 
             if (json.has("ligues") == true) {
-                final JSONObject jsonLigues = json.getJSONObject("ligues");
+                final JSONArray jsonLigues = json.getJSONArray("ligues");
+                final int length = jsonLigues.length();
 
-                final Iterator<?> keys = jsonLigues.keys();
-                while (keys.hasNext() == true) {
-                    final String key = (String)keys.next();
-                    final Ligue ligue = LigueFactory.createFromJsonObject(jsonLigues.getJSONObject(key));
-                    ligue.setId(key);
-                    ligues.add(ligue);
+                for (int i = 0; i < length; i++) {
+                    ligues.add(LigueFactory.createFromJsonObject(jsonLigues.getJSONObject(i)));
                 }
             }
 
