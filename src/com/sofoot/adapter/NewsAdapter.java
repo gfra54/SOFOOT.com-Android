@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.sofoot.R;
 import com.sofoot.domain.model.News;
+import com.sofoot.loader.ImageLoader;
 
 public class NewsAdapter extends BaseAdapter {
 
@@ -57,9 +58,10 @@ public class NewsAdapter extends BaseAdapter {
 
         final ViewHolder viewHolder = (ViewHolder)row.getTag();
         viewHolder.titre.setText(news.getTitre());
-        viewHolder.chapo.setText(news.getChapo());
-        //viewHolder.icon.setTag(news.getUrl());
-        //new ImageLoader(viewHolder.icon):
+        viewHolder.descriptif.setText((news.hasDescriptif() ? news.getDescriptif() : ""));
+        viewHolder.icon.setTag(news.getImageHome(News.ImageSize.SMALL));
+        final ImageLoader imageLoader = new ImageLoader(viewHolder.icon);
+        imageLoader.execute(news.getImageHome(News.ImageSize.SMALL));
 
         return row;
     }
@@ -123,12 +125,12 @@ public class NewsAdapter extends BaseAdapter {
     private class ViewHolder {
         TextView titre;
         ImageView icon;
-        TextView chapo;
+        TextView descriptif;
 
         public ViewHolder(final View view) {
             this.titre = (TextView)view.findViewById(android.R.id.title);
             this.icon = (ImageView)view.findViewById(android.R.id.icon);
-            this.chapo = (TextView)view.findViewById(android.R.id.text1);
+            this.descriptif = (TextView)view.findViewById(android.R.id.text1);
         }
     }
 }

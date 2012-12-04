@@ -22,6 +22,7 @@ public class NewsListLoader extends AsyncTaskLoader<Collection<News>> {
     public NewsListLoader(final Context context) {
         super(context);
         this.criteria = Criteria.defaultCriteria();
+        this.criteria.setParam("rubrique", "1");
     }
 
     @Override
@@ -55,6 +56,14 @@ public class NewsListLoader extends AsyncTaskLoader<Collection<News>> {
 
     public Exception getLastException() {
         return this.lastException;
+    }
+
+    public void setRubrique(final String rubrique) {
+        this.criteria.setParam("rubrique", rubrique);
+    }
+
+    public String getRubrique() {
+        return this.criteria.getParam("rubrique");
     }
 
     public void setLimit(final int limit) {

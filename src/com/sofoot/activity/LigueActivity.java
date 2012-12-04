@@ -2,7 +2,6 @@ package com.sofoot.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -11,9 +10,8 @@ import android.util.Log;
 import com.sofoot.R;
 import com.sofoot.fragment.ClassementFragment;
 
-abstract public class LigueActivity extends FragmentActivity
+abstract public class LigueActivity extends SofootAdActivity
 {
-
 
     private MyAdapter mAdapter;
 

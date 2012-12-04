@@ -57,6 +57,7 @@ public class NewsMapper extends SofootWsMapper<News> {
         try {
             final ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>(this.defaultWSParams);
             params.add(new BasicNameValuePair("mode", "articles"));
+            params.add(new BasicNameValuePair("rubrique", criteria.getParam("rubrique")));
             params.add(new BasicNameValuePair("debut", String.valueOf(criteria.getOffset())));
             params.add(new BasicNameValuePair("qte", String.valueOf(criteria.getLimit())));
 

@@ -20,4 +20,6 @@
     
     <string name="resultatsloader_error">@string/loader_error</string>
     <string name="no_resultat">@string/nodata</string>
+    
+    <string name="share_via">Partager via</string>
 </resources>

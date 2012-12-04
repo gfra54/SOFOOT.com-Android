@@ -1,28 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal" >
 
-    <TextView
-        android:id="@+id/recontreClub1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="left" />
+    <ImageView
+        android:id="@+id/rencontreLogoClub1"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
+
+    <ImageView
+        android:id="@+id/rencontreLogoClub2"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
 
     <TextView
-        android:id="@+id/recontreScore"
-        android:layout_width="wrap_content"
+        android:id="@+id/rencontreInfo"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center" />
+        android:layout_centerInParent="true" />
 
     <TextView
-        android:id="@+id/recontreClub2"
-        android:layout_width="wrap_content"
+        android:id="@+id/rencontreDate"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_above="@id/rencontreInfo"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/rencontreClub1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/rencontreInfo"
+        android:layout_toRightOf="@id/rencontreLogoClub1" />
+
+    <TextView
+        android:id="@+id/rencontreClub2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/rencontreLogoClub2"
+        android:layout_toRightOf="@id/rencontreInfo"
         android:gravity="right" />
 
-</LinearLayout>
+</RelativeLayout>

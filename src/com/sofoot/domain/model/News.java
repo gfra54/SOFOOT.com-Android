@@ -104,6 +104,10 @@ public class News extends com.sofoot.domain.Object {
         this.soustitre = soustitre;
     }
 
+    public boolean hasDescriptif() {
+        return this.descriptif != null;
+    }
+
     public String getDescriptif() {
         return this.descriptif;
     }
@@ -124,8 +128,7 @@ public class News extends com.sofoot.domain.Object {
         this.chapo = chapo;
     }
 
-    public boolean hasAuteur()
-    {
+    public boolean hasAuteur() {
         return this.auteur != null;
     }
 
@@ -137,9 +140,7 @@ public class News extends com.sofoot.domain.Object {
         this.auteur = auteur;
     }
 
-
-    public boolean hasLegende()
-    {
+    public boolean hasLegende() {
         return this.legende != null;
     }
 
@@ -228,7 +229,12 @@ public class News extends com.sofoot.domain.Object {
         return this.getImage(size);
     }
 
-    public URL getImage(final ImageSize size){
+
+    public boolean hasImage(final ImageSize size) {
+        return this.images.containsKey(size);
+    }
+
+    public URL getImage(final ImageSize size) {
         return this.images.get(size);
     }
 

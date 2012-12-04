@@ -2,7 +2,6 @@ package com.sofoot.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -14,16 +13,16 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 import com.sofoot.R;
-import com.sofoot.activity.NewsActivity;
+import com.sofoot.activity.NewsDetailsActivity;
 import com.sofoot.adapter.NewsAdapter;
 import com.sofoot.domain.Collection;
 import com.sofoot.domain.model.News;
 import com.sofoot.loader.NewsListLoader;
 
-public class NewsListFragment extends ListFragment
+public class NewsListFragment extends SofootListFragment
 implements LoaderManager.LoaderCallbacks<Collection<News>>, OnScrollListener, OnItemClickListener
 {
-    final static private String MY_LOG_TAG = "NewsListFragment";
+    final static public String LOG_TAG = "NewsListFragment";
 
     private  NewsListLoader newsLoader;
 
@@ -54,18 +53,21 @@ implements LoaderManager.LoaderCallbacks<Collection<News>>, OnScrollListener, On
         this.getListView().setOnItemClickListener(this);
     }
 
+
+
     @Override
     public Loader<Collection<News>> onCreateLoader(final int id, final Bundle args) {
-        Log.d(NewsListFragment.MY_LOG_TAG, "onCreateLoader");
+        Log.d(NewsListFragment.LOG_TAG, "onCreateLoader");
 
         this.newsLoader = new NewsListLoader(this.getActivity());
         this.newsLoader.setLimit(NewsListFragment.NEWS_LIMIT);
+        this.newsLoader.setRubrique(this.getArguments().getString("rubrique"));
         return this.newsLoader;
     }
 
     @Override
     public void onLoadFinished(final Loader<Collection<News>> loader, final Collection<News> result) {
-        Log.d(NewsListFragment.MY_LOG_TAG, "onLoadFinish");
+        Log.d(NewsListFragment.LOG_TAG, "onLoadFinish");
 
         if (this.newsLoader.getLastException() != null) {
             Toast.makeText(this.getActivity(), this.getString(R.string.newslistloader_error), Toast.LENGTH_LONG).show();
@@ -85,7 +87,7 @@ implements LoaderManager.LoaderCallbacks<Collection<News>>, OnScrollListener, On
 
     @Override
     public void onLoaderReset(final Loader<Collection<News>> arg0) {
-        Log.d(NewsListFragment.MY_LOG_TAG, "onLoaderReset");
+        Log.d(NewsListFragment.LOG_TAG, "onLoaderReset");
         this.mAdapter.clear();
     }
 
@@ -104,9 +106,9 @@ implements LoaderManager.LoaderCallbacks<Collection<News>>, OnScrollListener, On
 
     @Override
     public void onItemClick(final AdapterView<?> adapterView, final View v, final int position, final long arg) {
-        Log.d(NewsListFragment.MY_LOG_TAG, "onItemClick : " + position);
+        Log.d(NewsListFragment.LOG_TAG, "onItemClick : " + position);
 
-        final Intent intent = new Intent(this.getActivity(), NewsActivity.class);
+        final Intent intent = new Intent(this.getActivity(), NewsDetailsActivity.class);
         intent.putExtra("relPosition", position);
         intent.putExtra("newsIds", this.mAdapter.getNewsIds());
         this.startActivity(intent);

@@ -6,21 +6,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
         android:orientation="vertical" >
 
+        
         <TextView
-            android:id="@+id/surtitre"
+            style="@style/NewsDetailsSurtitre"
+            android:id="@+id/surtitre"            
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/titre"
+            style="@style/NewsDetailsTitre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView
+            style="@style/NewsDetailsDatePublication"
             android:id="@+id/publication"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -34,31 +37,39 @@
 
         <TextView
             android:id="@+id/chapo"
+            style="@style/NewsDetailsChapo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone" />
 
-        <TextView
+        <ImageView
             android:id="@+id/img"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="5dp"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/legende"
+            style="@style/NewsDetailsLegende"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/texte"
+            style="@style/NewsDetailsTexte"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/auteur"
+            style="@style/NewsDetailsAuteur"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" 
+            android:gravity="right"/>
     </LinearLayout>
 
 </ScrollView>

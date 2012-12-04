@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.support.v4.util.LruCache;
-import android.util.Log;
 
 import com.sofoot.gateway.WSGateway;
 import com.sofoot.mapper.ClassementMapper;
@@ -141,11 +140,25 @@ public class Sofoot extends Application {
             final int memClass = ((ActivityManager) this.getSystemService(
                     Context.ACTIVITY_SERVICE)).getMemoryClass();
 
-            Log.d("MAX_MEMORY_AVAILABLE", "" + memClass);
-
-            this.bitmapCache = new LruCache<URL, Bitmap>(memClass / 8);
+            final int cacheSize = memClass * 1024 * 1024;
+            this.bitmapCache = new LruCache<URL, Bitmap>(cacheSize) {
+                @SuppressWarnings("unused")
+                protected int sizeOf(final String key, final Bitmap value) {
+                    return value.getByteCount();
+                }
+            };
         }
 
         return this.bitmapCache;
+    }
+
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+
+        if (this.bitmapCache != null) {
+            this.bitmapCache.evictAll();
+        }
     }
 }

@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.sofoot.domain.model.News.ImageSize;
+import com.sofoot.utils.StringUtils;
 
 public class NewsFactory {
 
@@ -19,55 +20,55 @@ public class NewsFactory {
 
         final News news = new News();
 
-        if (json.has("id") == true) {
+        if (StringUtils.isJsonFieldNotEmpty(json,"id") == true) {
             news.setId(json.getInt("id"));
         }
-        if (json.has("publication") == true) {
+        if (StringUtils.isJsonFieldNotEmpty(json,"publication") == true) {
             news.setPublication(NewsFactory.dateFormatter.parse(json.getString("publication").trim()));
         }
-        if (json.has("surtitre") == true) {
+        if (StringUtils.isJsonFieldNotEmpty(json,"surtitre") == true) {
             news.setSurtitre(json.getString("surtitre").trim());
         }
-        if (json.has("titre") == true) {
+        if (StringUtils.isJsonFieldNotEmpty(json,"titre") == true) {
             news.setTitre(json.getString("titre").trim());
         }
-        if (json.has("soustitre") == true) {
+        if (StringUtils.isJsonFieldNotEmpty(json,"soustitre") == true) {
             news.setSoustitre(json.getString("soustitre").trim());
         }
-        if (json.has("descriptif") == true) {
+        if (StringUtils.isJsonFieldNotEmpty(json,"descriptif") == true) {
             news.setDescriptif(json.getString("descriptif").trim());
         }
-        if (json.has("chapo") == true) {
+        if (StringUtils.isJsonFieldNotEmpty(json,"chapo") == true) {
             news.setChapo(json.getString("chapo").trim());
         }
-        if (json.has("auteur") == true) {
+        if (StringUtils.isJsonFieldNotEmpty(json,"auteur") == true) {
             news.setAuteur(json.getString("auteur").trim());
         }
-        if (json.has("texte") == true) {
+        if (StringUtils.isJsonFieldNotEmpty(json,"texte") == true) {
             news.setTexte(json.getString("texte").trim());
         }
-        if (json.has("legende") == true) {
+        if (StringUtils.isJsonFieldNotEmpty(json,"legende") == true) {
             news.setLegende(json.getString("legende").trim());
         }
-        if (json.has("legende_home") == true) {
+        if (StringUtils.isJsonFieldNotEmpty(json,"legende_home") == true) {
             news.setLegendeHome(json.getString("legende_home").trim());
         }
-        if (json.has("url") == true) {
+        if (StringUtils.isJsonFieldNotEmpty(json,"url") == true) {
             news.setUrl(json.getString("url").trim());
         }
-        if (json.has("votes") == true) {
+        if (StringUtils.isJsonFieldNotEmpty(json,"votes") == true) {
             news.setVotes(json.getString("votes").trim());
         }
-        if (json.has("note") == true) {
+        if (StringUtils.isJsonFieldNotEmpty(json,"note") == true) {
             news.setNote(json.getString("note").trim());
         }
-        if (json.has("commentaires") == true) {
+        if (StringUtils.isJsonFieldNotEmpty(json,"commentaires") == true) {
             news.setCommentaires(json.getInt("commentaires"));
         }
-        if (json.has("id_parent") == true) {
+        if (StringUtils.isJsonFieldNotEmpty(json,"id_parent") == true) {
             news.setIdParent(json.getInt("id_parent"));
         }
-        if (json.has("id_rubrique") == true) {
+        if (StringUtils.isJsonFieldNotEmpty(json,"id_rubrique") == true) {
             news.setIdRubrique(json.getInt("id_rubrique"));
         }
 

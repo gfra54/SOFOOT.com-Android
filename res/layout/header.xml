@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#eeeeee" >
+
+    <ImageView
+        android:id="@+id/headerLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:src="@drawable/logo_header" />
+
+    <ImageView
+        android:id="@+id/headerNextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:paddingBottom="5dp"
+        android:paddingLeft="1dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:src="@drawable/ic_arrow_next"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/headerPrevButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/headerNextButton"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:src="@drawable/ic_arrow_prev"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/headerUpdatedDatetimeView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/headerLogo"
+        android:background="@drawable/bg_updaded_datetime"
+        android:paddingBottom="2dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="2dp"
+        android:textColor="#FFF"
+        android:textSize="8sp"
+        android:visibility="gone" />
+
+</RelativeLayout>

@@ -56,11 +56,11 @@ public class ResultatLoader extends AsyncTaskLoader<Collection<Rencontre>> {
         return this.lastException;
     }
 
-    public void setLigue(final String ligue) {
+    public void setLigueId(final String ligue) {
         this.criteria.setParam("ligue", ligue);
     }
 
-    public String getLigue() {
+    public String getLigueId() {
         return this.criteria.getParam("ligue");
 
     }

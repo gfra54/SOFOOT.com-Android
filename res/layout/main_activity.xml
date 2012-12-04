@@ -11,11 +11,10 @@
         android:orientation="vertical" >
 
         <include
-            android:id="@+id/header_logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            layout="@layout/header_logo" />
+            layout="@layout/header" />
 
         <FrameLayout
             android:id="@android:id/tabcontent"
@@ -32,11 +31,11 @@
         <include
             android:id="@+id/footer_ad_banner"
             android:layout_weight="0"
-            layout="@layout/footer_ad_banner" />
+            layout="@layout/ad_banner" />
 
         <TabWidget
             android:id="@android:id/tabs"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:orientation="horizontal" />

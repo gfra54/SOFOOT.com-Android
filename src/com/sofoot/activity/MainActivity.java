@@ -16,30 +16,25 @@ import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
-import com.google.ads.Ad;
-import com.google.ads.AdListener;
-import com.google.ads.AdRequest;
-import com.google.ads.AdRequest.ErrorCode;
-import com.google.ads.doubleclick.DfpAdView;
+import com.google.android.apps.analytics.easytracking.EasyTracker;
 import com.sofoot.R;
 import com.sofoot.fragment.LiguesFragment;
 import com.sofoot.fragment.NewsListFragment;
 
-public class MainActivity extends FragmentActivity implements AdListener {
+public class MainActivity extends SofootAdActivity  {
 
     private TabHost mTabHost;
     ViewPager  mViewPager;
     TabsAdapter mTabsAdapter;
 
-    private DfpAdView adView;
-
-    final private static String MY_LOG_TAG = "TabsActivity";
+    final private static String LOG_TAG = "TabsActivity";
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState, R.layout.main_activity);
 
-        this.setContentView(R.layout.main_activity);
+        EasyTracker.getTracker().setContext(this);
+
         this.mTabHost = (TabHost)this.findViewById(android.R.id.tabhost);
         this.mTabHost.setup();
 
@@ -48,82 +43,57 @@ public class MainActivity extends FragmentActivity implements AdListener {
         this.mTabsAdapter = new TabsAdapter(this, this.mTabHost, this.mViewPager);
 
         final View tabIndicator = this.getLayoutInflater().inflate(R.layout.tab_indicator, null);
-        ((TextView) tabIndicator.findViewById(android.R.id.title)).setText("Actus");
+        ((TextView) tabIndicator.findViewById(android.R.id.title)).setText("La une");
+        final Bundle args1 = new Bundle();
+        args1.putString("rubrique", "2");
+        this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("la_une").setIndicator(tabIndicator),
+                NewsListFragment.class, args1);
 
-        this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("simple").setIndicator(tabIndicator),
-                NewsListFragment.class, null);
 
         final View tabIndicator2 = this.getLayoutInflater().inflate(R.layout.tab_indicator, null);
+        ((TextView) tabIndicator2.findViewById(android.R.id.title)).setText("News");
         final Bundle args2 = new Bundle();
-        args2.putBoolean("resultats", true);
-        ((TextView) tabIndicator2.findViewById(android.R.id.title)).setText("Résultats");
-        this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("resultat").setIndicator(tabIndicator2),
-                LiguesFragment.class, args2);
+        args2.putString("rubrique", "1");
+        this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("news").setIndicator(tabIndicator2),
+                NewsListFragment.class, args2);
 
+        final View tabIndicator3 = this.getLayoutInflater().inflate(R.layout.tab_indicator, null);
+        ((TextView) tabIndicator3.findViewById(android.R.id.title)).setText("Résultats / Classment");
+        final Bundle args3 = new Bundle();
+        args3.putBoolean("resultats", true);
+        this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("choix_ligue").setIndicator(tabIndicator3),
+                LiguesFragment.class, args3);
+
+        /*
         final View tabIndicator3 = this.getLayoutInflater().inflate(R.layout.tab_indicator, null);
         final Bundle args3 = new Bundle();
         args3.putBoolean("classement", true);
         ((TextView) tabIndicator3.findViewById(android.R.id.title)).setText("Classement");
-        this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("classement").setIndicator(tabIndicator3),
+        this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("choix_ligue").setIndicator(tabIndicator3),
                 LiguesFragment.class, args3);
-
-        this.adView = (DfpAdView)this.findViewById(R.id.adView);
-
-        // Initiate a generic request to load it with an ad
-        final AdRequest adRequest = new AdRequest();
-        adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
-        this.adView.loadAd(adRequest);
+         */
 
         if (savedInstanceState != null) {
             this.mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EasyTracker.getTracker().trackActivityStart(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EasyTracker.getTracker().trackActivityStop(this);
+    }
 
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("tab", this.mTabHost.getCurrentTabTag());
-    }
-
-
-
-    @Override
-    public void onDestroy() {
-
-        if (this.adView != null) {
-            this.adView.destroy();
-        }
-
-        super.onDestroy();
-    }
-
-    @Override
-    public void onDismissScreen(final Ad ad) {
-        Log.d(MainActivity.MY_LOG_TAG, "onDismissScreen");
-    }
-
-    @Override
-    public void onFailedToReceiveAd(final Ad add, final ErrorCode code) {
-        Log.d(MainActivity.MY_LOG_TAG, "Ad failed to received");
-
-    }
-
-    @Override
-    public void onLeaveApplication(final Ad ad) {
-        // TODO Auto-generated method stub
-        Log.d(MainActivity.MY_LOG_TAG, "onLeaveApplication");
-    }
-
-    @Override
-    public void onPresentScreen(final Ad ad) {
-        // TODO Auto-generated method stub
-        Log.d(MainActivity.MY_LOG_TAG, "onPresentScreen");
-    }
-
-    @Override
-    public void onReceiveAd(final Ad ad) {
-        Log.d(MainActivity.MY_LOG_TAG, "Ad received");
     }
 
 
@@ -198,6 +168,8 @@ public class MainActivity extends FragmentActivity implements AdListener {
         @Override
         public void onTabChanged(final String tabId) {
             final int position = this.mTabHost.getCurrentTab();
+            EasyTracker.getTracker().trackPageView(this.mTabHost.getCurrentTabTag());
+            Log.d(EasyTracker.LOG_TAG, "trackPageView : " + this.mTabHost.getCurrentTabTag());
             this.mViewPager.setCurrentItem(position);
         }
 

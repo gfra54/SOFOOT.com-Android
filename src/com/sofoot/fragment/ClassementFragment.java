@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,8 +51,8 @@ implements LoaderManager.LoaderCallbacks<Collection<Classement>>
 
             final View row = this.getActivity().getLayoutInflater().inflate(R.layout.classement_row, null);
 
-            ((TextView) row.findViewById(R.id.classement_rang)).setText(String.valueOf(classement.getDiff()));
-            ((TextView) row.findViewById(R.id.classement_club)).setText(classement.getClub().getLibelle());
+            //((TextView) row.findViewById(R.id.classement_rang)).setText(String.valueOf(classement.getDiff()));
+            ((TextView) row.findViewById(R.id.classement_club)).setText(Html.fromHtml(classement.getClub().getLibelle()));
             ((TextView) row.findViewById(R.id.classement_points)).setText(String.valueOf(classement.getNbPoints()));
             //((TextView) row.findViewById(R.id.classement_journee)).setText(classement.get());
 

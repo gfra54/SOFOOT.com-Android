@@ -52,7 +52,7 @@ implements LoaderManager.LoaderCallbacks<Collection<Rencontre>>
     public Loader<Collection<Rencontre>> onCreateLoader(final int id, final Bundle args) {
         Log.d(ResultatListFragment.MY_LOG_TAG, "onCreateLoader");
         this.resultatLoader = new ResultatLoader(this.getActivity());
-        this.resultatLoader.setLigue(this.getArguments().getString("ligue"));
+        this.resultatLoader.setLigueId(this.getArguments().getString("ligueId"));
         return this.resultatLoader;
     }
 

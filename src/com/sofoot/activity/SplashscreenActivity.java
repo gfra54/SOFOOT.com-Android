@@ -10,10 +10,9 @@ import com.google.ads.AdListener;
 import com.google.ads.AdRequest;
 import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.doubleclick.DfpInterstitialAd;
+import com.google.android.apps.analytics.easytracking.EasyTracker;
 import com.sofoot.R;
 import com.sofoot.Sofoot;
-import com.sofoot.R.layout;
-import com.sofoot.R.string;
 
 public class SplashscreenActivity extends Activity implements AdListener{
 
@@ -24,7 +23,10 @@ public class SplashscreenActivity extends Activity implements AdListener{
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_splashscreen);
+
+        EasyTracker.getTracker().setContext(this);
+
+        this.setContentView(R.layout.splashscreen_activity);
 
         //Create the interstitial
         this.interstitial = new DfpInterstitialAd(this, this.getString(R.string.interstitial_unit_id));
@@ -37,12 +39,32 @@ public class SplashscreenActivity extends Activity implements AdListener{
         this.interstitial.setAdListener(this);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EasyTracker.getTracker().trackActivityStart(this);
+        EasyTracker.getTracker().trackPageView("splashscreen");
+    }
+
+    @Override
+    public Object onRetainNonConfigurationInstance() {
+        final Object o = super.onRetainNonConfigurationInstance();
+        EasyTracker.getTracker().trackActivityRetainNonConfigurationInstance();
+        return o;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EasyTracker.getTracker().trackActivityStop(this);
+    }
+
     public DfpInterstitialAd getDfpInterstitialAd()
     {
         return this.interstitial;
     }
 
-    public void startHomeActivity()
+    public void startMainActivity()
     {
         this.startActivity(new Intent(this, MainActivity.class));
     }
@@ -50,13 +72,13 @@ public class SplashscreenActivity extends Activity implements AdListener{
     @Override
     public void onDismissScreen(final Ad ad) {
         Log.d(SplashscreenActivity.MY_LOG_TAG, "onDismissScreen");
-        this.startHomeActivity();
+        this.startMainActivity();
     }
 
     @Override
     public void onFailedToReceiveAd(final Ad add, final ErrorCode code) {
         Log.d(SplashscreenActivity.MY_LOG_TAG, "Ad failed to received");
-        this.startHomeActivity();
+        this.startMainActivity();
     }
 
     @Override
@@ -76,7 +98,7 @@ public class SplashscreenActivity extends Activity implements AdListener{
         if ((Sofoot.DEVELOPPER_MODE == false) && (ad == this.interstitial)) {
             this.interstitial.show();
         } else {
-            this.startHomeActivity();
+            this.startMainActivity();
         }
     }
 }

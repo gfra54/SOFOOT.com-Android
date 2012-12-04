@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <item android:id="@+id/increaseFontSize"
+          android:icon="@android:drawable/ic_menu_upload"
+          android:title="Agrandir"
+          android:showAsAction="ifRoom"/>
+    
+    <item android:id="@+id/decreaseFontSize"
+          android:icon="@android:drawable/ic_menu_agenda"
+          android:title="Réduire" />
+    
+    <item android:id="@+id/share"
+          android:icon="@android:drawable/ic_menu_share"
+          android:title="Partager"
+          android:showAsAction="ifRoom" />
+    
+</menu>

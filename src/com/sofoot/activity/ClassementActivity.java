@@ -23,19 +23,19 @@ public class ClassementActivity extends FragmentActivity
 
         this.mAdapter = new MyAdapter(
                 this.getSupportFragmentManager(),
-                this.getIntent().getExtras().getStringArray("liguesIds"),
-                this.getIntent().getExtras().getInt("relPosition")
+                this.getIntent().getExtras().getStringArray("liguesIds")
                 );
 
         this.mPager = (ViewPager)this.findViewById(R.id.liguesPager);
         this.mPager.setAdapter(this.mAdapter);
+        this.mPager.setCurrentItem(this.getIntent().getExtras().getInt("relPosition"));
     }
 
 
     private class MyAdapter extends ListFragmentStatePagerAdapter{
 
-        public MyAdapter(final FragmentManager fm, final String[] newsIds, final int relativePosition) {
-            super(fm, newsIds, relativePosition);
+        public MyAdapter(final FragmentManager fm, final String[] newsIds) {
+            super(fm, newsIds);
         }
 
         @Override
