@@ -1,59 +1,25 @@
 package com.sofoot.loader;
 
 import android.content.Context;
-import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.sofoot.Sofoot;
 import com.sofoot.domain.Collection;
-import com.sofoot.domain.Criteria;
 import com.sofoot.domain.model.Rencontre;
+import com.sofoot.mapper.MapperException;
 
-public class ResultatLoader extends AsyncTaskLoader<Collection<Rencontre>> {
-
-    final static private String MY_LOG_TAG = "ResultatLoader";
-
-    private Exception lastException;
-
-    private Collection<Rencontre> data;
-
-    final private Criteria criteria;
+public class ResultatLoader extends SofootLoader<Collection<Rencontre>> {
 
     public ResultatLoader(final Context context) {
         super(context);
-        this.criteria = new Criteria();
     }
+
+    final static private String LOG_TAG = "ResultatLoader";
 
     @Override
-    public Collection<Rencontre> loadInBackground() {
-        Log.d(ResultatLoader.MY_LOG_TAG, "loadInbackground");
-
-        this.lastException = null;
-        this.data = null;
-
-        try {
-            this.data = ((Sofoot)this.getContext().getApplicationContext()).getResultatMapper().findAll(this.criteria);
-        } catch (final Exception exception) {
-            this.lastException = exception;
-            this.data = null;
-        }
-
-        return this.data;
-    }
-
-    @Override
-    protected void onStartLoading() {
-        Log.d(ResultatLoader.MY_LOG_TAG, "onStartLoading");
-
-        super.onStartLoading();
-
-        if (this.takeContentChanged() || (this.data == null)) {
-            this.forceLoad();
-        }
-    }
-
-    public Exception getLastException() {
-        return this.lastException;
+    public Collection<Rencontre> doLoad() throws MapperException {
+        Log.d(ResultatLoader.LOG_TAG, "doLoad");
+        return  ((Sofoot)this.getContext().getApplicationContext()).getResultatMapper().findAll(this.criteria);
     }
 
     public void setLigueId(final String ligue) {

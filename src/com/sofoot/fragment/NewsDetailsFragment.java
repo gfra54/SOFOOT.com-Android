@@ -1,12 +1,18 @@
 package com.sofoot.fragment;
 
+import java.io.IOException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.util.LruCache;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,13 +25,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.apps.analytics.easytracking.EasyTracker;
 import com.sofoot.R;
+import com.sofoot.Sofoot;
 import com.sofoot.domain.model.News;
-import com.sofoot.loader.ImageLoader;
 import com.sofoot.loader.NewsLoader;
+import com.sofoot.utils.SofootAnalytics;
 
 public class NewsDetailsFragment extends Fragment
-implements LoaderManager.LoaderCallbacks<News>
+implements LoaderManager.LoaderCallbacks<News>, SofootAnalytics
 {
 
     final static public String LOG_TAG = "NewsFragment";
@@ -37,8 +45,31 @@ implements LoaderManager.LoaderCallbacks<News>
         super.onActivityCreated(savedInstanceState);
 
         this.setHasOptionsMenu(true);
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
 
         this.getLoaderManager().initLoader(0, null, this);
+
+        EasyTracker.getTracker().trackActivityStart(null);
+        this.trackPageView(EasyTracker.getTracker());
+        Log.i(NewsDetailsFragment.LOG_TAG, "On Start "  + this.toString());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getTracker().trackActivityStop(null);
+        Log.i(NewsDetailsFragment.LOG_TAG, "On Stop "  + this.toString());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(NewsDetailsFragment.LOG_TAG, "On Resume "  + this.toString());
     }
 
     @Override
@@ -48,12 +79,12 @@ implements LoaderManager.LoaderCallbacks<News>
 
     @Override
     public Loader<News> onCreateLoader(final int id, final Bundle args) {
-        return new NewsLoader(this.getActivity(), this.getArguments().getInt("id"));
+        return new NewsLoader(this.getActivity(), this.getArguments().getString("id"));
     }
 
     @Override
     public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
-        inflater.inflate(R.menu.news_details_activity, menu);
+        inflater.inflate(R.menu.news_details_fragment, menu);
     }
 
     @Override
@@ -73,7 +104,9 @@ implements LoaderManager.LoaderCallbacks<News>
                     final Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                     sharingIntent.setType("text/plain");
                     sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, this.currentNews.getTitre());
-                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, this.currentNews.getTitre() + "\n\n" + this.currentNews.getUrl() + "\n\nEnvoyé par l'appli SO FOOT");
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, this.currentNews.getTitre() +
+                            "\n\n" + this.currentNews.getUrl() +
+                            "\n\n" + this.getString(R.string.send_via));
                     this.startActivity(Intent.createChooser(sharingIntent, this.getString(R.string.share_via)));
                 default:
 
@@ -119,7 +152,6 @@ implements LoaderManager.LoaderCallbacks<News>
             view.setVisibility(View.VISIBLE);
         }
 
-
         ((TextView)this.getView().findViewById(R.id.titre)).setText(result.getTitre());
 
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd / MM / yy  à  HH:mm");
@@ -140,12 +172,50 @@ implements LoaderManager.LoaderCallbacks<News>
         }
 
         if (result.hasImage(News.ImageSize.NORMAL)) {
-            final ImageView imageView = (ImageView)this.getView().findViewById(R.id.img);
-            final ImageLoader imageLoader = new ImageLoader(imageView);
 
-            imageView.setTag(result.getImage(News.ImageSize.NORMAL));
-            imageLoader.execute(result.getImage(News.ImageSize.NORMAL));
+            final ImageView imageView =  (ImageView)NewsDetailsFragment.this.getView().findViewById(R.id.img);
             imageView.setVisibility(View.VISIBLE);
+
+            final AsyncTask<URL, Void, Bitmap> asyncTask = new AsyncTask<URL,Void, Bitmap>(){
+
+                @Override
+                protected Bitmap doInBackground(final URL... urls) {
+                    try {
+                        final Sofoot application = (Sofoot)NewsDetailsFragment.this.getActivity().getApplication();
+                        final LruCache<URL, Bitmap> cache = application.getBitmapCache();
+
+                        Bitmap bitmap = cache.get(urls[0]);
+
+                        if (bitmap == null) {
+                            Log.d(NewsDetailsFragment.LOG_TAG, "Bitmap for url '" + urls[0].toString() + "' is not cached");
+                            bitmap = BitmapFactory.decodeStream(urls[0].openStream());
+                            cache.put(urls[0], bitmap);
+                        } else {
+                            Log.d(NewsDetailsFragment.LOG_TAG, "Bitmap for url '" + urls[0].toString() + "' is cached");
+                        }
+
+                        return bitmap;
+                    } catch (final IOException ioe) {
+                        Log.wtf(NewsDetailsFragment.LOG_TAG, ioe);
+                    }
+
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(final Bitmap result) {
+
+                    if (result != null) {
+                        Log.d(NewsDetailsFragment.LOG_TAG, "Bitmap : " + result.toString());
+                        imageView.setImageBitmap(result);
+                    } else {
+                        Log.d(NewsDetailsFragment.LOG_TAG, "Bitmap : NULL");
+                    }
+                }
+
+            };
+
+            asyncTask.execute(result.getImage(News.ImageSize.NORMAL));
 
             if (result.hasLegende()) {
                 final TextView legende = (TextView)this.getView().findViewById(R.id.legende);
@@ -161,6 +231,9 @@ implements LoaderManager.LoaderCallbacks<News>
             view.setText(result.getAuteur());
             view.setVisibility(View.VISIBLE);
         }
+
+        this.getView().findViewById(android.R.id.empty).setVisibility(View.GONE);
+        this.getView().findViewById(R.id.newsDetails).setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -169,5 +242,10 @@ implements LoaderManager.LoaderCallbacks<News>
 
     }
 
+
+    @Override
+    public void trackPageView(final EasyTracker easyTracker) {
+        easyTracker.trackPageView("details_news");
+    }
 
 }

@@ -12,7 +12,6 @@ import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.doubleclick.DfpInterstitialAd;
 import com.google.android.apps.analytics.easytracking.EasyTracker;
 import com.sofoot.R;
-import com.sofoot.Sofoot;
 
 public class SplashscreenActivity extends Activity implements AdListener{
 
@@ -95,10 +94,8 @@ public class SplashscreenActivity extends Activity implements AdListener{
 
     @Override
     public void onReceiveAd(final Ad ad) {
-        if ((Sofoot.DEVELOPPER_MODE == false) && (ad == this.interstitial)) {
+        if (ad == this.interstitial) {
             this.interstitial.show();
-        } else {
-            this.startMainActivity();
         }
     }
 }

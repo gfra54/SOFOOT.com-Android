@@ -1,63 +1,25 @@
 package com.sofoot.loader;
 
 import android.content.Context;
-import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.sofoot.Sofoot;
-import com.sofoot.domain.Criteria;
 import com.sofoot.domain.model.News;
+import com.sofoot.mapper.MapperException;
 
-public class NewsLoader extends AsyncTaskLoader<News> {
+public class NewsLoader extends SofootLoader<News> {
 
-    private Exception lastException;
+    final static public String LOG_TAG = "NewsLoader";
 
-    final static private String MY_LOG_TAG = "NewsLoader";
-
-    private News news;
-
-    final private Criteria criteria;
-
-    public NewsLoader(final Context context, final int id) {
+    public NewsLoader(final Context context, final String id) {
         super(context);
-
-        Log.d(NewsLoader.MY_LOG_TAG, context.toString());
-
-        this.criteria = new Criteria();
-        this.criteria.setParam("id", String.valueOf(id));
+        this.criteria.setParam("id", id);
     }
 
     @Override
-    public News loadInBackground() {
-        this.lastException = null;
-        this.news = null;
-
-        Log.d(NewsLoader.MY_LOG_TAG, "loadInbackground");
-
-        try {
-            this.news = ((Sofoot)this.getContext().getApplicationContext()).getNewsMapper().find(this.criteria);
-            //throw new GatewayException("toto");
-        } catch (final Exception exception) {
-            this.lastException = exception;
-            this.news = null;
-        }
-
-        return this.news;
-    }
-
-    @Override
-    protected void onStartLoading() {
-        super.onStartLoading();
-
-        Log.d(NewsLoader.MY_LOG_TAG, "onStartLoading");
-
-        if (this.takeContentChanged() || (this.news == null)) {
-            this.forceLoad();
-        }
-    }
-
-    public Exception getLastException() {
-        return this.lastException;
+    protected News doLoad() throws MapperException {
+        Log.d(NewsLoader.LOG_TAG, "doLoad");
+        return ((Sofoot)this.getContext().getApplicationContext()).getNewsMapper().find(this.criteria);
     }
 
 }

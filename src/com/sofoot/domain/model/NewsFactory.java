@@ -75,17 +75,17 @@ public class NewsFactory {
         if (json.has("logo") == true) {
             final JSONObject logos = json.getJSONObject("logo");
 
-            news.addImage(ImageSize.SMALL, new URL(logos.getString("100x100").trim()));
-            news.addImage(ImageSize.NORMAL, new URL(logos.getString("w300").trim()));
-            news.addImage(ImageSize.LARGE, new URL(logos.getString("w600").trim()));
+            news.addImage(ImageSize.SMALL, new URL(logos.getString("90x60").trim()));
+            news.addImage(ImageSize.NORMAL, new URL(logos.getString("w320").trim()));
+            news.addImage(ImageSize.LARGE, new URL(logos.getString("w640").trim()));
         }
 
         if (json.has("logo_home") == true) {
             final JSONObject logos = json.getJSONObject("logo_home");
 
-            news.addImage(ImageSize.SMALL, new URL(logos.getString("100x100").trim()));
-            news.addImage(ImageSize.NORMAL, new URL(logos.getString("w300").trim()));
-            news.addImage(ImageSize.LARGE, new URL(logos.getString("w600").trim()));
+            news.addImage(ImageSize.SMALL, new URL(logos.getString("90x60").trim()));
+            news.addImage(ImageSize.NORMAL, new URL(logos.getString("w320").trim()));
+            news.addImage(ImageSize.LARGE, new URL(logos.getString("w640").trim()));
         }
 
         return news;

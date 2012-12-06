@@ -57,4 +57,7 @@ public class Rencontre extends Object
         this.club2 = club2;
     }
 
+    public boolean isPlayed() {
+        return (this.score1 > -1) && (this.score2 > -1);
+    }
 }

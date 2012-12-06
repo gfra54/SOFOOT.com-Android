@@ -9,14 +9,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
-import com.google.android.apps.analytics.easytracking.EasyTracker;
 import com.sofoot.R;
 import com.sofoot.fragment.LiguesFragment;
 import com.sofoot.fragment.NewsListFragment;
@@ -33,7 +31,6 @@ public class MainActivity extends SofootAdActivity  {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.main_activity);
 
-        EasyTracker.getTracker().setContext(this);
 
         this.mTabHost = (TabHost)this.findViewById(android.R.id.tabhost);
         this.mTabHost.setup();
@@ -42,13 +39,12 @@ public class MainActivity extends SofootAdActivity  {
 
         this.mTabsAdapter = new TabsAdapter(this, this.mTabHost, this.mViewPager);
 
-        final View tabIndicator = this.getLayoutInflater().inflate(R.layout.tab_indicator, null);
+        final View tabIndicator = this.getLayoutInflater().inflate(R.layout.tab_indicator_la_une, null);
         ((TextView) tabIndicator.findViewById(android.R.id.title)).setText("La une");
         final Bundle args1 = new Bundle();
         args1.putString("rubrique", "2");
         this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("la_une").setIndicator(tabIndicator),
                 NewsListFragment.class, args1);
-
 
         final View tabIndicator2 = this.getLayoutInflater().inflate(R.layout.tab_indicator, null);
         ((TextView) tabIndicator2.findViewById(android.R.id.title)).setText("News");
@@ -58,20 +54,20 @@ public class MainActivity extends SofootAdActivity  {
                 NewsListFragment.class, args2);
 
         final View tabIndicator3 = this.getLayoutInflater().inflate(R.layout.tab_indicator, null);
-        ((TextView) tabIndicator3.findViewById(android.R.id.title)).setText("Résultats / Classment");
+        ((TextView) tabIndicator3.findViewById(android.R.id.title)).setText("Résultats");
         final Bundle args3 = new Bundle();
         args3.putBoolean("resultats", true);
-        this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("choix_ligue").setIndicator(tabIndicator3),
+        this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("choix_ligue_resultats").setIndicator(tabIndicator3),
                 LiguesFragment.class, args3);
 
-        /*
-        final View tabIndicator3 = this.getLayoutInflater().inflate(R.layout.tab_indicator, null);
-        final Bundle args3 = new Bundle();
-        args3.putBoolean("classement", true);
-        ((TextView) tabIndicator3.findViewById(android.R.id.title)).setText("Classement");
-        this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("choix_ligue").setIndicator(tabIndicator3),
-                LiguesFragment.class, args3);
-         */
+        final View tabIndicator4 = this.getLayoutInflater().inflate(R.layout.tab_indicator, null);
+        ((TextView) tabIndicator4.findViewById(android.R.id.title)).setText("Classement");
+        final Bundle args4 = new Bundle();
+        args4.putBoolean("classement", true);
+        this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("choix_ligue_classement").setIndicator(tabIndicator4),
+                LiguesFragment.class, args4);
+
+        this.showHeaderUpdatedTime();
 
         if (savedInstanceState != null) {
             this.mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
@@ -79,24 +75,10 @@ public class MainActivity extends SofootAdActivity  {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        EasyTracker.getTracker().trackActivityStart(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        EasyTracker.getTracker().trackActivityStop(this);
-    }
-
-    @Override
     protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("tab", this.mTabHost.getCurrentTabTag());
     }
-
-
 
 
     public static class TabsAdapter extends FragmentPagerAdapter
@@ -168,8 +150,6 @@ public class MainActivity extends SofootAdActivity  {
         @Override
         public void onTabChanged(final String tabId) {
             final int position = this.mTabHost.getCurrentTab();
-            EasyTracker.getTracker().trackPageView(this.mTabHost.getCurrentTabTag());
-            Log.d(EasyTracker.LOG_TAG, "trackPageView : " + this.mTabHost.getCurrentTabTag());
             this.mViewPager.setCurrentItem(position);
         }
 

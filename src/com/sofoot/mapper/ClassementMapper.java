@@ -39,7 +39,9 @@ public class ClassementMapper extends SofootWsMapper<Classement> {
 
                 final int length = jsonClassement.length();
                 for (int i = 0; i < length; i++) {
-                    classements.add(ClassementFactory.createFromJsonObject(jsonClassement.getJSONObject(i)));
+                    final Classement classement = ClassementFactory.createFromJsonObject(jsonClassement.getJSONObject(i));
+                    classement.setRang(i+1);
+                    classements.add(classement);
                 }
             }
 

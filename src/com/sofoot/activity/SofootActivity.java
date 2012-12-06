@@ -1,8 +1,14 @@
 package com.sofoot.activity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 import com.sofoot.R;
 
@@ -13,16 +19,32 @@ public class SofootActivity extends FragmentActivity
     protected View headerNextButton;
     protected View headerPrevButton;
 
-    protected View headerUpdatedDatetime;
+    protected View headerUpdatedTime;
+
+    private SimpleDateFormat dateFormat;
+    private final Date date = new Date();
+
 
     protected void onCreate(final Bundle bundle, final int layoutResID) {
         super.onCreate(bundle);
 
         this.setContentView(layoutResID);
 
+        this.dateFormat = new SimpleDateFormat(this.getString(R.string.updated_datetime_format));
+
         this.headerNextButton = this.findViewById(R.id.headerNextButton);
         this.headerPrevButton = this.findViewById(R.id.headerPrevButton);
-        this.headerUpdatedDatetime = this.findViewById(R.id.headerUpdatedDatetimeView);
+        this.headerUpdatedTime = this.findViewById(R.id.headerUpdatedTimeView);
+
+        this.findViewById(R.id.headerLogo).setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(final View arg0) {
+                final Intent intent = new Intent(SofootActivity.this.getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                SofootActivity.this.startActivity(intent);
+            }
+        });
     }
 
     public void showHeaderNextButton() {
@@ -37,9 +59,16 @@ public class SofootActivity extends FragmentActivity
         }
     }
 
-    public void showHeaderUpdatedDatetime() {
-        if (this.headerUpdatedDatetime != null) {
-            this.headerUpdatedDatetime.setVisibility(View.VISIBLE);
+    public void showHeaderUpdatedTime() {
+        if (this.headerUpdatedTime != null) {
+            this.headerUpdatedTime.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void setHeaderUpdatedTime(final long time) {
+        if (this.headerUpdatedTime != null) {
+            this.date.setTime(time);
+            ((TextView)this.headerUpdatedTime).setText(this.dateFormat.format(this.date));
         }
     }
 }

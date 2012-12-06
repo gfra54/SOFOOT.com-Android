@@ -20,6 +20,10 @@ public class Classement extends Object
 
     private int nbPoints;
 
+    private int rang;
+
+    private int nbMatchs;
+
     public Club getClub() {
         return this.club;
     }
@@ -84,4 +88,19 @@ public class Classement extends Object
         this.nbPoints = nbPoints;
     }
 
+    public int getRang() {
+        return this.rang;
+    }
+
+    public void setRang(final int rang) {
+        this.rang = rang;
+    }
+
+    public int getNbMatchs() {
+        return this.nbMatchs;
+    }
+
+    public void setNbMatchs(final int nbMatchs) {
+        this.nbMatchs = nbMatchs;
+    }
 }

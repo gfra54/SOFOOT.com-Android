@@ -20,8 +20,6 @@ import com.sofoot.mapper.ResultatMapper;
 
 public class Sofoot extends Application {
 
-    static public final boolean DEVELOPPER_MODE = true;
-
     private String defaultWSUserAgent;
 
     private HttpHost defaultWSHttpHost;

@@ -2,51 +2,33 @@ package com.sofoot.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Toast;
 
+import com.google.android.apps.analytics.easytracking.EasyTracker;
 import com.sofoot.R;
 import com.sofoot.activity.ClassementActivity;
 import com.sofoot.activity.ResultatsActivity;
 import com.sofoot.adapter.LigueAdapter;
+import com.sofoot.adapter.SofootAdapter;
 import com.sofoot.domain.Collection;
 import com.sofoot.domain.model.Ligue;
 import com.sofoot.loader.LiguesLoader;
 
-public class LiguesFragment extends ListFragment
-implements LoaderManager.LoaderCallbacks<Collection<Ligue>>, OnItemClickListener
+public class LiguesFragment extends SofootListFragment<Collection<Ligue>>
+implements OnItemClickListener
 {
     final static private String MY_LOG_TAG = "LiguesFragment";
-
-    private LigueAdapter ligueAdapter;
 
 
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onActivityCreated(savedInstanceState);
-
-        this.setEmptyText(this.getString(R.string.no_ligue));
-        this.setHasOptionsMenu(false);
-
-        this.ligueAdapter = new LigueAdapter(this.getActivity());
-
-        this.setListAdapter(this.ligueAdapter);
-
-        // Start out with a progress indicator.
-        this.setListShown(false);
-
-        this.getLoaderManager().initLoader(0, null, this);
-
         this.getListView().setOnItemClickListener(this);
     }
-
 
     @Override
     public Loader<Collection<Ligue>> onCreateLoader(final int id, final Bundle args) {
@@ -55,43 +37,39 @@ implements LoaderManager.LoaderCallbacks<Collection<Ligue>>, OnItemClickListener
     }
 
     @Override
-    public void onLoadFinished(final Loader<Collection<Ligue>> loader, final Collection<Ligue> result) {
-        Log.d(LiguesFragment.MY_LOG_TAG, "Ligues are loaded");
-
-
-        if (((LiguesLoader)loader).getLastException() != null) {
-            Toast.makeText(this.getActivity(), this.getString(R.string.liguesloader_error), Toast.LENGTH_LONG).show();
-        }
-
-        if (result != null) {
-            this.ligueAdapter.addAll(result);
-            this.ligueAdapter.notifyDataSetChanged();
-        }
-
-        if (this.isResumed()) {
-            this.setListShown(true);
-        } else {
-            this.setListShownNoAnimation(true);
-        }
+    protected String getEmptyString() {
+        return this.getString(R.string.no_ligue);
     }
+
 
     @Override
-    public void onLoaderReset(final Loader<Collection<Ligue>> arg0) {
-        Log.d(LiguesFragment.MY_LOG_TAG, "ligues loader is reseted");
-        this.ligueAdapter.clear();
+    protected SofootAdapter<?> getAdapter() {
+        return new LigueAdapter(this.getActivity());
     }
+
 
     @Override
     public void onItemClick(final AdapterView<?> adapterView, final View v, final int position, final long arg) {
         Log.d(LiguesFragment.MY_LOG_TAG, "onItemClick : " + position);
 
-        final Class fClass = this.getArguments().getBoolean("resultats", false) ?
-                ResultatsActivity.class : ClassementActivity.class;
+        if (this.getArguments().getBoolean("resultats", false)) {
+            final Intent intent = new Intent(this.getActivity(), ResultatsActivity.class);
+            intent.putExtra("ligue", (Ligue)this.mAdapter.getItem(position));
+            this.startActivity(intent);
+        } else {
+            final Intent intent = new Intent(this.getActivity(), ClassementActivity.class);
+            final Ligue[] ligues = new Ligue[this.mAdapter.getCount()];
+            for (int i = 0; i < ligues.length; i++) {
+                ligues[i] = (Ligue)this.mAdapter.getItem(i);
+            }
+            intent.putExtra("ligues", ligues);
+            intent.putExtra("position", position);
+            this.startActivity(intent);
+        }
+    }
 
-        final Intent intent = new Intent(this.getActivity(), fClass);
-
-        intent.putExtra("relPosition", position);
-        intent.putExtra("liguesIds", this.ligueAdapter.getLiguesIds());
-        this.startActivity(intent);
+    @Override
+    public void trackPageView(final EasyTracker easyTracker) {
+        easyTracker.trackPageView("choix_ligue");
     }
 }

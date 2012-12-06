@@ -1,59 +1,25 @@
 package com.sofoot.loader;
 
 import android.content.Context;
-import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.sofoot.Sofoot;
 import com.sofoot.domain.Collection;
-import com.sofoot.domain.Criteria;
 import com.sofoot.domain.model.Classement;
+import com.sofoot.mapper.MapperException;
 
-public class ClassementLoader extends AsyncTaskLoader<Collection<Classement>> {
+public class ClassementLoader extends SofootLoader<Collection<Classement>> {
 
-    final static private String MY_LOG_TAG = "ClassementLoader";
-
-    private Exception lastException;
-
-    private Collection<Classement> data;
-
-    final private Criteria criteria;
+    final static private String LOG_TAG = "ClassementLoader";
 
     public ClassementLoader(final Context context) {
         super(context);
-        this.criteria = new Criteria();
     }
 
     @Override
-    public Collection<Classement> loadInBackground() {
-        Log.d(ClassementLoader.MY_LOG_TAG, "loadInbackground");
-
-        this.lastException = null;
-        this.data = null;
-
-        try {
-            this.data = ((Sofoot)this.getContext().getApplicationContext()).getClassementMapper().findAll(this.criteria);
-        } catch (final Exception exception) {
-            this.lastException = exception;
-            this.data = null;
-        }
-
-        return this.data;
-    }
-
-    @Override
-    protected void onStartLoading() {
-        Log.d(ClassementLoader.MY_LOG_TAG, "onStartLoading");
-
-        super.onStartLoading();
-
-        if (this.takeContentChanged() || (this.data == null)) {
-            this.forceLoad();
-        }
-    }
-
-    public Exception getLastException() {
-        return this.lastException;
+    public Collection<Classement> doLoad() throws MapperException {
+        Log.d(ClassementLoader.LOG_TAG, "loadInbackground");
+        return ((Sofoot)this.getContext().getApplicationContext()).getClassementMapper().findAll(this.criteria);
     }
 
     public void setLigue(final String ligue) {
