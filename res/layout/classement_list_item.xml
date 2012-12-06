@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_list_item"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/classement_rang"
+        style="@style/ClassementRang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:width="22dp"
+         />
+
+    <TextView
+        android:id="@+id/classement_club"
+        style="@style/ClassementClub"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:drawableLeft="@drawable/mock_logo_club"
+        android:drawablePadding="@dimen/grid_unit"
+        android:paddingLeft="2dp"
+        android:gravity="left" />
+
+    <TextView
+        android:id="@+id/classement_points"
+        style="@style/ClassementChiffre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:width="23dp" />
+
+    <TextView
+        android:id="@+id/classement_journee"
+        style="@style/ClassementChiffre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:width="23dp" />
+
+    <TextView
+        android:id="@+id/classement_gagne"
+        style="@style/ClassementChiffre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:width="23dp" />
+
+    <TextView
+        android:id="@+id/classement_nul"
+        style="@style/ClassementChiffre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:width="23dp" />
+
+    <TextView
+        android:id="@+id/classement_perdu"
+        style="@style/ClassementChiffre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:width="23dp" />
+
+    <TextView
+        android:id="@+id/classement_diff"
+        style="@style/ClassementChiffre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingRight="@dimen/grid_unit"
+        android:width="30dp" />
+
+</LinearLayout>

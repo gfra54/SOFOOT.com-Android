@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#757575"/>
-    <padding 
-        android:top="10dp"/>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <solid android:color="#757575" />
+
+    <padding
+        android:bottom="@dimen/grid_unit"
+        android:left="@dimen/grid_unit"
+        android:right="@dimen/grid_unit"
+        android:top="@dimen/grid_unit" />
     
     <stroke android:width="1px"
         android:color="#000"
         />
+
 </shape>

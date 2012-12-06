@@ -26,13 +26,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity" >
+        <activity
+            android:name=".activity.MainActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activity.NewsDetailsActivity" >
+        <activity
+            android:name=".activity.NewsDetailsActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activity.ResultatsActivity" >
+        <activity
+            android:name=".activity.ResultatsActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activity.ClassementActivity" >
+        <activity
+            android:name=".activity.ClassementActivity"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.google.ads.AdActivity"

@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#CCC"/>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <solid android:color="#ccc" />
+
+    <padding
+        android:bottom="@dimen/grid_unit"
+        android:left="@dimen/grid_unit"
+        android:right="@dimen/grid_unit"
+        android:top="@dimen/grid_unit" />
+    
+    <stroke android:width="1px"
+        android:color="#000"
+        />
+
 </shape>

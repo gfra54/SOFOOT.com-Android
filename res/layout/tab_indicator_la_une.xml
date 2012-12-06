@@ -8,6 +8,9 @@
         android:id="@android:id/title"
         style="@style/TabIndicatorTexte"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:drawablePadding="1dp"
+        android:drawableTop="@drawable/ic_la_une"
+        android:gravity="center_horizontal" />
 
 </FrameLayout>

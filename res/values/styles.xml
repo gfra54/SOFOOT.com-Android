@@ -1,11 +1,17 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="AppTheme" parent="@android:Theme.Light.NoTitleBar"></style>
+    
+    <style name="HeaderUpdatedTime">
+        <item name="android:textColor">#FFF</item>
+        <item name="android:textSize">9sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
     <style name="SofootTitre">
         <item name="android:textColor">#ff2f00</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">22sp</item>
     </style>
     
     <style name="SofootLegende">
@@ -16,13 +22,12 @@
     </style>
     
     <style name="SofootTexte">
-        <item name="android:textColor">#4c4c4c</item>
+        <item name="android:textColor">#575757</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">14sp</item>
     </style>
 
     <style name="NewsDetailsTitre" parent="@style/SofootTitre">
-        <item name="android:textSize">24sp</item>
         <item name="android:background">#f6f6f6</item>
         <item name="android:paddingLeft">5dp</item>
         <item name="android:paddingRight">5dp</item>
@@ -76,16 +81,58 @@
     </style>
 
     <style name="LigueListItemTitle" parent="@style/SofootTitre">
-        <item name="android:textSize">22sp</item>
     </style>
 
     <style name="LigueTitle" parent="@style/SofootTitre">
+        <item name="android:background">@drawable/bg_ligue_title</item>
     </style>
     
     <style name="NewsDescription" parent="@style/SofootTexte">
         <item name="android:textSize">12sp</item>
     </style>
-
+    
     <style name="NewsListItemDescription" parent="@style/NewsDescription"></style>
+    
+    <style name="ResultatListItemClubName" parent="@style/SofootTitre">
+        <item name="android:textSize">14sp</item>
+    </style>
+    
+    <style name="ResultatListItemInfoHeure" parent="@style/SofootTexte">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+    
+    <style name="ResultatListItemInfoDate" parent="@style/ResultatListItemInfoHeure">
+        <item name="android:textSize">8sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    
+    <style name="ResultatListItemInfoScore" parent="@style/ResultatListItemInfoHeure">
+    </style>
+    
+    <style name="ClassementRang" parent="@style/SofootTitre">
+        <item name="android:textSize">14sp</item>        
+    </style>
+    
+    <style name="ClassementClub" parent="@style/SofootTitre">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#000</item>
+    </style>
+    
+    <style name="ClassementChiffre" parent="@style/SofootTexte">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#000</item>
+    </style>
+    
+    <style name="ClassementHeader" parent="@style/ClassementChiffre">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="TabIndicatorTexte">
+        <item name="android:textColor">#efefef</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
 </resources>
