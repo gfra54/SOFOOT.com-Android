@@ -1,8 +1,11 @@
 package com.sofoot.adapter;
 
+import java.net.URL;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
+import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.TextAppearanceSpan;
@@ -55,22 +58,34 @@ public class NewsAdapter extends SofootAdapter<News> {
 
 
         final SpannableStringBuilder builder = new SpannableStringBuilder();
-        builder.append(news.getTitre());
+        builder.append(Html.fromHtml(news.getTitre()));
+
+        final int index = builder.length();
+
         builder.setSpan(new TextAppearanceSpan(this.context, R.style.NewsListItemTitle), 0,
-                news.getTitre().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                index, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         if (news.hasDescriptif()) {
-            builder.append("\n\n" + news.getDescriptif());
+            builder.append("\n\n" + Html.fromHtml(news.getDescriptif()));
             builder.setSpan(new TextAppearanceSpan(this.context, R.style.NewsListItemDescription),
-                    news.getTitre().length(), builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    index, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         viewHolder.textView.setText(builder);
-        viewHolder.textView.setTag(R.id.thumbnail, news.getImageHome(News.ImageSize.SMALL));
 
-
-        final ThumbnailLoader thumbnailLoader = new ThumbnailLoader(viewHolder.textView);
-        thumbnailLoader.execute(news.getImageHome(News.ImageSize.SMALL));
+        if (news.hasThumbnail()) {
+            final URL thumbnail = news.getThumbnail(this.context.getWindowManager().getDefaultDisplay());
+            final ThumbnailLoader thumbnailLoader = new ThumbnailLoader(viewHolder.textView);
+            viewHolder.textView.setTag(R.id.thumbnail, thumbnail);
+            thumbnailLoader.execute(thumbnail);
+        } else {
+            viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.mock_news_list_thumbnail,
+                    0,
+                    0,
+                    0);
+            viewHolder.textView.setTag(R.id.thumbnail, null);
+        }
 
 
         return row;
@@ -136,7 +151,10 @@ public class NewsAdapter extends SofootAdapter<News> {
 
             if ((result.url == this.textView.getTag(R.id.thumbnail)) && (result.bitmap != null)) {
                 final BitmapDrawable bitmapDrawable = new BitmapDrawable(this.textView.getContext().getResources(), result.bitmap);
-                bitmapDrawable.setBounds(0, 0, 90, 60);
+
+                final float scale = this.textView.getResources().getDisplayMetrics().density;
+
+                bitmapDrawable.setBounds(0, 0,  (int)(90 * scale), (int)(60 * scale));
 
                 this.textView.setCompoundDrawables(
                         bitmapDrawable,

@@ -91,7 +91,8 @@ public class ClassementAdapter extends SofootAdapter<Classement>
         @Override
         protected void onPostExecute(final BitmapInfo result) {
             final BitmapDrawable bitmapDrawable = new BitmapDrawable(this.textView.getContext().getResources(), result.bitmap);
-            bitmapDrawable.setBounds(0, 0, 25, 25);
+            final float scale = this.textView.getResources().getDisplayMetrics().density;
+            bitmapDrawable.setBounds(0, 0, (int)(25 * scale) , (int)(25 * scale));
 
             this.textView.setCompoundDrawables(
                     bitmapDrawable,

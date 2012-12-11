@@ -1,6 +1,7 @@
 package com.sofoot.activity;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -23,12 +24,12 @@ public class NewsDetailsActivity extends SofootAdActivity implements OnClickList
 
         this.mAdapter = new MyAdapter(
                 this.getSupportFragmentManager(),
-                this.getIntent().getExtras().getStringArray("newsIds")
+                this.getIntent().getExtras().getParcelableArray("newsMetas")
                 );
 
         this.mPager = (ViewPager)this.findViewById(R.id.newsPager);
         this.mPager.setAdapter(this.mAdapter);
-        this.mPager.setCurrentItem(this.getIntent().getExtras().getInt("relPosition"));
+        this.mPager.setCurrentItem(this.getIntent().getExtras().getInt("position"));
 
 
         this.showHeaderNextButton();
@@ -41,17 +42,17 @@ public class NewsDetailsActivity extends SofootAdActivity implements OnClickList
 
     private class MyAdapter extends FragmentStatePagerAdapter{
 
-        private final String[] newsIds;
+        private final Parcelable[] newsMetas;
 
-        public MyAdapter(final FragmentManager fm, final String[] newsIds) {
+        public MyAdapter(final FragmentManager fm, final Parcelable[] newsMetas) {
             super(fm);
-            this.newsIds = newsIds;
+            this.newsMetas = newsMetas;
         }
 
         @Override
         public Fragment getItem(final int position) {
             final Bundle args = new Bundle(1);
-            args.putString("id", this.newsIds[position]);
+            args.putParcelable("newsMeta", this.newsMetas[position]);
 
             final Fragment f =  new NewsDetailsFragment();
             f.setArguments(args);
@@ -60,7 +61,7 @@ public class NewsDetailsActivity extends SofootAdActivity implements OnClickList
 
         @Override
         public int getCount() {
-            return this.newsIds.length;
+            return this.newsMetas.length;
         }
     }
 

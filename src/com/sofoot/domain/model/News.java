@@ -1,15 +1,22 @@
 package com.sofoot.domain.model;
 
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.util.DisplayMetrics;
+import android.view.Display;
+
 public class News extends com.sofoot.domain.Object {
 
+    /*
     public enum ImageSize {
         SMALL, NORMAL, LARGE
     }
+     */
 
     private int id;
 
@@ -43,15 +50,15 @@ public class News extends com.sofoot.domain.Object {
 
     private int idRubrique;
 
-    private final Map<ImageSize, URL> images;
+    private final Map<Integer, URL> images;
 
-    private final Map<ImageSize, URL> imagesHome;
+    private final Map<Integer, URL> thumbnails;
 
     private String texte;
 
     public News() {
-        this.images = new HashMap<ImageSize, URL>();
-        this.imagesHome = new HashMap<ImageSize, URL>();
+        this.images = new HashMap<Integer, URL>();
+        this.thumbnails = new HashMap<Integer, URL>();
     }
 
     public int getId() {
@@ -213,34 +220,64 @@ public class News extends com.sofoot.domain.Object {
         this.idRubrique = idRubrique;
     }
 
-    public void addImage(final ImageSize size, final URL url) {
+    public boolean hasThumbnail() {
+        return this.thumbnails.size() > 0;
+    }
+
+    public void addThumbnail(final int size, final URL url) {
+        this.thumbnails.put(size, url);
+    }
+
+    public URL getThumbnail(final Display display){
+        final DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+
+        final float thumbnailWidth = 90 * metrics.density;
+
+        final Integer[] keys = new Integer[this.thumbnails.size()];
+        this.thumbnails.keySet().toArray(keys);
+        Arrays.sort(keys, Collections.reverseOrder());
+
+        for (final Integer width : keys) {
+            if (width <= thumbnailWidth) {
+                return this.thumbnails.get(width);
+            }
+        }
+
+        return this.thumbnails.get(keys[0]);
+    }
+
+
+    public boolean hasImage() {
+        return this.images.size() > 0;
+    }
+
+    public void addImage(final int size, final URL url) {
         this.images.put(size, url);
     }
 
-    public void addImageHome(final ImageSize size, final URL url) {
-        this.imagesHome.put(size, url);
-    }
+    public URL getImage(final Display display) {
+        final DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
 
-    public URL getImageHome(final ImageSize size){
-        if (this.imagesHome.containsKey(size)) {
-            return this.imagesHome.get(size);
+        final int imageWidth = (int)(320 * metrics.density);
+
+        final Integer[] keys = new Integer[this.images.size()];
+        this.images.keySet().toArray(keys);
+        Arrays.sort(keys, Collections.reverseOrder());
+
+        for (int i=0; i<keys.length; i++) {
+            if (keys[i] <= imageWidth) {
+                return this.images.get(keys[i]);
+            }
         }
 
-        return this.getImage(size);
-    }
-
-
-    public boolean hasImage(final ImageSize size) {
-        return this.images.containsKey(size);
-    }
-
-    public URL getImage(final ImageSize size) {
-        return this.images.get(size);
+        return this.images.get(keys[0]);
     }
 
     @Override
     public String toString() {
-        return "News #" + this.id + " : " + this.titre;
+        return "News #" + this.id + " " + this.titre + " : " + this.publication.toLocaleString();
     }
 
     public String getTexte() {

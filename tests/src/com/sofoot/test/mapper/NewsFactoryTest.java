@@ -44,6 +44,6 @@ public class NewsFactoryTest extends AndroidTestCase {
         Assert.assertEquals("Klinsmann kiffe la Russie", news.getTitre());
         Assert.assertTrue(news.getTexte().startsWith("2-2 un peu chateux hier"));
         Assert.assertEquals("http://i.sofoot.com/IMG/img-jurgen-klinsmann-selectionneur-des-etats-unis-1352980068_x300_articles-163852.jpg", news.getImage(ImageSize.NORMAL).toString());
-        Assert.assertEquals("http://i.sofoot.com/IMG/img-jurgen-klinsmann-selectionneur-des-etats-unis-1352980068_100_100_true_articles-163852.jpg", news.getImageHome(ImageSize.SMALL).toString());
+        Assert.assertEquals("http://i.sofoot.com/IMG/img-jurgen-klinsmann-selectionneur-des-etats-unis-1352980068_100_100_true_articles-163852.jpg", news.getThumbnail(ImageSize.SMALL).toString());
     }
 }

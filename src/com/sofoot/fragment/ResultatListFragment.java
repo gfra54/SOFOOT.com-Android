@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.util.Log;
 
-import com.google.android.apps.analytics.easytracking.EasyTracker;
+import com.google.analytics.tracking.android.Tracker;
 import com.sofoot.R;
 import com.sofoot.adapter.ResultatAdapter;
 import com.sofoot.adapter.SofootAdapter;
@@ -16,12 +16,24 @@ public class ResultatListFragment extends SofootListFragment<Collection<Rencontr
 {
     final static private String LOG_TAG = "ResultatListFragment";
 
+    private String ligueId;
+    private String journee;
+
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        this.ligueId = this.getArguments().getString("ligueId");
+        this.journee = this.getArguments().getString("journee");
+    }
+
+
     @Override
     public Loader<Collection<Rencontre>> onCreateLoader(final int id, final Bundle args) {
         Log.d(ResultatListFragment.LOG_TAG, "onCreateLoader");
         final ResultatLoader resultatLoader = new ResultatLoader(this.getActivity());
-        resultatLoader.setLigueId(this.getArguments().getString("ligueId"));
-        resultatLoader.setJournee(this.getArguments().getString("journee"));
+        resultatLoader.setLigueId(this.ligueId);
+        resultatLoader.setJournee(this.journee);
         return resultatLoader;
     }
 
@@ -31,12 +43,17 @@ public class ResultatListFragment extends SofootListFragment<Collection<Rencontr
     }
 
     @Override
+    protected String getLoaderErrorString() {
+        return this.getString(R.string.resultatsloader_error);
+    }
+
+    @Override
     protected SofootAdapter<Rencontre> getAdapter() {
         return new ResultatAdapter(this.getActivity());
     }
 
     @Override
-    public void trackPageView(final EasyTracker easyTracker) {
-        easyTracker.trackPageView("resultats");
+    public void trackPageView(final Tracker easyTracker) {
+        easyTracker.trackView("resultats/" + this.ligueId + "/" + this.journee);
     }
 }

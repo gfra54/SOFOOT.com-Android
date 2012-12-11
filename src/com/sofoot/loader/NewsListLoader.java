@@ -19,7 +19,7 @@ public class NewsListLoader extends SofootLoader<Collection<News>> {
 
     @Override
     public Collection<News> doLoad() throws MapperException{
-        Log.d(NewsListLoader.MY_LOG_TAG, "loadInbackground");
+        Log.d(NewsListLoader.MY_LOG_TAG, "doLoad");
         return ((Sofoot)this.getContext().getApplicationContext()).getNewsMapper().findAll(this.criteria);
     }
 
@@ -55,6 +55,11 @@ public class NewsListLoader extends SofootLoader<Collection<News>> {
 
     public void loadNext() {
         this.criteria.setOffset(this.getLimit() + this.getOffset());
+        this.forceLoad();
+    }
+
+    public void reload() {
+        this.criteria.setOffset(0);
         this.forceLoad();
     }
 

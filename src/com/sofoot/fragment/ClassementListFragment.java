@@ -5,7 +5,7 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.apps.analytics.easytracking.EasyTracker;
+import com.google.analytics.tracking.android.Tracker;
 import com.sofoot.R;
 import com.sofoot.adapter.ClassementAdapter;
 import com.sofoot.adapter.SofootAdapter;
@@ -50,12 +50,18 @@ public class ClassementListFragment extends SofootListFragment<Collection<Classe
 
 
     @Override
+    protected String getLoaderErrorString() {
+        return this.getString(R.string.classementloader_error);
+    }
+
+
+    @Override
     protected SofootAdapter<Classement> getAdapter() {
         return new ClassementAdapter(this.getActivity());
     }
 
     @Override
-    public void trackPageView(final EasyTracker easyTracker) {
-        easyTracker.trackPageView("classement");
+    public void trackPageView(final Tracker easyTracker) {
+        easyTracker.trackView("classement/" + this.ligue.getId());
     }
 }

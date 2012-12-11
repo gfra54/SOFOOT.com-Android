@@ -11,9 +11,9 @@ public class NewsLoader extends SofootLoader<News> {
 
     final static public String LOG_TAG = "NewsLoader";
 
-    public NewsLoader(final Context context, final String id) {
+    public NewsLoader(final Context context, final int id) {
         super(context);
-        this.criteria.setParam("id", id);
+        this.criteria.setParam("id", String.valueOf(id));
     }
 
     @Override

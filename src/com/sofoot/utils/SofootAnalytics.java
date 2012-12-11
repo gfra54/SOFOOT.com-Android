@@ -1,10 +1,10 @@
 package com.sofoot.utils;
 
-import com.google.android.apps.analytics.easytracking.EasyTracker;
+import com.google.analytics.tracking.android.Tracker;
 
 public interface SofootAnalytics
 {
 
-    public void trackPageView(EasyTracker easyTracker);
+    public void trackPageView(Tracker easyTracker);
 
 }

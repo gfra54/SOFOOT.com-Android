@@ -10,7 +10,7 @@ import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.doubleclick.DfpAdView;
 import com.sofoot.R;
 
-public class SofootAdActivity extends SofootActivity implements AdListener
+abstract public class SofootAdActivity extends SofootActivity implements AdListener
 {
     final private static String LOG_TAG = "SofootAdActivity";
 

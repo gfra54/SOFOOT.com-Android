@@ -1,13 +1,15 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="right" >
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="right" >
+    <ProgressBar
+        android:layout_marginTop="@dimen/grid_unit"
+        android:layout_marginRight="@dimen/grid_unit"
+        android:layout_marginBottom="@dimen/grid_unit"
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-        <ProgressBar
-            style="?android:attr/progressBarStyleSmall"
-            android:id="@+id/progressBar1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
+</LinearLayout>

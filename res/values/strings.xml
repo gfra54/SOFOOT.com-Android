@@ -4,7 +4,6 @@
 
     <string name="app_name">@string/sofoot</string>
     <string name="app_version">1.0</string>
-    <string name="title_activity_sofoot">@string/sofoot</string>
     
     <string name="loader_error">Oops&#8230; une erreur s\'est produite.</string>
     <string name="nodata">Aucune donnée.</string>
@@ -16,7 +15,6 @@
     <string name="no_ligue">@string/nodata</string>
     
     <string name="newsloader_error">@string/loader_error</string>
-    <string name="no_news">@string/nodata</string>
     
     <string name="resultatsloader_error">@string/loader_error</string>
     <string name="no_resultat">@string/nodata</string>

@@ -17,8 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.apps.analytics.easytracking.EasyTracker;
-import com.sofoot.R;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.sofoot.activity.SofootActivity;
 import com.sofoot.adapter.SofootAdapter;
 import com.sofoot.domain.Collection;
@@ -32,13 +31,6 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
     static final int INTERNAL_EMPTY_ID = 0x00ff0001;
     static final int INTERNAL_PROGRESS_CONTAINER_ID = 0x00ff0002;
     static final int INTERNAL_LIST_CONTAINER_ID = 0x00ff0003;
-
-    @Override
-    public void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        EasyTracker.getTracker().setContext(this.getActivity());
-    }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -92,69 +84,93 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
         return root;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        EasyTracker.getTracker().trackActivityStart(null);
-        this.trackPageView(EasyTracker.getTracker());
-        Log.i(SofootListFragment.LOG_TAG, "On Start "  + this.toString());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EasyTracker.getTracker().trackActivityStop(null);
-        Log.i(SofootListFragment.LOG_TAG, "On Stop "  + this.toString());
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i(SofootListFragment.LOG_TAG, "On Resume "  + this.toString());
-    }
-
-
     final static private String LOG_TAG = "SofootListFragment";
 
     protected SofootAdapter<?> mAdapter;
 
     @Override
-    public void onActivityCreated(final Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        this.setEmptyText(this.getEmptyString());
-
-        this.mAdapter = this.getAdapter();
-
-        this.setListAdapter(this.mAdapter);
-
-        //Start out with a progress indicator.
-        this.setListShown(false);
-
-        this.getLoaderManager().initLoader(0, null, this);
+        Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment is created " + this.toString());
     }
 
 
+    @Override
+    public void onActivityCreated(final Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment activity created " + this.toString());
+
+        this.setEmptyText(this.getEmptyString());
+        this.mAdapter = this.getAdapter();
+        this.setListAdapter(this.mAdapter);
+
+        //LoaderManager.enableDebugLogging(true);
+
+        final LoaderManager loaderManager = this.getLoaderManager();
+        loaderManager.initLoader(0, this.getArguments(), this);
+    }
+
+
+    @Override
+    public void onStart() {
+        Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment started " + this.toString());
+        super.onStart();
+        this.trackPageView(EasyTracker.getTracker());
+        this.setListShownNoAnimation(((SofootLoader<?>)this.getLoaderManager().getLoader(0)).isDataValid());
+    }
+
+    @Override
+    public void onResume() {
+        Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment resumed " + this.toString());
+        super.onResume();
+    }
+
+
+    @Override
+    public void onStop() {
+        Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment stoped " + this.toString());
+        super.onStop();
+    }
 
     @Override
     public void onLoadFinished(final Loader<T> loader, final T result) {
         final SofootLoader<T> sofootLoader = (SofootLoader<T>)loader;
-
-        if (sofootLoader.getLastException() != null) {
-            Toast.makeText(this.getActivity(), this.getString(R.string.resultatsloader_error), Toast.LENGTH_LONG).show();
-        }
+        this.displayLastException(sofootLoader);
 
         if (result != null) {
+            Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment load finished " + this.toString() + " " + result.toString());
+
+            this.updateAdapterData(result);
+            this.showList();
+            this.updateLastLoadTime(sofootLoader);
+        }
+    }
+
+    protected void displayLastException(final SofootLoader<T> sofootLoader) {
+        if (sofootLoader.getLastException() != null) {
+            Toast.makeText(this.getActivity(), this.getLoaderErrorString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    protected void updateAdapterData(final T result) {
+        if (result != null) {
+            this.mAdapter.clear();
             this.mAdapter.addAll(result);
             this.mAdapter.notifyDataSetChanged();
         }
+    }
 
+    protected void showList() {
         if (this.isResumed()) {
             this.setListShown(true);
         } else {
             this.setListShownNoAnimation(true);
         }
+    }
 
+    protected void updateLastLoadTime(final SofootLoader<T> sofootLoader) {
         if (this.getActivity() instanceof SofootActivity) {
             ((SofootActivity)this.getActivity()).setHeaderUpdatedTime(sofootLoader.getLastLoadingTime());
         }
@@ -167,6 +183,8 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
     }
 
     abstract protected String getEmptyString();
+
+    abstract protected String getLoaderErrorString();
 
     abstract protected SofootAdapter<?> getAdapter();
 }

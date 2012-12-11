@@ -10,6 +10,8 @@ public abstract class SofootLoader<T> extends AsyncTaskLoader<T>
 {
     final static public String LOG_TAG = "SofootLoader";
 
+    protected long cacheTTL = 60 * 30 * 1000;
+
     protected long lastLoadingTime;
 
     protected Exception lastException;
@@ -17,6 +19,8 @@ public abstract class SofootLoader<T> extends AsyncTaskLoader<T>
     protected T data;
 
     final protected Criteria criteria;
+
+    protected boolean isRunning;
 
     public SofootLoader(final Context context) {
         super(context);
@@ -42,7 +46,7 @@ public abstract class SofootLoader<T> extends AsyncTaskLoader<T>
     protected void onStartLoading() {
         super.onStartLoading();
 
-        if (this.takeContentChanged() || (this.data == null)) {
+        if (this.takeContentChanged() || (this.isDataValid() == false)) {
             this.forceLoad();
         }
     }
@@ -50,16 +54,33 @@ public abstract class SofootLoader<T> extends AsyncTaskLoader<T>
     @Override
     protected void onForceLoad() {
         this.lastLoadingTime = System.currentTimeMillis();
+        this.isRunning = true;
         super.onForceLoad();
+    }
+
+    @Override
+    public void deliverResult(final T data) {
+        super.deliverResult(data);
+
+        this.isRunning = false;
+    }
+
+
+    public boolean isDataValid() {
+        final long delta = (System.currentTimeMillis() - this.lastLoadingTime);
+        return (this.data != null) && (delta < this.cacheTTL);
     }
 
     public long getLastLoadingTime() {
         return this.lastLoadingTime;
     }
 
-
     final public Exception getLastException() {
         return this.lastException;
+    }
+
+    public boolean isRunning() {
+        return this.isRunning;
     }
 
     abstract protected T doLoad() throws MapperException;

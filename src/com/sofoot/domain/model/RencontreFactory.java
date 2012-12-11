@@ -9,15 +9,15 @@ import org.json.JSONObject;
 
 public class RencontreFactory
 {
-    final static private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     static public Rencontre createFromJsonObject(final JSONObject json) throws JSONException,
     MalformedURLException, ParseException {
 
         final Rencontre rencontre = new Rencontre();
 
+        final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         if (json.has("date")) {
-            rencontre.setDate(RencontreFactory.dateFormatter.parse(json.getString("date")));
+            rencontre.setDate(dateFormatter.parse(json.getString("date")));
         }
 
         if (json.has("score1")) {

@@ -21,8 +21,12 @@ import android.net.NetworkInfo;
 import android.net.http.AndroidHttpClient;
 import android.util.Log;
 
+import com.google.analytics.tracking.android.Tracker;
+
 
 public class WSGateway {
+
+    final static private String LOG_TAG = "WSGateway";
 
     private final ConnectivityManager connectivityManager;
 
@@ -32,6 +36,8 @@ public class WSGateway {
 
     private HttpResponse lastHttpResponse;
 
+    private Tracker tracker;
+
     public WSGateway(final ConnectivityManager connectivityManager, final String userAgent, final HttpHost httpHost)
     {
         this.connectivityManager = connectivityManager;
@@ -39,6 +45,10 @@ public class WSGateway {
         HttpConnectionParams.setConnectionTimeout(this.httpClient.getParams(), 20 * 1000);
         HttpConnectionParams.setSoTimeout(this.httpClient.getParams(), 10 * 1000);
         this.httpHost = httpHost;
+    }
+
+    public void setTimeTracker(final Tracker tracker) {
+        this.tracker = tracker;
     }
 
     public boolean isConnected()
@@ -57,6 +67,8 @@ public class WSGateway {
     public String fetchData(final String uri, final List< ? extends NameValuePair> params) throws GatewayException
     {
         try {
+            final long trackTime = System.currentTimeMillis();
+
             final HttpRequest request = this.buildGetRequest(uri, params);
             this.lastHttpResponse = this.httpClient.execute(this.httpHost, request);
 
@@ -66,6 +78,10 @@ public class WSGateway {
             }
 
             final String content = this.getLastHttpContent();
+
+            if (this.tracker != null) {
+                this.tracker.trackTiming("http_request", (System.currentTimeMillis() - trackTime), uri, null);
+            }
 
             return content;
 
@@ -77,7 +93,7 @@ public class WSGateway {
     public HttpGet buildGetRequest(final String path, final List< ? extends NameValuePair> parameters)
     {
         final String uri= path + "?" + URLEncodedUtils.format(parameters, "utf-8") + "&refresh";
-        Log.d("QUERY_STRING", uri);
+        Log.d(WSGateway.LOG_TAG, uri);
         final HttpGet get = new HttpGet(uri);
         AndroidHttpClient.modifyRequestToAcceptGzipResponse(get);
         return get;

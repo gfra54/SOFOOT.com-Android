@@ -83,7 +83,6 @@ public class Ligue extends Object implements Parcelable{
 
     @Override
     public void writeToParcel(final Parcel out, final int arg1) {
-        // TODO Auto-generated method stub
         out.writeStringArray(new String[] {
                 this.id,
                 this.libelle,

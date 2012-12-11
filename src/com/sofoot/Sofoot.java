@@ -11,7 +11,9 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.support.v4.util.LruCache;
+import android.util.Log;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.sofoot.gateway.WSGateway;
 import com.sofoot.mapper.ClassementMapper;
 import com.sofoot.mapper.LigueMapper;
@@ -40,7 +42,9 @@ public class Sofoot extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        EasyTracker.getInstance().setContext(this);
     }
+
 
     public String getDefaultWSUserAgent()
     {
@@ -126,6 +130,8 @@ public class Sofoot extends Application {
                     this.getDefaultWSUserAgent(),
                     this.getDefaultWSHttpHost()
                     );
+
+            this.wsGateway.setTimeTracker(EasyTracker.getTracker());
         }
 
         return this.wsGateway;
@@ -138,11 +144,15 @@ public class Sofoot extends Application {
             final int memClass = ((ActivityManager) this.getSystemService(
                     Context.ACTIVITY_SERVICE)).getMemoryClass();
 
-            final int cacheSize = memClass * 1024 * 1024;
+            final int cacheSize = (memClass / 8) * 1024 * 1024;
+
+            Log.d("SO FOOT", "Lru Cache Size : " + cacheSize);
+
             this.bitmapCache = new LruCache<URL, Bitmap>(cacheSize) {
                 @SuppressWarnings("unused")
                 protected int sizeOf(final String key, final Bitmap value) {
-                    return value.getByteCount();
+                    Log.d("SO FOOT", "get Size : " + (value.getRowBytes() * value.getHeight()));
+                    return value.getRowBytes() * value.getHeight();
                 }
             };
         }

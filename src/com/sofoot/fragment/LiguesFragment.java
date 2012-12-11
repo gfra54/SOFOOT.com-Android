@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.google.android.apps.analytics.easytracking.EasyTracker;
+import com.google.analytics.tracking.android.Tracker;
 import com.sofoot.R;
 import com.sofoot.activity.ClassementActivity;
 import com.sofoot.activity.ResultatsActivity;
@@ -23,6 +23,7 @@ implements OnItemClickListener
 {
     final static private String MY_LOG_TAG = "LiguesFragment";
 
+    protected long cacheTTL = 1000 * 60 * 60;
 
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
@@ -39,6 +40,11 @@ implements OnItemClickListener
     @Override
     protected String getEmptyString() {
         return this.getString(R.string.no_ligue);
+    }
+
+    @Override
+    protected String getLoaderErrorString() {
+        return this.getString(R.string.liguesloader_error);
     }
 
 
@@ -69,7 +75,7 @@ implements OnItemClickListener
     }
 
     @Override
-    public void trackPageView(final EasyTracker easyTracker) {
-        easyTracker.trackPageView("choix_ligue");
+    public void trackPageView(final Tracker easyTracker) {
+        easyTracker.trackView("choix_ligue");
     }
 }

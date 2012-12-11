@@ -13,14 +13,16 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.google.android.apps.analytics.easytracking.EasyTracker;
+import com.google.analytics.tracking.android.Tracker;
 import com.sofoot.R;
 import com.sofoot.activity.NewsDetailsActivity;
 import com.sofoot.adapter.NewsAdapter;
 import com.sofoot.adapter.SofootAdapter;
 import com.sofoot.domain.Collection;
 import com.sofoot.domain.model.News;
+import com.sofoot.domain.model.NewsMeta;
 import com.sofoot.loader.NewsListLoader;
+import com.sofoot.loader.SofootLoader;
 
 public class NewsListFragment extends SofootListFragment<Collection<News>>
 implements OnScrollListener, OnItemClickListener
@@ -29,7 +31,7 @@ implements OnScrollListener, OnItemClickListener
 
     private  NewsListLoader newsLoader;
 
-    final static private int NEWS_NB_MAX = 200;
+    final static private int NEWS_NB_MAX = 400;
     final static private int NEWS_LIMIT = 20;
 
     private String rubrique;
@@ -62,7 +64,7 @@ implements OnScrollListener, OnItemClickListener
 
         this.newsLoader = new NewsListLoader(this.getActivity());
         this.newsLoader.setLimit(NewsListFragment.NEWS_LIMIT);
-        this.newsLoader.setRubrique(this.rubrique);
+        this.newsLoader.setRubrique(args.getString("rubrique"));
 
         return this.newsLoader;
     }
@@ -72,6 +74,10 @@ implements OnScrollListener, OnItemClickListener
         return this.getString(R.string.no_newslist);
     }
 
+    @Override
+    protected String getLoaderErrorString() {
+        return this.getString(R.string.newslistloader_error);
+    }
 
 
     @Override
@@ -82,7 +88,15 @@ implements OnScrollListener, OnItemClickListener
 
     @Override
     public void onScroll (final AbsListView view, final int firstVisibleItem, final int visibleItemCount, final int totalItemCount) {
-        if (((totalItemCount - firstVisibleItem) == visibleItemCount) && (totalItemCount < NewsListFragment.NEWS_NB_MAX)) {
+        if (totalItemCount < NewsListFragment.NEWS_LIMIT) {
+            return;
+        }
+
+        if (totalItemCount > NewsListFragment.NEWS_NB_MAX) {
+            return;
+        }
+
+        if ((totalItemCount - firstVisibleItem) == visibleItemCount) {
             this.newsLoader.loadNext();
         }
     }
@@ -97,37 +111,51 @@ implements OnScrollListener, OnItemClickListener
     public void onItemClick(final AdapterView<?> adapterView, final View v, final int position, final long arg) {
         Log.d(NewsListFragment.LOG_TAG, "onItemClick : " + position);
 
-        final String[] ids = new String[this.mAdapter.getCount()-1];
-        for (int i = 0; i < ids.length; i++) {
-            ids[i] = String.valueOf(((News)this.mAdapter.getItem(i)).getId());
+        final NewsMeta[] newsMetas = new NewsMeta[this.mAdapter.getCount()-1];
+        for (int i = 0; i < newsMetas.length; i++) {
+            newsMetas[i] = new NewsMeta((News)this.mAdapter.getItem(i));
         }
 
         final Intent intent = new Intent(this.getActivity(), NewsDetailsActivity.class);
-        intent.putExtra("relPosition", position);
-        intent.putExtra("newsIds", ids);
+        intent.putExtra("position", position);
+        intent.putExtra("newsMetas", newsMetas);
 
         this.startActivity(intent);
     }
 
 
     @Override
-    public void trackPageView(final EasyTracker easyTracker) {
+    public void trackPageView(final Tracker easyTracker) {
         if (this.rubrique.equals("1")) {
-            easyTracker.trackPageView("news");
+            easyTracker.trackView("news");
         } else {
-            easyTracker.trackPageView("la_une");
+            easyTracker.trackView("la_une");
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        this.setListShown(true);
-        this.mAdapter.clear();
-        this.mAdapter.notifyDataSetChanged();
-        this.newsLoader.setOffset(0);
-        this.newsLoader.forceLoad();
+        this.newsLoader.reload();
         return true;
     }
 
 
+    @Override
+    protected void updateAdapterData(final Collection<News> result) {
+        if (this.newsLoader.getOffset() == 0) {
+            super.updateAdapterData(result);
+        } else {
+            if (result != null) {
+                this.mAdapter.addAll(result);
+                this.mAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    @Override
+    protected void updateLastLoadTime(final SofootLoader<Collection<News>> sofootLoader) {
+        if (this.newsLoader.getOffset() == 0) {
+            super.updateLastLoadTime(sofootLoader);
+        }
+    }
 }

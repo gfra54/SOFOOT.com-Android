@@ -10,7 +10,7 @@ import com.google.ads.AdListener;
 import com.google.ads.AdRequest;
 import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.doubleclick.DfpInterstitialAd;
-import com.google.android.apps.analytics.easytracking.EasyTracker;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.sofoot.R;
 
 public class SplashscreenActivity extends Activity implements AdListener{
@@ -23,8 +23,6 @@ public class SplashscreenActivity extends Activity implements AdListener{
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        EasyTracker.getTracker().setContext(this);
-
         this.setContentView(R.layout.splashscreen_activity);
 
         //Create the interstitial
@@ -33,6 +31,8 @@ public class SplashscreenActivity extends Activity implements AdListener{
         // Initiate a generic request to load it with an ad
         final AdRequest adRequest = new AdRequest();
         adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
+        adRequest.addTestDevice("ECFF6683D20D5920A9B71F4AADDA8662");
+
 
         this.interstitial.loadAd(adRequest);
         this.interstitial.setAdListener(this);
@@ -41,21 +41,14 @@ public class SplashscreenActivity extends Activity implements AdListener{
     @Override
     protected void onStart() {
         super.onStart();
-        EasyTracker.getTracker().trackActivityStart(this);
-        EasyTracker.getTracker().trackPageView("splashscreen");
-    }
-
-    @Override
-    public Object onRetainNonConfigurationInstance() {
-        final Object o = super.onRetainNonConfigurationInstance();
-        EasyTracker.getTracker().trackActivityRetainNonConfigurationInstance();
-        return o;
+        EasyTracker.getInstance().activityStart(this);
+        EasyTracker.getTracker().trackView("splashscreen");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        EasyTracker.getTracker().trackActivityStop(this);
+        EasyTracker.getInstance().activityStop(this);
     }
 
     public DfpInterstitialAd getDfpInterstitialAd()

@@ -8,15 +8,14 @@ import java.text.SimpleDateFormat;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.sofoot.domain.model.News.ImageSize;
 import com.sofoot.utils.StringUtils;
 
 public class NewsFactory {
 
-    final static private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     static public News createFromJsonObject(final JSONObject json) throws JSONException, ParseException,
     MalformedURLException{
+
+        final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         final News news = new News();
 
@@ -24,7 +23,7 @@ public class NewsFactory {
             news.setId(json.getInt("id"));
         }
         if (StringUtils.isJsonFieldNotEmpty(json,"publication") == true) {
-            news.setPublication(NewsFactory.dateFormatter.parse(json.getString("publication").trim()));
+            news.setPublication(dateFormatter.parse(json.getString("publication").trim()));
         }
         if (StringUtils.isJsonFieldNotEmpty(json,"surtitre") == true) {
             news.setSurtitre(json.getString("surtitre").trim());
@@ -72,20 +71,46 @@ public class NewsFactory {
             news.setIdRubrique(json.getInt("id_rubrique"));
         }
 
+
+        JSONObject thumbnails = null;
+
         if (json.has("logo") == true) {
             final JSONObject logos = json.getJSONObject("logo");
 
-            news.addImage(ImageSize.SMALL, new URL(logos.getString("90x60").trim()));
-            news.addImage(ImageSize.NORMAL, new URL(logos.getString("w320").trim()));
-            news.addImage(ImageSize.LARGE, new URL(logos.getString("w640").trim()));
+            final int predefinedSize[] = {240, 320, 480, 640};
+
+            for (final int size : predefinedSize) {
+                final String key = "w" + size;
+
+                if (logos.has(key)) {
+                    news.addImage(size, new URL(logos.getString(key).trim()));
+                }
+            }
+
+            thumbnails = logos;
         }
 
         if (json.has("logo_home") == true) {
-            final JSONObject logos = json.getJSONObject("logo_home");
+            thumbnails = json.getJSONObject("logo_home");
+        }
 
-            news.addImage(ImageSize.SMALL, new URL(logos.getString("90x60").trim()));
-            news.addImage(ImageSize.NORMAL, new URL(logos.getString("w320").trim()));
-            news.addImage(ImageSize.LARGE, new URL(logos.getString("w640").trim()));
+        //thumbnails
+        if (thumbnails != null) {
+            if (thumbnails.has("64x45")) {
+                news.addThumbnail(67, new URL(thumbnails.getString("67x45").trim()));
+            }
+
+            if (thumbnails.has("90x60")) {
+                news.addThumbnail(90, new URL(thumbnails.getString("90x60").trim()));
+            }
+
+            if (thumbnails.has("135x90")) {
+                news.addThumbnail(135, new URL(thumbnails.getString("135x90").trim()));
+            }
+
+            if (thumbnails.has("180x120")) {
+                news.addThumbnail(180, new URL(thumbnails.getString("180x120").trim()));
+            }
         }
 
         return news;

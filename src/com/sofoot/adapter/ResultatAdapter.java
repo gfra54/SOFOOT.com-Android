@@ -67,11 +67,13 @@ public class ResultatAdapter extends SofootAdapter<Rencontre>
         viewHolder.info.setText(ssb);
 
         viewHolder.logo1.setTag(rencontre.getClub1().getLogo());
+        viewHolder.logo1.setVisibility(View.INVISIBLE);
         final BitmapLoader bitmapLoader1 = new ClubLogoLoader(viewHolder.logo1);
         bitmapLoader1.execute(rencontre.getClub1().getLogo());
 
 
         viewHolder.logo2.setTag(rencontre.getClub2().getLogo());
+        viewHolder.logo2.setVisibility(View.INVISIBLE);
         final BitmapLoader bitmapLoader2 = new ClubLogoLoader(viewHolder.logo2);
         bitmapLoader2.execute(rencontre.getClub2().getLogo());
 
@@ -118,6 +120,8 @@ public class ResultatAdapter extends SofootAdapter<Rencontre>
             if ((result.url == this.imageView.getTag()) && (result.bitmap != null)) {
                 this.imageView.setImageBitmap(result.bitmap);
                 this.imageView.setVisibility(View.VISIBLE);
+            } else {
+                this.imageView.setVisibility(View.INVISIBLE);
             }
         }
     }

@@ -3,7 +3,7 @@
     xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#eeeeee" >
+    android:background="#EEEEEE" >
 
     <ImageView
         android:id="@+id/headerLogo"
@@ -41,8 +41,8 @@
         android:visibility="invisible" />
 
     <TextView
-        style="@style/HeaderUpdatedTime"
         android:id="@+id/headerUpdatedTimeView"
+        style="@style/HeaderUpdatedTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -51,7 +51,7 @@
         android:paddingBottom="2dp"
         android:paddingLeft="@dimen/grid_unit"
         android:paddingRight="@dimen/grid_unit"
-        android:paddingTop="2dp"        
+        android:paddingTop="2dp"
         android:visibility="gone" />
 
 </RelativeLayout>

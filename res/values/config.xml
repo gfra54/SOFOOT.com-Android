@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <bool name="developper_mode">true</bool>
     <dimen name="grid_unit">5dp</dimen>
     <item type="id" name="thumbnail"/>
 </resources>
