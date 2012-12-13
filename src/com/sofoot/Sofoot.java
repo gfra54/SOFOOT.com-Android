@@ -151,7 +151,6 @@ public class Sofoot extends Application {
             this.bitmapCache = new LruCache<URL, Bitmap>(cacheSize) {
                 @SuppressWarnings("unused")
                 protected int sizeOf(final String key, final Bitmap value) {
-                    Log.d("SO FOOT", "get Size : " + (value.getRowBytes() * value.getHeight()));
                     return value.getRowBytes() * value.getHeight();
                 }
             };

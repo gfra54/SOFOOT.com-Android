@@ -35,4 +35,6 @@
     <string name="classement_nul">N.</string>
     <string name="classement_perdu">P.</string>
     <string name="classement_diff">Diff.</string>
+    
+    <string name="menu_refresh">Rafraîchir</string>
 </resources>

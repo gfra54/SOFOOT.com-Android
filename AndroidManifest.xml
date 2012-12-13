@@ -19,7 +19,8 @@
             android:name=".activity.SplashscreenActivity"
             android:finishOnTaskLaunch="true"
             android:noHistory="true"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

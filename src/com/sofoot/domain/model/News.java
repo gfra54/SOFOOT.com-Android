@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 
 public class News extends com.sofoot.domain.Object {
@@ -267,6 +268,8 @@ public class News extends com.sofoot.domain.Object {
         Arrays.sort(keys, Collections.reverseOrder());
 
         for (int i=0; i<keys.length; i++) {
+            Log.d("getImage", "Key : " + keys[i]);
+
             if (keys[i] <= imageWidth) {
                 return this.images.get(keys[i]);
             }

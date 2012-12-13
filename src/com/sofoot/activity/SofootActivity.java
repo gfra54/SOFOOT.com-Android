@@ -5,15 +5,15 @@ import java.util.Date;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.sofoot.R;
 
-abstract public class SofootActivity extends FragmentActivity
+abstract public class SofootActivity extends SherlockFragmentActivity
 {
     final private static String LOG_TAG = "sofootActivity";
 
@@ -33,10 +33,11 @@ abstract public class SofootActivity extends FragmentActivity
 
         this.dateFormat = new SimpleDateFormat(this.getString(R.string.updated_datetime_format));
 
-        this.headerNextButton = this.findViewById(R.id.headerNextButton);
-        this.headerPrevButton = this.findViewById(R.id.headerPrevButton);
+        //this.headerNextButton = this.findViewById(R.id.headerNextButton);
+        //this.headerPrevButton = this.findViewById(R.id.headerPrevButton);
         this.headerUpdatedTime = this.findViewById(R.id.headerUpdatedTimeView);
 
+        /*
         this.findViewById(R.id.headerLogo).setOnClickListener(new OnClickListener() {
 
             @Override
@@ -46,8 +47,21 @@ abstract public class SofootActivity extends FragmentActivity
                 SofootActivity.this.startActivity(intent);
             }
         });
+         */
     }
 
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            final Intent intent = new Intent(SofootActivity.this.getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            SofootActivity.this.startActivity(intent);
+            return true;
+        }
+
+        return false;
+    }
 
     @Override
     protected void onStart() {
@@ -61,7 +75,7 @@ abstract public class SofootActivity extends FragmentActivity
         EasyTracker.getInstance().activityStop(this);
     }
 
-
+    /*
     public void showHeaderNextButton() {
         if (this.headerNextButton != null) {
             this.headerNextButton.setVisibility(View.VISIBLE);
@@ -73,6 +87,7 @@ abstract public class SofootActivity extends FragmentActivity
             this.headerPrevButton.setVisibility(View.VISIBLE);
         }
     }
+     */
 
     public void showHeaderUpdatedTime() {
         if (this.headerUpdatedTime != null) {

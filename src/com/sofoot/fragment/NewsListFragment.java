@@ -4,15 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.google.analytics.tracking.android.Tracker;
 import com.sofoot.R;
 import com.sofoot.activity.NewsDetailsActivity;
@@ -55,6 +55,7 @@ implements OnScrollListener, OnItemClickListener
 
     @Override
     public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
+        Log.d(NewsListFragment.LOG_TAG, "onCreateOptionsMenu : " + inflater.toString());
         inflater.inflate(R.menu.news_list_fragment, menu);
     }
 
@@ -135,8 +136,12 @@ implements OnScrollListener, OnItemClickListener
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        this.newsLoader.reload();
-        return true;
+        if (item.getItemId() == R.id.menu_refresh) {
+            this.newsLoader.reload();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 

@@ -1,17 +1,30 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <item android:id="@+id/increaseFontSize"
-          android:icon="@android:drawable/ic_menu_upload"
-          android:title="Agrandir"
-          android:showAsAction="ifRoom"/>
+    <!--
+    <item android:id="@+id/prev_news"
+          android:icon="@drawable/ic_arrow_prev"
+          android:title="Article Précédent"
+          android:showAsAction="always" />
     
-    <item android:id="@+id/decreaseFontSize"
-          android:icon="@android:drawable/ic_menu_agenda"
-          android:title="Réduire" />
+    <item android:id="@+id/next_news"
+          android:icon="@drawable/ic_arrow_next"
+          android:title="Article Suivant" 
+          android:showAsAction="always" />
+    -->
     
     <item android:id="@+id/share"
           android:icon="@android:drawable/ic_menu_share"
           android:title="Partager"
           android:showAsAction="ifRoom" />
+    
+    <item android:id="@+id/increaseFontSize"
+          android:icon="@android:drawable/ic_menu_upload"
+          android:title="Agrandir"
+          android:showAsAction="never"/>
+    
+    <item android:id="@+id/decreaseFontSize"
+          android:icon="@android:drawable/ic_menu_agenda"
+          android:title="Réduire"
+          android:showAsAction="never" />
     
 </menu>

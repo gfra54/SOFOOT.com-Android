@@ -15,6 +15,7 @@ import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
+import com.actionbarsherlock.view.MenuItem;
 import com.sofoot.R;
 import com.sofoot.fragment.LiguesFragment;
 import com.sofoot.fragment.NewsListFragment;
@@ -78,6 +79,16 @@ public class MainActivity extends SofootAdActivity  {
     protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("tab", this.mTabHost.getCurrentTabTag());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 

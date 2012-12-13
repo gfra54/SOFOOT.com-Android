@@ -32,11 +32,11 @@ public class NewsDetailsActivity extends SofootAdActivity implements OnClickList
         this.mPager.setCurrentItem(this.getIntent().getExtras().getInt("position"));
 
 
-        this.showHeaderNextButton();
-        this.showHeaderPrevButton();
+        //this.showHeaderNextButton();
+        //this.showHeaderPrevButton();
 
-        this.headerNextButton.setOnClickListener(this);
-        this.headerPrevButton.setOnClickListener(this);
+        //this.headerNextButton.setOnClickListener(this);
+        //this.headerPrevButton.setOnClickListener(this);
     }
 
 

@@ -31,11 +31,8 @@ abstract public class BitmapLoader extends AsyncTask<URL, Void, BitmapInfo>
             Bitmap bitmap = this.cache.get(urls[0]);
 
             if (bitmap == null) {
-                Log.d(BitmapLoader.LOG_TAG, "Bitmap for url '" + urls[0].toString() + "' is not cached");
                 bitmap = BitmapFactory.decodeStream(urls[0].openStream());
                 this.cache.put(urls[0], bitmap);
-            } else {
-                Log.d(BitmapLoader.LOG_TAG, "Bitmap for url '" + urls[0].toString() + "' is cached");
             }
 
             return new BitmapInfo(urls[0], bitmap);

@@ -9,22 +9,23 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.util.LruCache;
 import android.text.Html;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Tracker;
 import com.sofoot.R;
@@ -34,11 +35,11 @@ import com.sofoot.domain.model.NewsMeta;
 import com.sofoot.loader.NewsLoader;
 import com.sofoot.utils.SofootAnalytics;
 
-public class NewsDetailsFragment extends Fragment
+public class NewsDetailsFragment extends SherlockFragment
 implements LoaderManager.LoaderCallbacks<News>, SofootAnalytics
 {
 
-    final static public String LOG_TAG = "NewsFragment";
+    final static public String LOG_TAG = "NewsDetailsFragment";
 
     private NewsMeta newsMeta;
 
@@ -86,6 +87,7 @@ implements LoaderManager.LoaderCallbacks<News>, SofootAnalytics
 
     @Override
     public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
+        Log.d(NewsDetailsFragment.LOG_TAG, "onCreateOptionsMenu" + inflater.toString());
         inflater.inflate(R.menu.news_details_fragment, menu);
     }
 
@@ -96,11 +98,11 @@ implements LoaderManager.LoaderCallbacks<News>, SofootAnalytics
             switch (item.getItemId()) {
                 case R.id.increaseFontSize:
                     this.searchAndChangeTextViewFontSize((ViewGroup)this.getView(), 2);
-                    break;
+                    return true;
 
                 case R.id.decreaseFontSize:
                     this.searchAndChangeTextViewFontSize((ViewGroup)this.getView(), -2);
-                    break;
+                    return true;
 
                 case R.id.share:
                     final Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -110,15 +112,16 @@ implements LoaderManager.LoaderCallbacks<News>, SofootAnalytics
                             "\n\n" + this.newsMeta.getUrl() +
                             "\n\n" + this.getString(R.string.send_via));
                     this.startActivity(Intent.createChooser(sharingIntent, this.getString(R.string.share_via)));
-                default:
+                    return true;
 
-                    break;
+                default:
+                    return super.onOptionsItemSelected(item);
             }
         } catch (final Exception e) {
             Log.wtf("NewsDetailsActivity", e);
         }
 
-        return true;
+        return false;
     }
 
 
@@ -132,7 +135,10 @@ implements LoaderManager.LoaderCallbacks<News>, SofootAnalytics
                 this.searchAndChangeTextViewFontSize((ViewGroup)child, coeff);
             } else if (child instanceof TextView) {
                 final TextView textView = (TextView)child;
-                textView.setTextSize(textView.getTextSize() + coeff);
+
+                Log.d("TEXT SIZE", "" + textView.getTextSize() + coeff + " " + (textView.getTextSize() + coeff));
+
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textView.getTextSize() + coeff);
             }
         }
     }
@@ -197,15 +203,25 @@ implements LoaderManager.LoaderCallbacks<News>, SofootAnalytics
                 @Override
                 protected void onPostExecute(final Bitmap result) {
 
-                    if (result != null) {
+                    final View view = NewsDetailsFragment.this.getView();
+
+                    if ((result != null) && (view != null) && !NewsDetailsFragment.this.isDetached() && !NewsDetailsFragment.this.isRemoving()) {
+                        final float ratio = (float)view.getWidth() / (float)result.getWidth();
+                        Log.d(NewsDetailsFragment.LOG_TAG, "Ratio : " + ratio);
+
+                        final int width =  (int)(result.getWidth() * ratio);
+                        final int height =  (int)(result.getHeight() * ratio);
+
+                        imageView.getLayoutParams().width = width;
+                        imageView.getLayoutParams().height = height;
+
                         imageView.setImageBitmap(result);
                     } else {
-                        imageView.setVisibility(View.GONE);
+                        imageView.setVisibility(View.INVISIBLE);
                     }
                 }
 
             };
-
 
             asyncTask.execute(result.getImage(this.getActivity().getWindowManager().getDefaultDisplay()));
 
@@ -233,6 +249,7 @@ implements LoaderManager.LoaderCallbacks<News>, SofootAnalytics
         // TODO Auto-generated method stub
 
     }
+
 
 
     @Override

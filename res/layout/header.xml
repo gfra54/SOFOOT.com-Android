@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/headerUpdatedTimeView"
+        style="@style/HeaderUpdatedTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_header_updaded_time"
+        android:paddingBottom="2dp"
+        android:paddingLeft="@dimen/grid_unit"
+        android:paddingRight="@dimen/grid_unit"
+        android:paddingTop="2dp"
+        android:visibility="gone" />
+
+</merge>
+
+<!-- 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:layout_width="match_parent"
@@ -55,3 +75,4 @@
         android:visibility="gone" />
 
 </RelativeLayout>
+-->

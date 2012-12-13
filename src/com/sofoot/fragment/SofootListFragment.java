@@ -2,7 +2,6 @@ package com.sofoot.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -17,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockListFragment;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.sofoot.activity.SofootActivity;
 import com.sofoot.adapter.SofootAdapter;
@@ -24,7 +24,7 @@ import com.sofoot.domain.Collection;
 import com.sofoot.loader.SofootLoader;
 import com.sofoot.utils.SofootAnalytics;
 
-abstract public class SofootListFragment<T extends Collection<?>> extends ListFragment
+abstract public class SofootListFragment<T extends Collection<?>> extends SherlockListFragment
 implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
 {
 
@@ -140,7 +140,7 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
         this.displayLastException(sofootLoader);
 
         if (result != null) {
-            Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment load finished " + this.toString() + " " + result.toString());
+            //Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment load finished " + this.toString() + " " + result.toString());
 
             this.updateAdapterData(result);
             this.showList();
@@ -150,7 +150,7 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
 
     protected void displayLastException(final SofootLoader<T> sofootLoader) {
         if (sofootLoader.getLastException() != null) {
-            Toast.makeText(this.getActivity(), this.getLoaderErrorString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getActivity(), this.getLoaderErrorString() + "\n" + sofootLoader.getLastException().getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 

@@ -2,7 +2,7 @@
 
     <string name="ga_trackingId">UA-1025689-3</string>
 
-    <item name="ga_debug" type="bool">true</item>
+    <item name="ga_debug" type="bool">false</item>
     <item name="ga_dispatchPeriod" type="integer">60</item>
 
     <bool name="ga_anonymizeIp">false</bool>
