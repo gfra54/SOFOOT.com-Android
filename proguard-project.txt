@@ -73,4 +73,10 @@
 
 -dontwarn com.google.ads.**
 
--keep public class com.sofoot.domain.Object
+
+-keep class android.support.v4.app.** { *; }
+-keep interface android.support.v4.app.** { *; }
+-keep class com.actionbarsherlock.** { *; }
+-keep interface com.actionbarsherlock.** { *; }
+
+-keepattributes *Annotation*

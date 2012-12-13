@@ -4,9 +4,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.sofoot.Sofoot;
+import com.sofoot.SofootException;
 import com.sofoot.domain.Collection;
 import com.sofoot.domain.model.Ligue;
-import com.sofoot.mapper.MapperException;
 
 public class LiguesLoader extends SofootLoader<Collection<Ligue>> {
 
@@ -17,7 +17,7 @@ public class LiguesLoader extends SofootLoader<Collection<Ligue>> {
     }
 
     @Override
-    public Collection<Ligue> doLoad() throws MapperException {
+    public Collection<Ligue> doLoad() throws SofootException {
         Log.d(LiguesLoader.LOG_TAG, "loadInbackground");
         return  ((Sofoot)this.getContext().getApplicationContext()).getLigueMapper().findAll();
     }

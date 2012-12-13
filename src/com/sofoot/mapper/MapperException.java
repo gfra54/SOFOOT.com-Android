@@ -1,6 +1,8 @@
 package com.sofoot.mapper;
 
-public class MapperException extends Exception
+import com.sofoot.SofootException;
+
+public class MapperException extends SofootException
 {
 
     /**
@@ -10,6 +12,12 @@ public class MapperException extends Exception
 
     public MapperException(final Throwable t) {
         super(t);
+    }
+
+
+    @Override
+    public String getLocalizedMessage() {
+        return "Aucune donnée n'est disponible";
     }
 
 }

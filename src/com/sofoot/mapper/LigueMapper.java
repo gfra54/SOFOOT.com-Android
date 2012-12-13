@@ -7,11 +7,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.sofoot.SofootException;
 import com.sofoot.domain.Collection;
 import com.sofoot.domain.Criteria;
 import com.sofoot.domain.model.Ligue;
 import com.sofoot.domain.model.LigueFactory;
-import com.sofoot.gateway.GatewayException;
 import com.sofoot.gateway.WSGateway;
 
 public class LigueMapper extends SofootWsMapper<Ligue> {
@@ -21,7 +21,7 @@ public class LigueMapper extends SofootWsMapper<Ligue> {
     }
 
     @Override
-    public Collection<Ligue> findAll(final Criteria criteria) throws MapperException {
+    public Collection<Ligue> findAll(final Criteria criteria) throws SofootException {
         try {
             final ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>(this.defaultWSParams);
             params.add(new BasicNameValuePair("mode", "ligues"));
@@ -44,8 +44,6 @@ public class LigueMapper extends SofootWsMapper<Ligue> {
 
         } catch (final JSONException jsone) {
             throw new MapperException(jsone);
-        } catch (final GatewayException ge) {
-            throw new MapperException(ge);
         }
     }
 

@@ -8,11 +8,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.sofoot.SofootException;
 import com.sofoot.domain.Collection;
 import com.sofoot.domain.Criteria;
 import com.sofoot.domain.model.Classement;
 import com.sofoot.domain.model.ClassementFactory;
-import com.sofoot.gateway.GatewayException;
 import com.sofoot.gateway.WSGateway;
 
 public class ClassementMapper extends SofootWsMapper<Classement> {
@@ -22,7 +22,7 @@ public class ClassementMapper extends SofootWsMapper<Classement> {
     }
 
     @Override
-    public Collection<Classement> findAll(final Criteria criteria) throws MapperException {
+    public Collection<Classement> findAll(final Criteria criteria) throws SofootException {
         try {
             final ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>(this.defaultWSParams);
             final String ligue = criteria.getParam("ligue", "L1");
@@ -49,8 +49,6 @@ public class ClassementMapper extends SofootWsMapper<Classement> {
 
         } catch (final JSONException jsone) {
             throw new MapperException(jsone);
-        } catch (final GatewayException ge) {
-            throw new MapperException(ge);
         } catch (final MalformedURLException mue) {
             throw new MapperException(mue);
         }

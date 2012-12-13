@@ -120,8 +120,6 @@ public class ResultatAdapter extends SofootAdapter<Rencontre>
             if ((result.url == this.imageView.getTag()) && (result.bitmap != null)) {
                 this.imageView.setImageBitmap(result.bitmap);
                 this.imageView.setVisibility(View.VISIBLE);
-            } else {
-                this.imageView.setVisibility(View.INVISIBLE);
             }
         }
     }

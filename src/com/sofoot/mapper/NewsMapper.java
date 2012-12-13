@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.sofoot.SofootException;
 import com.sofoot.domain.Collection;
 import com.sofoot.domain.Criteria;
 import com.sofoot.domain.model.News;
@@ -52,7 +53,7 @@ public class NewsMapper extends SofootWsMapper<News> {
     }
 
     @Override
-    public Collection<News> findAll(final Criteria criteria) throws MapperException
+    public Collection<News> findAll(final Criteria criteria) throws SofootException
     {
         try {
             final ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>(this.defaultWSParams);
@@ -90,8 +91,6 @@ public class NewsMapper extends SofootWsMapper<News> {
             throw new MapperException(jsone);
         } catch (final ParseException pe) {
             throw new MapperException(pe);
-        } catch (final GatewayException ge) {
-            throw new MapperException(ge);
         } catch (final MalformedURLException mue) {
             throw new MapperException(mue);
         }

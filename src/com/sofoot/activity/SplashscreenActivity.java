@@ -30,8 +30,8 @@ public class SplashscreenActivity extends Activity implements AdListener{
 
         // Initiate a generic request to load it with an ad
         final AdRequest adRequest = new AdRequest();
-        adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
-        adRequest.addTestDevice("ECFF6683D20D5920A9B71F4AADDA8662");
+        //adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
+        //adRequest.addTestDevice("ECFF6683D20D5920A9B71F4AADDA8662");
 
 
         this.interstitial.loadAd(adRequest);

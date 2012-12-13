@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.apache.http.message.BasicNameValuePair;
 
+import com.sofoot.SofootException;
 import com.sofoot.domain.Collection;
 import com.sofoot.domain.Criteria;
 import com.sofoot.domain.Object;
@@ -22,7 +23,7 @@ abstract public class SofootWsMapper<O extends Object> extends Mapper<O>
         this.defaultWSParams.add(new BasicNameValuePair(wsKeyName, wsKeyValue));
     }
 
-    public Collection<O> findAll() throws MapperException {
+    public Collection<O> findAll() throws SofootException {
         return this.findAll(Criteria.defaultCriteria());
     }
 

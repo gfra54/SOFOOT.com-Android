@@ -60,8 +60,8 @@ implements OnScrollListener, OnItemClickListener
     }
 
     @Override
-    public Loader<Collection<News>> onCreateLoader(final int id, final Bundle args) {
-        Log.d(NewsListFragment.LOG_TAG, "onCreateLoader");
+    public Loader<Collection<News>> doCreateLoader(final int id, final Bundle args) {
+        Log.d(NewsListFragment.LOG_TAG, "doCreateLoader");
 
         this.newsLoader = new NewsListLoader(this.getActivity());
         this.newsLoader.setLimit(NewsListFragment.NEWS_LIMIT);
@@ -69,17 +69,6 @@ implements OnScrollListener, OnItemClickListener
 
         return this.newsLoader;
     }
-
-    @Override
-    protected String getEmptyString() {
-        return this.getString(R.string.no_newslist);
-    }
-
-    @Override
-    protected String getLoaderErrorString() {
-        return this.getString(R.string.newslistloader_error);
-    }
-
 
     @Override
     protected SofootAdapter<News> getAdapter() {
@@ -137,7 +126,7 @@ implements OnScrollListener, OnItemClickListener
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         if (item.getItemId() == R.id.menu_refresh) {
-            this.newsLoader.reload();
+            this.reload();
             return true;
         }
 

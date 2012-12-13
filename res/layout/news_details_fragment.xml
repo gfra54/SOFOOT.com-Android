@@ -10,9 +10,30 @@
         android:gravity="center" >
 
         <ProgressBar
-            style="?android:attr/progressBarStyleSmall"
+            style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/errorTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/errorButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/grid_unit"
+            android:text="@string/empty_list_button_text" />
     </LinearLayout>
 
     <ScrollView
@@ -65,7 +86,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 android:adjustViewBounds="true"
-                android:scaleType="fitXY"               
+                android:scaleType="fitXY"
                 android:visibility="invisible" />
 
             <TextView
@@ -80,8 +101,8 @@
                 style="@style/NewsDetailsTexte"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:linksClickable="true" 
-                android:autoLink="web"/>
+                android:autoLink="web"
+                android:linksClickable="true" />
 
             <TextView
                 android:id="@+id/auteur"

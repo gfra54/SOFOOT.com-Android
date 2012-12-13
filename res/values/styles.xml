@@ -3,17 +3,18 @@
     <style name="AppTheme" parent="@style/Theme.Sherlock.Light">
         <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
+        <item name="actionButtonStyle">@style/Widget.Styled.ActionButton</item>
     </style>
     
     <style name="Widget.Styled.ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid">
         <item name="background">#eee</item>
         <item name="android:background">#eee</item>
         <item name="titleTextStyle">@style/TextAppearance.Styled.ActionBar.Title</item>
-        <item name="actionButtonStyle">@style/Widget.Styled.ActionButton</item>
     </style>
     
     <style name="Widget.Styled.ActionButton" parent="Widget.Sherlock.Light.ActionButton">
-        
+        <item name="android:background">@drawable/bg_actionbar_item</item>
+        <item name="background">#000</item>
     </style>
     
     <style name="TextAppearance.Styled.ActionBar.Title" parent="TextAppearance.Sherlock.Widget.ActionBar.Title.Inverse">

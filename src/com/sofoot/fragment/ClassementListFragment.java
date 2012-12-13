@@ -37,23 +37,11 @@ public class ClassementListFragment extends SofootListFragment<Collection<Classe
     }
 
     @Override
-    public Loader<Collection<Classement>> onCreateLoader(final int id, final Bundle args) {
+    public Loader<Collection<Classement>> doCreateLoader(final int id, final Bundle args) {
         final ClassementLoader classementLoader =  new ClassementLoader(this.getActivity());
         classementLoader.setLigue(this.ligue.getId());
         return classementLoader;
     }
-
-    @Override
-    protected String getEmptyString() {
-        return this.getString(R.string.no_classement);
-    }
-
-
-    @Override
-    protected String getLoaderErrorString() {
-        return this.getString(R.string.classementloader_error);
-    }
-
 
     @Override
     protected SofootAdapter<Classement> getAdapter() {

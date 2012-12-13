@@ -4,9 +4,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.sofoot.Sofoot;
+import com.sofoot.SofootException;
 import com.sofoot.domain.Collection;
 import com.sofoot.domain.model.News;
-import com.sofoot.mapper.MapperException;
 
 public class NewsListLoader extends SofootLoader<Collection<News>> {
 
@@ -18,7 +18,7 @@ public class NewsListLoader extends SofootLoader<Collection<News>> {
     }
 
     @Override
-    public Collection<News> doLoad() throws MapperException{
+    public Collection<News> doLoad() throws SofootException{
         Log.d(NewsListLoader.MY_LOG_TAG, "doLoad");
         return ((Sofoot)this.getContext().getApplicationContext()).getNewsMapper().findAll(this.criteria);
     }
@@ -57,10 +57,4 @@ public class NewsListLoader extends SofootLoader<Collection<News>> {
         this.criteria.setOffset(this.getLimit() + this.getOffset());
         this.forceLoad();
     }
-
-    public void reload() {
-        this.criteria.setOffset(0);
-        this.forceLoad();
-    }
-
 }

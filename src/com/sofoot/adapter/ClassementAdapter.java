@@ -88,17 +88,25 @@ public class ClassementAdapter extends SofootAdapter<Classement>
             this.textView = view;
         }
 
+
+        @Override
+        protected void onPreExecute() {
+            this.textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.mock_logo_club, 0, 0, 0);
+        }
+
         @Override
         protected void onPostExecute(final BitmapInfo result) {
-            final BitmapDrawable bitmapDrawable = new BitmapDrawable(this.textView.getContext().getResources(), result.bitmap);
-            final float scale = this.textView.getResources().getDisplayMetrics().density;
-            bitmapDrawable.setBounds(0, 0, (int)(25 * scale) , (int)(25 * scale));
+            if (result.bitmap != null) {
+                final BitmapDrawable bitmapDrawable = new BitmapDrawable(this.textView.getContext().getResources(), result.bitmap);
+                final float scale = this.textView.getResources().getDisplayMetrics().density;
+                bitmapDrawable.setBounds(0, 0, (int)(25 * scale) , (int)(25 * scale));
 
-            this.textView.setCompoundDrawables(
-                    bitmapDrawable,
-                    null,
-                    null,
-                    null);
+                this.textView.setCompoundDrawables(
+                        bitmapDrawable,
+                        null,
+                        null,
+                        null);
+            }
         }
     }
 }

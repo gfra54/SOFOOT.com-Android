@@ -110,6 +110,10 @@ public class NewsAdapter extends SofootAdapter<News> {
 
     @Override
     public int getCount() {
+        if (this.list.size() == 0) {
+            return 0;
+        }
+
         return this.list.size() + 1;
     }
 

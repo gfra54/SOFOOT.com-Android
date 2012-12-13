@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.google.analytics.tracking.android.Tracker;
-import com.sofoot.R;
 import com.sofoot.activity.ClassementActivity;
 import com.sofoot.activity.ResultatsActivity;
 import com.sofoot.adapter.LigueAdapter;
@@ -32,21 +31,10 @@ implements OnItemClickListener
     }
 
     @Override
-    public Loader<Collection<Ligue>> onCreateLoader(final int id, final Bundle args) {
+    public Loader<Collection<Ligue>> doCreateLoader(final int id, final Bundle args) {
         Log.d(LiguesFragment.MY_LOG_TAG, "Loader is created");
         return new LiguesLoader(this.getActivity());
     }
-
-    @Override
-    protected String getEmptyString() {
-        return this.getString(R.string.no_ligue);
-    }
-
-    @Override
-    protected String getLoaderErrorString() {
-        return this.getString(R.string.liguesloader_error);
-    }
-
 
     @Override
     protected SofootAdapter<?> getAdapter() {

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +43,8 @@ public class WSGateway {
     {
         this.connectivityManager = connectivityManager;
         this.httpClient = AndroidHttpClient.newInstance(userAgent);
-        HttpConnectionParams.setConnectionTimeout(this.httpClient.getParams(), 20 * 1000);
-        HttpConnectionParams.setSoTimeout(this.httpClient.getParams(), 10 * 1000);
+        HttpConnectionParams.setConnectionTimeout(this.httpClient.getParams(), 1000 * 60);
+        HttpConnectionParams.setSoTimeout(this.httpClient.getParams(), 1000 * 60);
         this.httpHost = httpHost;
     }
 
@@ -67,9 +68,14 @@ public class WSGateway {
     public String fetchData(final String uri, final List< ? extends NameValuePair> params) throws GatewayException
     {
         try {
+            if (this.isConnected() == false) {
+                throw new ConnectException("Network is unreachable");
+            }
+
             final long trackTime = System.currentTimeMillis();
 
             final HttpRequest request = this.buildGetRequest(uri, params);
+
             this.lastHttpResponse = this.httpClient.execute(this.httpHost, request);
 
             final int statusCode = this.lastHttpResponse.getStatusLine().getStatusCode();
@@ -85,8 +91,8 @@ public class WSGateway {
 
             return content;
 
-        } catch (final IOException ioe) {
-            throw new GatewayException(ioe);
+        } catch (final Exception e) {
+            throw new GatewayException(e);
         }
     }
 

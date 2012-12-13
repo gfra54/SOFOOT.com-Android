@@ -4,9 +4,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.sofoot.Sofoot;
+import com.sofoot.SofootException;
 import com.sofoot.domain.Collection;
 import com.sofoot.domain.model.Rencontre;
-import com.sofoot.mapper.MapperException;
 
 public class ResultatLoader extends SofootLoader<Collection<Rencontre>> {
 
@@ -17,7 +17,7 @@ public class ResultatLoader extends SofootLoader<Collection<Rencontre>> {
     final static private String LOG_TAG = "ResultatLoader";
 
     @Override
-    public Collection<Rencontre> doLoad() throws MapperException {
+    public Collection<Rencontre> doLoad() throws SofootException {
         Log.d(ResultatLoader.LOG_TAG, "doLoad");
         return  ((Sofoot)this.getContext().getApplicationContext()).getResultatMapper().findAll(this.criteria);
     }

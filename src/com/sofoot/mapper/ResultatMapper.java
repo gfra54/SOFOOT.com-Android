@@ -9,11 +9,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.sofoot.SofootException;
 import com.sofoot.domain.Collection;
 import com.sofoot.domain.Criteria;
 import com.sofoot.domain.model.Rencontre;
 import com.sofoot.domain.model.RencontreFactory;
-import com.sofoot.gateway.GatewayException;
 import com.sofoot.gateway.WSGateway;
 
 public class ResultatMapper extends SofootWsMapper<Rencontre> {
@@ -23,7 +23,7 @@ public class ResultatMapper extends SofootWsMapper<Rencontre> {
     }
 
     @Override
-    public Collection<Rencontre> findAll(final Criteria criteria) throws MapperException {
+    public Collection<Rencontre> findAll(final Criteria criteria) throws SofootException {
         try {
             final ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>(this.defaultWSParams);
             final String ligue = criteria.getParam("ligue", "L1");
@@ -53,8 +53,6 @@ public class ResultatMapper extends SofootWsMapper<Rencontre> {
 
         } catch (final JSONException jsone) {
             throw new MapperException(jsone);
-        } catch (final GatewayException ge) {
-            throw new MapperException(ge);
         } catch (final MalformedURLException mue) {
             throw new MapperException(mue);
         } catch (final ParseException pe) {

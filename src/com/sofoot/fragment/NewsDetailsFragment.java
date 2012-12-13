@@ -17,10 +17,10 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
@@ -30,6 +30,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Tracker;
 import com.sofoot.R;
 import com.sofoot.Sofoot;
+import com.sofoot.SofootException;
 import com.sofoot.domain.model.News;
 import com.sofoot.domain.model.NewsMeta;
 import com.sofoot.loader.NewsLoader;
@@ -43,17 +44,21 @@ implements LoaderManager.LoaderCallbacks<News>, SofootAnalytics
 
     private NewsMeta newsMeta;
 
+    private View emptyView;
+
+    private View errorView;
+
+    private View newsDetailsView;
+
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         this.newsMeta = (NewsMeta)this.getArguments().getParcelable("newsMeta");
     }
 
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         this.setHasOptionsMenu(true);
     }
 
@@ -77,13 +82,16 @@ implements LoaderManager.LoaderCallbacks<News>, SofootAnalytics
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.news_details_fragment, container, false);
+        final View v = inflater.inflate(R.layout.news_details_fragment, container, false);
+
+        this.emptyView = v.findViewById(android.R.id.empty);
+        this.errorView = v.findViewById(R.id.error);
+        this.newsDetailsView = v.findViewById(R.id.newsDetails);
+
+        return v;
     }
 
-    @Override
-    public Loader<News> onCreateLoader(final int id, final Bundle args) {
-        return new NewsLoader(this.getActivity(), this.newsMeta.getId());
-    }
+
 
     @Override
     public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
@@ -97,11 +105,11 @@ implements LoaderManager.LoaderCallbacks<News>, SofootAnalytics
         try {
             switch (item.getItemId()) {
                 case R.id.increaseFontSize:
-                    this.searchAndChangeTextViewFontSize((ViewGroup)this.getView(), 2);
+                    this.searchAndChangeTextViewFontSize((ViewGroup)this.getView(), 3);
                     return true;
 
                 case R.id.decreaseFontSize:
-                    this.searchAndChangeTextViewFontSize((ViewGroup)this.getView(), -2);
+                    this.searchAndChangeTextViewFontSize((ViewGroup)this.getView(), -3);
                     return true;
 
                 case R.id.share:
@@ -125,32 +133,48 @@ implements LoaderManager.LoaderCallbacks<News>, SofootAnalytics
     }
 
 
-    private void searchAndChangeTextViewFontSize(final ViewGroup root, final int coeff) {
-        final int count  = root.getChildCount();
+    @Override
+    public Loader<News> onCreateLoader(final int id, final Bundle args) {
+        this.emptyView.setVisibility(View.VISIBLE);
+        this.errorView.setVisibility(View.GONE);
+        this.newsDetailsView.setVisibility(View.GONE);
 
-        for (int i = 0; i < count; i++) {
-            final View child = root.getChildAt(i);
-
-            if (child instanceof ViewGroup) {
-                this.searchAndChangeTextViewFontSize((ViewGroup)child, coeff);
-            } else if (child instanceof TextView) {
-                final TextView textView = (TextView)child;
-
-                Log.d("TEXT SIZE", "" + textView.getTextSize() + coeff + " " + (textView.getTextSize() + coeff));
-
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textView.getTextSize() + coeff);
-            }
-        }
+        return new NewsLoader(this.getActivity(), this.newsMeta.getId());
     }
+
 
     @Override
     public void onLoadFinished(final Loader<News> loader, final News result) {
-        Log.d(NewsDetailsFragment.LOG_TAG, "onLoadFinish : " + result);
 
-        if (((NewsLoader)loader).getLastException() != null) {
-            Toast.makeText(this.getActivity(), this.getString(R.string.newsloader_error), Toast.LENGTH_LONG).show();
+        final Exception e = ((NewsLoader)loader).getLastException();
+
+        if (e != null) {
+
+            if (e instanceof SofootException) {
+                ((TextView)this.errorView.findViewById(R.id.errorTextView)).setText(e.getLocalizedMessage());
+            } else {
+                ((TextView)this.errorView.findViewById(R.id.errorTextView)).setText(
+                        this.getString(R.string.unexpected_exception) + " : " + e.getLocalizedMessage());
+            }
+
+            this.errorView.findViewById(R.id.errorButton).setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(final View v) {
+                    NewsDetailsFragment.this.getLoaderManager().restartLoader(0, null, NewsDetailsFragment.this);
+                }
+            });
+
+            this.emptyView.setVisibility(View.GONE);
+            this.errorView.setVisibility(View.VISIBLE);
+            this.newsDetailsView.setVisibility(View.GONE);
+
             return;
         }
+
+
+
+
 
         if (result.hasSurtitre()) {
             final TextView view = ((TextView)this.getView().findViewById(R.id.surtitre));
@@ -240,8 +264,9 @@ implements LoaderManager.LoaderCallbacks<News>, SofootAnalytics
             view.setVisibility(View.VISIBLE);
         }
 
-        this.getView().findViewById(android.R.id.empty).setVisibility(View.GONE);
-        this.getView().findViewById(R.id.newsDetails).setVisibility(View.VISIBLE);
+        this.emptyView.setVisibility(View.GONE);
+        this.errorView.setVisibility(View.GONE);
+        this.newsDetailsView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -251,6 +276,23 @@ implements LoaderManager.LoaderCallbacks<News>, SofootAnalytics
     }
 
 
+    private void searchAndChangeTextViewFontSize(final ViewGroup root, final int coeff) {
+        final int count  = root.getChildCount();
+
+        for (int i = 0; i < count; i++) {
+            final View child = root.getChildAt(i);
+
+            if (child instanceof ViewGroup) {
+                this.searchAndChangeTextViewFontSize((ViewGroup)child, coeff);
+            } else if (child instanceof TextView) {
+                final TextView textView = (TextView)child;
+
+                Log.d("TEXT SIZE", "" + textView.getTextSize() + coeff + " " + (textView.getTextSize() + coeff));
+
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textView.getTextSize() + coeff);
+            }
+        }
+    }
 
     @Override
     public void trackPageView(final Tracker easyTracker) {

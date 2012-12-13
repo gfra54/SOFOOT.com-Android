@@ -8,16 +8,18 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.sofoot.R;
+import com.sofoot.SofootException;
 import com.sofoot.activity.SofootActivity;
 import com.sofoot.adapter.SofootAdapter;
 import com.sofoot.domain.Collection;
@@ -31,6 +33,8 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
     static final int INTERNAL_EMPTY_ID = 0x00ff0001;
     static final int INTERNAL_PROGRESS_CONTAINER_ID = 0x00ff0002;
     static final int INTERNAL_LIST_CONTAINER_ID = 0x00ff0003;
+
+    protected TextView emptyTextView;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -49,7 +53,7 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
         pframe.setGravity(Gravity.CENTER);
 
         final ProgressBar progress = new ProgressBar(context, null,
-                android.R.attr.progressBarStyleSmall);
+                android.R.attr.progressBarStyle);
         pframe.addView(progress, new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
@@ -61,11 +65,25 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
         final FrameLayout lframe = new FrameLayout(context);
         lframe.setId(SofootListFragment.INTERNAL_LIST_CONTAINER_ID);
 
+        final View emptyView = inflater.inflate(R.layout.list_empty_view, lframe, true);
+        this.emptyTextView = (TextView)emptyView.findViewById(R.id.emptyListTextView);
+
+        emptyView.findViewById(R.id.emptyListButton).setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(final View button) {
+                SofootListFragment.this.reload();
+            }
+        });
+
+
+        /*
         final TextView tv = new TextView(this.getActivity());
         tv.setId(SofootListFragment.INTERNAL_EMPTY_ID);
         tv.setGravity(Gravity.CENTER);
         lframe.addView(tv, new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+         */
 
         final ListView lv = new ListView(this.getActivity());
         lv.setId(android.R.id.list);
@@ -83,6 +101,14 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
 
         return root;
     }
+
+
+    @Override
+    public void setEmptyText(final CharSequence text) {
+        this.emptyTextView.setText(text);
+    }
+
+
 
     final static private String LOG_TAG = "SofootListFragment";
 
@@ -102,7 +128,6 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
 
         Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment activity created " + this.toString());
 
-        this.setEmptyText(this.getEmptyString());
         this.mAdapter = this.getAdapter();
         this.setListAdapter(this.mAdapter);
 
@@ -118,7 +143,6 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
         Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment started " + this.toString());
         super.onStart();
         this.trackPageView(EasyTracker.getTracker());
-        this.setListShownNoAnimation(((SofootLoader<?>)this.getLoaderManager().getLoader(0)).isDataValid());
     }
 
     @Override
@@ -135,22 +159,35 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
     }
 
     @Override
+    public Loader<T> onCreateLoader(final int id, final Bundle args) {
+        this.setListShownNoAnimation(false);
+        return this.doCreateLoader(id, args);
+    }
+
+    @Override
     public void onLoadFinished(final Loader<T> loader, final T result) {
+        Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment load finished " + loader.toString());
+
         final SofootLoader<T> sofootLoader = (SofootLoader<T>)loader;
         this.displayLastException(sofootLoader);
 
         if (result != null) {
-            //Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment load finished " + this.toString() + " " + result.toString());
-
             this.updateAdapterData(result);
-            this.showList();
             this.updateLastLoadTime(sofootLoader);
         }
+
+        this.setListShown(true);
     }
 
     protected void displayLastException(final SofootLoader<T> sofootLoader) {
-        if (sofootLoader.getLastException() != null) {
-            Toast.makeText(this.getActivity(), this.getLoaderErrorString() + "\n" + sofootLoader.getLastException().getMessage(), Toast.LENGTH_LONG).show();
+        final Exception e = sofootLoader.getLastException();
+
+        if (e != null) {
+            if (e instanceof SofootException) {
+                this.setEmptyText(e.getLocalizedMessage());
+            } else {
+                this.setEmptyText(this.getString(R.string.unexpected_exception) + " : " + e.getLocalizedMessage());
+            }
         }
     }
 
@@ -159,14 +196,6 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
             this.mAdapter.clear();
             this.mAdapter.addAll(result);
             this.mAdapter.notifyDataSetChanged();
-        }
-    }
-
-    protected void showList() {
-        if (this.isResumed()) {
-            this.setListShown(true);
-        } else {
-            this.setListShownNoAnimation(true);
         }
     }
 
@@ -182,9 +211,12 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
         this.mAdapter.clear();
     }
 
-    abstract protected String getEmptyString();
-
-    abstract protected String getLoaderErrorString();
+    public void reload()
+    {
+        this.getLoaderManager().restartLoader(0, this.getArguments(), this);
+    }
 
     abstract protected SofootAdapter<?> getAdapter();
+
+    abstract protected Loader<T> doCreateLoader(final int id, final Bundle args);
 }

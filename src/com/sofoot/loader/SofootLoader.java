@@ -2,9 +2,10 @@ package com.sofoot.loader;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
+import com.sofoot.SofootException;
 import com.sofoot.domain.Criteria;
-import com.sofoot.mapper.MapperException;
 
 public abstract class SofootLoader<T> extends AsyncTaskLoader<T>
 {
@@ -35,6 +36,7 @@ public abstract class SofootLoader<T> extends AsyncTaskLoader<T>
         try {
             this.data = this.doLoad();
         } catch (final Exception exception) {
+            Log.wtf(SofootLoader.LOG_TAG, exception);
             this.lastException = exception;
             this.data = null;
         }
@@ -83,5 +85,5 @@ public abstract class SofootLoader<T> extends AsyncTaskLoader<T>
         return this.isRunning;
     }
 
-    abstract protected T doLoad() throws MapperException;
+    abstract protected T doLoad() throws SofootException;
 }

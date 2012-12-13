@@ -4,9 +4,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.sofoot.Sofoot;
+import com.sofoot.SofootException;
 import com.sofoot.domain.Collection;
 import com.sofoot.domain.model.Classement;
-import com.sofoot.mapper.MapperException;
 
 public class ClassementLoader extends SofootLoader<Collection<Classement>> {
 
@@ -17,7 +17,7 @@ public class ClassementLoader extends SofootLoader<Collection<Classement>> {
     }
 
     @Override
-    public Collection<Classement> doLoad() throws MapperException {
+    public Collection<Classement> doLoad() throws SofootException {
         Log.d(ClassementLoader.LOG_TAG, "loadInbackground");
         return ((Sofoot)this.getContext().getApplicationContext()).getClassementMapper().findAll(this.criteria);
     }

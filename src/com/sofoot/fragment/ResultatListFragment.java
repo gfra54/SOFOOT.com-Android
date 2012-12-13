@@ -5,7 +5,6 @@ import android.support.v4.content.Loader;
 import android.util.Log;
 
 import com.google.analytics.tracking.android.Tracker;
-import com.sofoot.R;
 import com.sofoot.adapter.ResultatAdapter;
 import com.sofoot.adapter.SofootAdapter;
 import com.sofoot.domain.Collection;
@@ -29,22 +28,12 @@ public class ResultatListFragment extends SofootListFragment<Collection<Rencontr
 
 
     @Override
-    public Loader<Collection<Rencontre>> onCreateLoader(final int id, final Bundle args) {
+    public Loader<Collection<Rencontre>> doCreateLoader(final int id, final Bundle args) {
         Log.d(ResultatListFragment.LOG_TAG, "onCreateLoader");
         final ResultatLoader resultatLoader = new ResultatLoader(this.getActivity());
         resultatLoader.setLigueId(this.ligueId);
         resultatLoader.setJournee(this.journee);
         return resultatLoader;
-    }
-
-    @Override
-    protected String getEmptyString() {
-        return this.getString(R.string.no_resultat);
-    }
-
-    @Override
-    protected String getLoaderErrorString() {
-        return this.getString(R.string.resultatsloader_error);
     }
 
     @Override
