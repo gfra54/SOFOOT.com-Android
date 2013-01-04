@@ -13,6 +13,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.util.LruCache;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -256,7 +257,10 @@ implements LoaderManager.LoaderCallbacks<News>, SofootAnalytics
             }
         }
 
-        ((TextView)this.getView().findViewById(R.id.texte)).setText(Html.fromHtml(result.getTexte().replace("\r\n", "<br/>")));
+        final TextView texte = ((TextView)this.getView().findViewById(R.id.texte));
+        texte.setMovementMethod(LinkMovementMethod.getInstance());
+        texte.setText(Html.fromHtml(result.getTexte().replace("\r\n", "<br/>")));
+        //Log.d(NewsDetailsFragment.LOG_TAG, texte.getMovementMethod().toString());
 
         if (result.hasAuteur()) {
             final TextView view = ((TextView)this.getView().findViewById(R.id.auteur));

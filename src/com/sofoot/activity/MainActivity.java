@@ -40,32 +40,30 @@ public class MainActivity extends SofootAdActivity  {
 
         this.mTabsAdapter = new TabsAdapter(this, this.mTabHost, this.mViewPager);
 
-        final View tabIndicator = this.getLayoutInflater().inflate(R.layout.tab_indicator_la_une, null);
-        ((TextView) tabIndicator.findViewById(android.R.id.title)).setText("La une");
         final Bundle args1 = new Bundle();
         args1.putString("rubrique", "2");
-        this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("la_une").setIndicator(tabIndicator),
+        this.mTabsAdapter.addTab(
+                this.mTabHost.newTabSpec("la_une").setIndicator(this.buildTabIndicator("La une", R.drawable.ic_la_une)),
                 NewsListFragment.class, args1);
 
-        final View tabIndicator2 = this.getLayoutInflater().inflate(R.layout.tab_indicator, null);
-        ((TextView) tabIndicator2.findViewById(android.R.id.title)).setText("News");
+
         final Bundle args2 = new Bundle();
         args2.putString("rubrique", "1");
-        this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("news").setIndicator(tabIndicator2),
+        this.mTabsAdapter.addTab(
+                this.mTabHost.newTabSpec("news").setIndicator(this.buildTabIndicator("News", R.drawable.ic_news)),
                 NewsListFragment.class, args2);
 
-        final View tabIndicator3 = this.getLayoutInflater().inflate(R.layout.tab_indicator, null);
-        ((TextView) tabIndicator3.findViewById(android.R.id.title)).setText("Résultats");
+
         final Bundle args3 = new Bundle();
         args3.putBoolean("resultats", true);
-        this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("choix_ligue_resultats").setIndicator(tabIndicator3),
+        this.mTabsAdapter.addTab(
+                this.mTabHost.newTabSpec("choix_ligue_resultats").setIndicator(this.buildTabIndicator("Résultats", R.drawable.ic_resultats)),
                 LiguesFragment.class, args3);
 
-        final View tabIndicator4 = this.getLayoutInflater().inflate(R.layout.tab_indicator, null);
-        ((TextView) tabIndicator4.findViewById(android.R.id.title)).setText("Classement");
         final Bundle args4 = new Bundle();
         args4.putBoolean("classement", true);
-        this.mTabsAdapter.addTab(this.mTabHost.newTabSpec("choix_ligue_classement").setIndicator(tabIndicator4),
+        this.mTabsAdapter.addTab(
+                this.mTabHost.newTabSpec("choix_ligue_classement").setIndicator(this.buildTabIndicator("Classement", R.drawable.ic_classements)),
                 LiguesFragment.class, args4);
 
         this.showHeaderUpdatedTime();
@@ -73,6 +71,14 @@ public class MainActivity extends SofootAdActivity  {
         if (savedInstanceState != null) {
             this.mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
         }
+    }
+
+    private View buildTabIndicator(final String text, final int ic) {
+        final View tabIndicator = this.getLayoutInflater().inflate(R.layout.tab_indicator, null);
+        final TextView tv = ((TextView) tabIndicator.findViewById(android.R.id.title));
+        tv.setText(text);
+        tv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, ic);
+        return tabIndicator;
     }
 
     @Override
