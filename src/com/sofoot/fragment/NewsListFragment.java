@@ -31,6 +31,8 @@ implements OnScrollListener, OnItemClickListener
 
     private  NewsListLoader newsLoader;
 
+    private boolean isLoadingNextNews = false;
+
     final static private int NEWS_NB_MAX = 400;
     final static private int NEWS_LIMIT = 20;
 
@@ -86,7 +88,12 @@ implements OnScrollListener, OnItemClickListener
             return;
         }
 
-        if ((totalItemCount - firstVisibleItem) == visibleItemCount) {
+        if (this.isLoadingNextNews == true) {
+            return;
+        }
+
+        if ((firstVisibleItem + visibleItemCount) == totalItemCount) {
+            this.isLoadingNextNews = true;
             this.newsLoader.loadNext();
         }
     }
@@ -133,6 +140,11 @@ implements OnScrollListener, OnItemClickListener
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onLoadFinished(final Loader<Collection<News>> loader, final Collection<News> result) {
+        this.isLoadingNextNews = false;
+        super.onLoadFinished(loader, result);
+    }
 
     @Override
     protected void updateAdapterData(final Collection<News> result) {
