@@ -57,13 +57,13 @@ public class MainActivity extends SofootAdActivity  {
         final Bundle args3 = new Bundle();
         args3.putBoolean("resultats", true);
         this.mTabsAdapter.addTab(
-                this.mTabHost.newTabSpec("choix_ligue_resultats").setIndicator(this.buildTabIndicator("Résultats", R.drawable.ic_resultats)),
+                this.mTabHost.newTabSpec("choix_ligue_resultats").setIndicator(this.buildTabIndicator("Scores en direct", R.drawable.ic_resultats)),
                 LiguesFragment.class, args3);
 
         final Bundle args4 = new Bundle();
         args4.putBoolean("classement", true);
         this.mTabsAdapter.addTab(
-                this.mTabHost.newTabSpec("choix_ligue_classement").setIndicator(this.buildTabIndicator("Classement", R.drawable.ic_classements)),
+                this.mTabHost.newTabSpec("choix_ligue_classement").setIndicator(this.buildTabIndicator("Classements", R.drawable.ic_classements)),
                 LiguesFragment.class, args4);
 
         this.showHeaderUpdatedTime();

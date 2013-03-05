@@ -3,7 +3,7 @@
     <string name="sofoot">SO FOOT</string>
 
     <string name="app_name">@string/sofoot</string>
-    <string name="app_version">1.0</string>
+    <string name="app_version">1.1.0</string>
     
     <string name="loader_error">Oops&#8230; une erreur s\'est produite.</string>
     <string name="no_data">Aucune donnée n\'est disponible.</string>

@@ -12,6 +12,7 @@ import org.apache.http.message.BasicNameValuePair;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.test.AndroidTestCase;
+import android.util.Log;
 
 import com.sofoot.R;
 import com.sofoot.gateway.GatewayException;
@@ -35,12 +36,22 @@ public class WSGatewayTest extends AndroidTestCase
                 this.getContext().getString(R.string.app_name) + "/" + this.getContext().getString(R.string.app_version),
                 new HttpHost("www.sofoot.com", 80)
                 );
+
+        this.gateway.setAppVersion("1.0.0");
+        this.gateway.setOsName("android");
+        this.gateway.setOsVersion("4.0.1");
     }
 
     public void testGetRequestAcceptGzip()
     {
         final Header[] headers = this.gateway.buildGetRequest("/ws.php", new ArrayList<NameValuePair>()).getHeaders("Accept-Encoding");
         Assert.assertTrue(headers.length > 0);
+    }
+
+    public void testGetUri()
+    {
+        final String uri = this.gateway.buildGetUri("/ws.php", new ArrayList<NameValuePair>());
+        Assert.assertTrue(uri.contains("v=1.0.0,android,4.0.1"));
     }
 
 
@@ -70,6 +81,6 @@ public class WSGatewayTest extends AndroidTestCase
                 ));
 
         final String data = this.gateway.fetchData("/ws.php", params);
-        Assert.assertTrue(data.startsWith("<div class=\"debugmessage\""));
+        Assert.assertTrue(data.startsWith("<div"));
     }
 }

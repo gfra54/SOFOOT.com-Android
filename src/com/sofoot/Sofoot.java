@@ -131,6 +131,10 @@ public class Sofoot extends Application {
                     this.getDefaultWSHttpHost()
                     );
 
+            this.wsGateway.setAppVersion(this.getString(R.string.app_version));
+            this.wsGateway.setOsName("android");
+            this.wsGateway.setOsVersion(Build.VERSION.RELEASE);
+
             this.wsGateway.setTimeTracker(EasyTracker.getTracker());
         }
 

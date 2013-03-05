@@ -21,24 +21,36 @@ public class ResultatFactoryTest extends AndroidTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        this.json = new JSONObject("{\"date\":\"2012-11-16 20:45:00\",\"score1\":\"2\",\"score2\":\"0\"," +
-                "\"club1\":{\"id\":\"11\",\"nom\":\"Lorient\",\"url\":\"http://www.sofoot.com/lorient.html\"," +
-                "\"logo\":\"http://i.sofoot.com/IMG/equipes/11.png\"},\"club2\":{\"id\":\"24\"," +
-                "\"nom\":\"Lille\",\"url\":\"http://www.sofoot.com/lille-osc.html\"," +
-                "\"logo\":\"http://i.sofoot.com/IMG/equipes/24.png\"}}");
+        this.json = new JSONObject("{\"encours\":\"2\",\"etat\":\"Termin\u00e9\",\"temps\":-1," +
+                "\"date\":\"2013-01-19 20:30:00\",\"score1\":\"4\",\"score2\":\"0\"," +
+                "\"buts1\":[{\"minute\":\"41\",\"csc\":false,\"joueur\":{\"nom\":\"Pogba\",\"prenom\":\"Paul\"," +
+                "\"numjoueur\":\"69929\"}},{\"minute\":\"66\",\"csc\":false,\"joueur\":{\"nom\":\"Pogba\"," +
+                "\"prenom\":\"Paul\",\"numjoueur\":\"69929\"}},{\"minute\":\"72\",\"csc\":false," +
+                "\"joueur\":{\"nom\":\"Vucinic\",\"prenom\":\"Mirko\",\"numjoueur\":\"1456\"}},{\"minute\":\"80\"," +
+                "\"csc\":false,\"joueur\":{\"nom\":\"Matri\",\"prenom\":\"Alessandro\",\"numjoueur\":\"20439\"}}]," +
+                "\"buts2\":[],\"libelle\":\"\",\"club1\":{\"id\":\"14\",\"nom\":\"Juventus Turin\"," +
+                "\"url\":\"http://dev.sofoot.com/juventus-turin.html\"," +
+                "\"logo\":\"http://dev.sofoot.com/IMG/equipes/14.png\"},\"club2\":{\"id\":\"59\",\"nom\":" +
+                "\"Udinese\",\"url\":\"http://dev.sofoot.com/udinese.html\",\"logo\":" +
+                "\"http://dev.sofoot.com/IMG/equipes/59.png\"}}");
     }
 
     public void testCreateFromJson() throws JSONException, MalformedURLException, ParseException
     {
         final Rencontre rencontre = RencontreFactory.createFromJsonObject(this.json);
 
-        Assert.assertEquals(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parseObject("2012-11-16 20:45:00"), rencontre.getDate());
-        Assert.assertEquals(2, rencontre.getScore1());
+        Assert.assertEquals(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parseObject("2013-01-19 20:30:00"), rencontre.getDate());
+        Assert.assertEquals(4, rencontre.getScore1());
         Assert.assertEquals(0, rencontre.getScore2());
-        Assert.assertEquals("Lorient", rencontre.getClub1().getLibelle());
-        Assert.assertEquals("Lille", rencontre.getClub2().getLibelle());
-        Assert.assertEquals("http://i.sofoot.com/IMG/equipes/11.png", rencontre.getClub1().getLogo().toString());
-        Assert.assertEquals("http://i.sofoot.com/IMG/equipes/24.png", rencontre.getClub2().getLogo().toString());
+        Assert.assertEquals("Juventus Turin", rencontre.getClub1().getLibelle());
+        Assert.assertEquals("Udinese", rencontre.getClub2().getLibelle());
+        Assert.assertEquals("http://dev.sofoot.com/IMG/equipes/14.png", rencontre.getClub1().getLogo().toString());
+        Assert.assertEquals("http://dev.sofoot.com/IMG/equipes/59.png", rencontre.getClub2().getLogo().toString());
+        Assert.assertEquals(2, rencontre.getEncours());
+        Assert.assertEquals("Terminé", rencontre.getEtat());
+        Assert.assertEquals(-1, rencontre.getTempsDeJeu());
+        Assert.assertEquals(4, rencontre.getButs1().size());
+        Assert.assertEquals(0, rencontre.getButs2().size());
     }
 
 }

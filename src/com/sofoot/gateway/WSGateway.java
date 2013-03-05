@@ -39,6 +39,12 @@ public class WSGateway {
 
     private Tracker tracker;
 
+    private String appVersion;
+
+    private String osName;
+
+    private String osVersion;
+
     public WSGateway(final ConnectivityManager connectivityManager, final String userAgent, final HttpHost httpHost)
     {
         this.connectivityManager = connectivityManager;
@@ -98,12 +104,22 @@ public class WSGateway {
 
     public HttpGet buildGetRequest(final String path, final List< ? extends NameValuePair> parameters)
     {
-        final String uri= path + "?" + URLEncodedUtils.format(parameters, "utf-8") + "&refresh";
-        Log.d(WSGateway.LOG_TAG, this.httpHost + uri);
+        final String uri = this.buildGetUri(path, parameters);
         final HttpGet get = new HttpGet(uri);
         AndroidHttpClient.modifyRequestToAcceptGzipResponse(get);
         return get;
     }
+
+    public String buildGetUri(final String path, final List< ? extends NameValuePair> parameters)
+    {
+        final String uri= path + "?v=" + this.appVersion + "," + this.osName + "," + this.osVersion + "&" +
+                URLEncodedUtils.format(parameters, "utf-8") + "&refresh";
+
+        Log.d(WSGateway.LOG_TAG, this.httpHost + uri);
+
+        return uri;
+    }
+
 
     public HttpResponse getLastHttpResponse()
     {
@@ -125,5 +141,20 @@ public class WSGateway {
         in.close();
 
         return total.toString().trim();
+    }
+
+    public void setAppVersion(final String version)
+    {
+        this.appVersion = version;
+    }
+
+    public void setOsName(final String osName)
+    {
+        this.osName = osName;
+    }
+
+    public void setOsVersion(final String osVersion)
+    {
+        this.osVersion = osVersion;
     }
 }

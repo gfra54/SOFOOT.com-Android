@@ -6,6 +6,7 @@ import org.apache.http.HttpHost;
 
 import android.test.AndroidTestCase;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.sofoot.Sofoot;
 import com.sofoot.mapper.NewsMapper;
 
@@ -19,6 +20,7 @@ public class SofootTest extends AndroidTestCase
         super.setUp();
 
         this.sofoot = (Sofoot)this.getContext().getApplicationContext();
+        EasyTracker.getInstance().setContext(this.sofoot);
     }
 
     public void testDefaultWSUserAgent()

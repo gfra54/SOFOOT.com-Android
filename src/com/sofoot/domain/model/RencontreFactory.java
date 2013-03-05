@@ -3,7 +3,10 @@ package com.sofoot.domain.model;
 import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,6 +21,22 @@ public class RencontreFactory
 
         if (json.has("date")) {
             rencontre.setDate(dateFormatter.parse(json.getString("date")));
+        }
+
+        if (json.has("libelle")) {
+            rencontre.setLibelle(json.getString("libelle"));
+        }
+
+        if (json.has("etat")) {
+            rencontre.setEtat(json.getString("etat"));
+        }
+
+        if (json.has("encours")) {
+            rencontre.setEncours(json.getInt("encours"));
+        }
+
+        if (json.has("temps")) {
+            rencontre.setTempsDeJeu(json.getInt("temps"));
         }
 
         if (json.has("score1")) {
@@ -42,6 +61,30 @@ public class RencontreFactory
 
         if (json.has("club2")) {
             rencontre.setClub2(ClubFactory.createFromJsonObject(json.getJSONObject("club2")));
+        }
+
+        if (json.has("buts1")) {
+            final JSONArray buts = json.getJSONArray("buts1");
+            final int nbButs = buts.length();
+            final List<But> buts1 = new ArrayList<But>(nbButs);
+
+            for (int i = 0; i < nbButs; i++) {
+                buts1.add(ButFactory.createFromJsonObject(buts.getJSONObject(i)));
+            }
+
+            rencontre.setButs1(buts1);
+        }
+
+        if (json.has("buts2")) {
+            final JSONArray buts = json.getJSONArray("buts2");
+            final int nbButs = buts.length();
+            final List<But> buts2 = new ArrayList<But>(nbButs);
+
+            for (int i = 0; i < nbButs; i++) {
+                buts2.add(ButFactory.createFromJsonObject(buts.getJSONObject(i)));
+            }
+
+            rencontre.setButs2(buts2);
         }
 
         return rencontre;

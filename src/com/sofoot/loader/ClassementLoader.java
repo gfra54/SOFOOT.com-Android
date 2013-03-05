@@ -28,6 +28,5 @@ public class ClassementLoader extends SofootLoader<Collection<Classement>> {
 
     public String getLigue() {
         return this.criteria.getParam("ligue");
-
     }
 }

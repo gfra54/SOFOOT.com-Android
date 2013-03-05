@@ -21,7 +21,9 @@ public class ClassementFactoryTest extends AndroidTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         this.json = new JSONObject("{\"class\":\"\",\"numclub\":\"3\",\"url\":\"paris-saint-germain.html\"," +
-                "\"classement\":1,\"id_equipe\":\"3\",\"equipe\":\"Paris S-G\",\"matchs\":\"12\",\"g\":\"6\"," +
+                "\"classement\":1,\"id_equipe\":\"3\",\"equipe\":{\"id\":\"3\",\"nom\":\"Paris S-G\"," +
+                "\"url\":\"http://www.sofoot.com/paris-saint-germain.html\"," +
+                "\"logo\":\"http://www.sofoot.com/IMG/equipes/3.png\"},\"matchs\":\"12\",\"g\":\"6\"," +
                 "\"n\":\"5\",\"p\":\"1\",\"bp\":\"18\",\"bc\":\"8\",\"diff\":\"+10\",\"pts\":\"23\"," +
                 "\"club\":{\"id\":\"3\",\"nom\":\"Paris S-G\"," +
                 "\"url\":\"http://www.sofoot.com/paris-saint-germain.html\"}},{\"class\":\"\",\"numclub\":\"2\"," +
