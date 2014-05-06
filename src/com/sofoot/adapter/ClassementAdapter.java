@@ -1,7 +1,10 @@
 package com.sofoot.adapter;
 
+import java.net.URL;
+
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -12,7 +15,7 @@ import android.widget.TextView;
 import com.sofoot.R;
 import com.sofoot.domain.model.Classement;
 import com.sofoot.loader.BitmapLoader;
-import com.sofoot.utils.BitmapInfo;
+import com.sofoot.loader.BitmapLoaderCallbacks;
 
 public class ClassementAdapter extends SofootAdapter<Classement>
 {
@@ -36,6 +39,7 @@ public class ClassementAdapter extends SofootAdapter<Classement>
 
         viewHolder.rang.setText(String.valueOf(classement.getRang()));
         viewHolder.club.setText(Html.fromHtml(classement.getClub().getLibelle()));
+        viewHolder.club.setCompoundDrawables(null, null, null, null);
         viewHolder.pts.setText(String.valueOf(classement.getNbPoints()));
         viewHolder.journee.setText(String.valueOf(classement.getNbMatchs()));
         viewHolder.gagne.setText(String.valueOf(classement.getNbMatchsGagnes()));
@@ -48,8 +52,9 @@ public class ClassementAdapter extends SofootAdapter<Classement>
             viewHolder.diff.setText(String.valueOf(classement.getDiff()));
         }
 
-        final ClubLogoLoader clubLogoLoader = new ClubLogoLoader(viewHolder.club);
-        clubLogoLoader.execute(classement.getClub().getLogo());
+        BitmapLoader.getInstance(this.context).load(
+                classement.getClub().getLogo(),
+                new LogoBitmapLoaderCallbacks(viewHolder.club));
 
         return row;
     }
@@ -78,35 +83,25 @@ public class ClassementAdapter extends SofootAdapter<Classement>
     }
 
 
-
-    private class ClubLogoLoader extends BitmapLoader {
+    private class LogoBitmapLoaderCallbacks implements BitmapLoaderCallbacks {
 
         private final TextView textView;
 
-        public ClubLogoLoader(final TextView view) {
-            super(view.getContext());
-            this.textView = view;
-        }
-
-
-        @Override
-        protected void onPreExecute() {
-            this.textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.mock_logo_club, 0, 0, 0);
+        public LogoBitmapLoaderCallbacks(final TextView textView) {
+            this.textView = textView;
         }
 
         @Override
-        protected void onPostExecute(final BitmapInfo result) {
-            if (result.bitmap != null) {
-                final BitmapDrawable bitmapDrawable = new BitmapDrawable(this.textView.getContext().getResources(), result.bitmap);
-                final float scale = this.textView.getResources().getDisplayMetrics().density;
-                bitmapDrawable.setBounds(0, 0, (int)(25 * scale) , (int)(25 * scale));
+        public void onBitmapLoaded(final URL url, final Bitmap bitmap) {
+            final BitmapDrawable bitmapDrawable = new BitmapDrawable(this.textView.getContext().getResources(), bitmap);
+            final int size = (int)this.textView.getResources().getDimension(R.dimen.logoSize);
+            bitmapDrawable.setBounds(0, 0, size , size);
 
-                this.textView.setCompoundDrawables(
-                        bitmapDrawable,
-                        null,
-                        null,
-                        null);
-            }
+            this.textView.setCompoundDrawables(
+                    bitmapDrawable,
+                    null,
+                    null,
+                    null);
         }
     }
 }

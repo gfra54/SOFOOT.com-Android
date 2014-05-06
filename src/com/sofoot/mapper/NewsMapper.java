@@ -1,6 +1,5 @@
 package com.sofoot.mapper;
 
-import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +29,8 @@ public class NewsMapper extends SofootWsMapper<News> {
         try {
             final ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>(this.defaultWSParams);
             params.add(new BasicNameValuePair("mode", "article"));
-            params.add(new BasicNameValuePair("id",criteria.getParam("id")));
+            params.add(new BasicNameValuePair("comms", "1"));
+            params.add(new BasicNameValuePair("id", criteria.getParam("id")));
 
             final String result = this.gateway.fetchData("/ws.php", params);
             final JSONObject json = new JSONObject(result);
@@ -47,20 +47,27 @@ public class NewsMapper extends SofootWsMapper<News> {
             throw new MapperException(pe);
         } catch (final GatewayException ge) {
             throw new MapperException(ge);
-        } catch (final MalformedURLException mue) {
-            throw new MapperException(mue);
         }
     }
 
     @Override
-    public Collection<News> findAll(final Criteria criteria) throws SofootException
-    {
+    public Collection<News> findAll(final Criteria criteria) throws SofootException {
         try {
             final ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>(this.defaultWSParams);
             params.add(new BasicNameValuePair("mode", "articles"));
-            params.add(new BasicNameValuePair("rubrique", criteria.getParam("rubrique")));
             params.add(new BasicNameValuePair("debut", String.valueOf(criteria.getOffset())));
             params.add(new BasicNameValuePair("qte", String.valueOf(criteria.getLimit())));
+
+            // Paramètres optionnels
+            final String mot = criteria.getParam("mot");
+            if (mot != null) {
+                params.add(new BasicNameValuePair("mot", mot));
+            }
+
+            final String rubrique = criteria.getParam("rubrique");
+            if (rubrique != null) {
+                params.add(new BasicNameValuePair("rubrique", rubrique));
+            }
 
             final String result = this.gateway.fetchData("/ws.php", params);
             final JSONObject json = new JSONObject(result);
@@ -91,8 +98,6 @@ public class NewsMapper extends SofootWsMapper<News> {
             throw new MapperException(jsone);
         } catch (final ParseException pe) {
             throw new MapperException(pe);
-        } catch (final MalformedURLException mue) {
-            throw new MapperException(mue);
         }
     }
 }

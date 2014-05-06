@@ -12,35 +12,24 @@ import android.view.View.OnClickListener;
 import com.sofoot.R;
 import com.sofoot.fragment.NewsDetailsFragment;
 
-public class NewsDetailsActivity extends SofootAdActivity implements OnClickListener
-{
+public class NewsDetailsActivity extends SofootAdActivity implements OnClickListener {
     private MyAdapter mAdapter;
 
     private ViewPager mPager;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState, R.layout.news_details_activity);
+        super.onCreate(savedInstanceState, R.layout.viewpager_activity);
 
-        this.mAdapter = new MyAdapter(
-                this.getSupportFragmentManager(),
-                this.getIntent().getExtras().getParcelableArray("newsMetas")
-                );
+        this.mAdapter = new MyAdapter(this.getSupportFragmentManager(), this.getIntent().getExtras()
+                .getParcelableArray("newsMetas"));
 
-        this.mPager = (ViewPager)this.findViewById(R.id.newsPager);
+        this.mPager = (ViewPager) this.findViewById(R.id.viewPager);
         this.mPager.setAdapter(this.mAdapter);
         this.mPager.setCurrentItem(this.getIntent().getExtras().getInt("position"));
-
-
-        //this.showHeaderNextButton();
-        //this.showHeaderPrevButton();
-
-        //this.headerNextButton.setOnClickListener(this);
-        //this.headerPrevButton.setOnClickListener(this);
     }
 
-
-    private class MyAdapter extends FragmentStatePagerAdapter{
+    private class MyAdapter extends FragmentStatePagerAdapter {
 
         private final Parcelable[] newsMetas;
 
@@ -54,7 +43,7 @@ public class NewsDetailsActivity extends SofootAdActivity implements OnClickList
             final Bundle args = new Bundle(1);
             args.putParcelable("newsMeta", this.newsMetas[position]);
 
-            final Fragment f =  new NewsDetailsFragment();
+            final Fragment f = new NewsDetailsFragment();
             f.setArguments(args);
             return f;
         }
@@ -64,7 +53,6 @@ public class NewsDetailsActivity extends SofootAdActivity implements OnClickList
             return this.newsMetas.length;
         }
     }
-
 
     @Override
     public void onClick(final View view) {
@@ -76,7 +64,8 @@ public class NewsDetailsActivity extends SofootAdActivity implements OnClickList
             if (currentItem < count) {
                 this.mPager.setCurrentItem(currentItem + 1);
             }
-        } else  if (view == this.headerPrevButton) {
+        }
+        else if (view == this.headerPrevButton) {
             if (currentItem > 0) {
                 this.mPager.setCurrentItem(currentItem - 1);
             }

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_list_item"
+    >
+        <TextView
+            android:id="@+id/rencontreDate"
+            style="@style/LiveScoringInfoBig"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:textIsSelectable="false" />
+
+        <ImageView
+            android:id="@+id/rencontreLogoClub1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:scaleType="fitStart"
+            android:layout_centerVertical="true" />
+        <ImageView
+            android:id="@+id/rencontreLogoClub2"
+            android:layout_width="@dimen/logoSize"
+            android:layout_height="@dimen/logoSize"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:scaleType="fitStart" />
+        <TextView
+            android:id="@+id/rencontreClub1"
+            style="@style/LiveScoringClubName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/rencontreDate"
+            android:layout_toRightOf="@id/rencontreLogoClub1"
+            android:gravity="left"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/grid_unit"
+            android:paddingRight="@dimen/grid_unit"
+            android:textIsSelectable="false"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/rencontreClub2"
+            style="@style/LiveScoringClubName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/rencontreLogoClub2"
+            android:layout_toRightOf="@id/rencontreDate"
+            android:layout_centerVertical="true"
+            android:gravity="right"
+            android:paddingLeft="@dimen/grid_unit"
+            android:paddingRight="@dimen/grid_unit"
+            android:textIsSelectable="false"
+            android:maxLines="1" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/cotesLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_list_item"
+        android:gravity="center_vertical"
+    >
+
+
+        <LinearLayout
+            android:id="@+id/coteContainerN"
+            style="@style/CoteContainer"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/grid_unit"
+            android:layout_marginRight="@dimen/grid_unit"
+        >
+
+            <TextView
+                style="@style/Cote1N2"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textIsSelectable="false"
+                android:layout_marginRight="@dimen/grid_unit"
+                android:text="@string/cote_N" />
+
+            <TextView
+                android:id="@+id/coteN"
+                style="@style/CoteNumber"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textIsSelectable="false" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/coteContainer1"
+            style="@style/CoteContainer"
+            android:layout_toLeftOf="@id/coteContainerN"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+        >
+
+            <TextView
+                style="@style/Cote1N2"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginRight="@dimen/grid_unit"
+                android:textIsSelectable="false"
+                android:text="@string/cote_1" />
+
+            <TextView
+                android:id="@+id/cote1"
+                style="@style/CoteNumber"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textIsSelectable="false" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/coteContainer2"
+            style="@style/CoteContainer"
+            android:layout_toRightOf="@id/coteContainerN"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+        >
+
+            <TextView
+                style="@style/Cote1N2"
+                android:layout_marginRight="@dimen/grid_unit"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textIsSelectable="false"
+                android:text="@string/cote_2" />
+
+            <TextView
+                android:id="@+id/cote2"
+                style="@style/CoteNumber"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textIsSelectable="false" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/coteLink"
+        style="@style/CoteLink"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="@string/betclic_bet"
+        android:paddingRight="@dimen/grid_unit"
+        android:drawablePadding="@dimen/grid_unit"
+        android:drawableRight="@drawable/ic_arrow3_next"
+        android:gravity="right"
+        android:textIsSelectable="false" />
+
+</LinearLayout>

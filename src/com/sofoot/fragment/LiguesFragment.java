@@ -10,17 +10,20 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.google.analytics.tracking.android.Tracker;
 import com.sofoot.activity.ClassementActivity;
-import com.sofoot.activity.ResultatsActivity;
+import com.sofoot.activity.CoteActivity;
+import com.sofoot.activity.LiveScoringActivity;
 import com.sofoot.adapter.LigueAdapter;
 import com.sofoot.adapter.SofootAdapter;
 import com.sofoot.domain.Collection;
 import com.sofoot.domain.model.Ligue;
-import com.sofoot.loader.LiguesLoader;
+import com.sofoot.loader.LigueLoader;
 
-public class LiguesFragment extends SofootListFragment<Collection<Ligue>>
-implements OnItemClickListener
-{
+public class LiguesFragment extends SofootListFragment<Collection<Ligue>> implements OnItemClickListener {
     final static private String MY_LOG_TAG = "LiguesFragment";
+
+    final static public String CLASSEMENT = "classement";
+    final static public String LIVE_SCORING = "resultats";
+    final static public String COTE = "cote";
 
     protected long cacheTTL = 1000 * 60 * 60;
 
@@ -33,7 +36,7 @@ implements OnItemClickListener
     @Override
     public Loader<Collection<Ligue>> doCreateLoader(final int id, final Bundle args) {
         Log.d(LiguesFragment.MY_LOG_TAG, "Loader is created");
-        return new LiguesLoader(this.getActivity());
+        return new LigueLoader(this.getActivity(), this.getArguments().getString("data"));
     }
 
     @Override
@@ -41,20 +44,28 @@ implements OnItemClickListener
         return new LigueAdapter(this.getActivity());
     }
 
-
     @Override
     public void onItemClick(final AdapterView<?> adapterView, final View v, final int position, final long arg) {
-        Log.d(LiguesFragment.MY_LOG_TAG, "onItemClick : " + position);
 
-        if (this.getArguments().getBoolean("resultats", false)) {
-            final Intent intent = new Intent(this.getActivity(), ResultatsActivity.class);
-            intent.putExtra("ligue", (Ligue)this.mAdapter.getItem(position));
+        final String data = this.getArguments().getString("data");
+
+        if (data.equalsIgnoreCase(LiguesFragment.LIVE_SCORING)) {
+            final Intent intent = new Intent(this.getActivity(), LiveScoringActivity.class);
+            intent.putExtra("ligue", (Ligue) this.mAdapter.getItem(position));
             this.startActivity(intent);
-        } else {
-            final Intent intent = new Intent(this.getActivity(), ClassementActivity.class);
+        }
+        else {
+            Intent intent;
+            if (data.equalsIgnoreCase(LiguesFragment.CLASSEMENT)) {
+                intent = new Intent(this.getActivity(), ClassementActivity.class);
+            }
+            else {
+                intent = new Intent(this.getActivity(), CoteActivity.class);
+            }
+
             final Ligue[] ligues = new Ligue[this.mAdapter.getCount()];
             for (int i = 0; i < ligues.length; i++) {
-                ligues[i] = (Ligue)this.mAdapter.getItem(i);
+                ligues[i] = (Ligue) this.mAdapter.getItem(i);
             }
             intent.putExtra("ligues", ligues);
             intent.putExtra("position", position);

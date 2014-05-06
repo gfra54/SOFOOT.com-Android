@@ -19,7 +19,7 @@ public class ClassementLoader extends SofootLoader<Collection<Classement>> {
     @Override
     public Collection<Classement> doLoad() throws SofootException {
         Log.d(ClassementLoader.LOG_TAG, "loadInbackground");
-        return ((Sofoot)this.getContext().getApplicationContext()).getClassementMapper().findAll(this.criteria);
+        return ((Sofoot) this.getContext().getApplicationContext()).getClassementMapper().findAll(this.criteria);
     }
 
     public void setLigue(final String ligue) {

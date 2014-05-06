@@ -4,12 +4,11 @@ import com.sofoot.domain.Object;
 
 public class Joueur extends Object
 {
-
     private String prenom;
 
     private String nom;
 
-    private int num;
+    private String num;
 
     public String getPrenom() {
         return this.prenom;
@@ -27,11 +26,11 @@ public class Joueur extends Object
         this.nom = nom;
     }
 
-    public int getNum() {
+    public String getNum() {
         return this.num;
     }
 
-    public void setNum(final int num) {
+    public void setNum(final String num) {
         this.num = num;
     }
 

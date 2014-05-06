@@ -2,8 +2,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <size
-        android:height="60dp"
-        android:width="90dp" />
+        android:height="@dimen/thumbnailHeight"
+        android:width="@dimen/thumbnailWidth" />
 
     <solid android:color="#ececec" />
 

@@ -27,6 +27,6 @@ public class JoueurFactoryTest extends AndroidTestCase
 
         Assert.assertEquals("Pogba", joueur.getNom());
         Assert.assertEquals("Paul", joueur.getPrenom());
-        Assert.assertEquals(69929, joueur.getNum());
+        Assert.assertEquals("69929", joueur.getNum());
     }
 }

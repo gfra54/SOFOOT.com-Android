@@ -19,7 +19,7 @@ public class JoueurFactory
         }
 
         if (json.has("numjoueur")) {
-            joueur.setNum(json.getInt("numjoueur"));
+            joueur.setNum(json.getString("numjoueur"));
         }
 
         return joueur;

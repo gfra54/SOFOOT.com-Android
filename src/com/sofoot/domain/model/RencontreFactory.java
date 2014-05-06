@@ -1,23 +1,26 @@
 package com.sofoot.domain.model;
 
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class RencontreFactory
-{
-    static public Rencontre createFromJsonObject(final JSONObject json) throws JSONException,
-    MalformedURLException, ParseException {
+import android.util.Log;
+
+public class RencontreFactory {
+    static public Rencontre createFromJsonObject(final JSONObject json) throws JSONException, MalformedURLException,
+            ParseException {
 
         final Rencontre rencontre = new Rencontre();
 
-        final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.FRANCE);
 
         if (json.has("date")) {
             rencontre.setDate(dateFormatter.parse(json.getString("date")));
@@ -42,7 +45,7 @@ public class RencontreFactory
         if (json.has("score1")) {
             try {
                 rencontre.setScore1(json.getInt("score1"));
-            } catch(final JSONException jsone) {
+            } catch (final JSONException jsone) {
                 rencontre.setScore1(-1);
             }
         }
@@ -50,7 +53,7 @@ public class RencontreFactory
         if (json.has("score2")) {
             try {
                 rencontre.setScore2(json.getInt("score2"));
-            } catch(final JSONException jsone) {
+            } catch (final JSONException jsone) {
                 rencontre.setScore2(-1);
             }
         }
@@ -87,7 +90,18 @@ public class RencontreFactory
             rencontre.setButs2(buts2);
         }
 
+        if (json.has("odds")) {
+            rencontre.setCote(CoteFactory.createFromJsonObject(json.getJSONObject("odds")));
+        }
+
+        if (json.has("url")) {
+            try {
+                rencontre.setLink(new URL(json.getString("url")));
+            } catch (final MalformedURLException e) {
+                Log.wtf("RencontreFactory", e);
+            }
+        }
+
         return rencontre;
     }
-
 }

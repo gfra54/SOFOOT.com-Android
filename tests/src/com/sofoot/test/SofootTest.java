@@ -7,6 +7,7 @@ import org.apache.http.HttpHost;
 import android.test.AndroidTestCase;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.sofoot.BuildConfig;
 import com.sofoot.Sofoot;
 import com.sofoot.mapper.NewsMapper;
 
@@ -32,7 +33,11 @@ public class SofootTest extends AndroidTestCase
     {
         final HttpHost httpHost = this.sofoot.getDefaultWSHttpHost();
 
-        Assert.assertEquals("www.sofoot.com", httpHost.getHostName());
+        if (BuildConfig.DEBUG) {
+            Assert.assertEquals("dev.sofoot.com", httpHost.getHostName());
+        } else {
+            Assert.assertEquals("www.sofoot.com", httpHost.getHostName());
+        }
         Assert.assertEquals(80, httpHost.getPort());
         Assert.assertEquals("http", httpHost.getSchemeName());
     }

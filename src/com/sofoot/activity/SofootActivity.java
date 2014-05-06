@@ -2,6 +2,7 @@ package com.sofoot.activity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,10 +14,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.sofoot.R;
 
-abstract public class SofootActivity extends SherlockFragmentActivity
-{
-    final private static String LOG_TAG = "sofootActivity";
-
+abstract public class SofootActivity extends SherlockFragmentActivity {
     protected View headerNextButton;
     protected View headerPrevButton;
 
@@ -25,29 +23,16 @@ abstract public class SofootActivity extends SherlockFragmentActivity
     private SimpleDateFormat dateFormat;
     private final Date date = new Date();
 
-
     protected void onCreate(final Bundle bundle, final int layoutResID) {
         super.onCreate(bundle);
 
         this.setContentView(layoutResID);
 
-        this.dateFormat = new SimpleDateFormat(this.getString(R.string.updated_datetime_format));
+        this.getSupportActionBar().setHomeButtonEnabled(true);
 
-        //this.headerNextButton = this.findViewById(R.id.headerNextButton);
-        //this.headerPrevButton = this.findViewById(R.id.headerPrevButton);
+        this.dateFormat = new SimpleDateFormat(this.getString(R.string.updated_datetime_format), Locale.FRANCE);
+
         this.headerUpdatedTime = this.findViewById(R.id.headerUpdatedTimeView);
-
-        /*
-        this.findViewById(R.id.headerLogo).setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(final View arg0) {
-                final Intent intent = new Intent(SofootActivity.this.getApplicationContext(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                SofootActivity.this.startActivity(intent);
-            }
-        });
-         */
     }
 
     @Override
@@ -75,20 +60,6 @@ abstract public class SofootActivity extends SherlockFragmentActivity
         EasyTracker.getInstance().activityStop(this);
     }
 
-    /*
-    public void showHeaderNextButton() {
-        if (this.headerNextButton != null) {
-            this.headerNextButton.setVisibility(View.VISIBLE);
-        }
-    }
-
-    public void showHeaderPrevButton() {
-        if (this.headerPrevButton != null) {
-            this.headerPrevButton.setVisibility(View.VISIBLE);
-        }
-    }
-     */
-
     public void showHeaderUpdatedTime() {
         if (this.headerUpdatedTime != null) {
             this.headerUpdatedTime.setVisibility(View.VISIBLE);
@@ -97,8 +68,9 @@ abstract public class SofootActivity extends SherlockFragmentActivity
 
     public void setHeaderUpdatedTime(final long time) {
         if (this.headerUpdatedTime != null) {
+            this.showHeaderUpdatedTime();
             this.date.setTime(time);
-            ((TextView)this.headerUpdatedTime).setText(this.dateFormat.format(this.date));
+            ((TextView) this.headerUpdatedTime).setText(this.dateFormat.format(this.date));
         }
     }
 }

@@ -1,12 +1,22 @@
 package com.sofoot.domain.model;
 
+import java.net.URL;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
+
+import android.util.Log;
 
 import com.sofoot.domain.Object;
 
-public class Rencontre extends Object
-{
+public class Rencontre extends Object {
+
+    static final int PLAYED = 2;
+    static final int PLAYING = 1;
+    static final int PLANNED = 0;
+    static final int LABEL = -1;
 
     /**
      * Date de la recontre
@@ -33,7 +43,6 @@ public class Rencontre extends Object
      */
     private Club club2;
 
-
     /**
      * Liste des buts du club 1
      */
@@ -55,20 +64,22 @@ public class Rencontre extends Object
     private int tempsDeJeu;
 
     /**
-     * Code sur l'état du match :
-     *  -1 : ligue spécial
-     *  0 : match non en cours
-     *  1 : match en cours
-     *  2 : match terminé
+     * Cote du match
+     */
+    private Cote cote;
+
+    /**
+     * Code sur l'état du match : -1 : ligue spécial 0 : match non en cours 1 :
+     * match en cours 2 : match terminé
      */
     private int encours;
-
 
     /**
      * Libelle de la recontre
      */
     private String libelle;
 
+    private URL link;
 
     public Date getDate() {
         return this.date;
@@ -159,6 +170,60 @@ public class Rencontre extends Object
     }
 
     public boolean isPlayed() {
-        return (this.score1 > -1) && (this.score2 > -1);
+        return this.encours == Rencontre.PLAYED;
     }
+
+    public boolean isPlaying() {
+        return this.encours == Rencontre.PLAYING;
+    }
+
+    public boolean isPlanned() {
+        return this.encours == Rencontre.PLANNED;
+    }
+
+    public boolean isPlanned(final boolean today) {
+        if (this.encours != Rencontre.PLANNED) {
+            return false;
+        }
+
+        if (today == true) {
+            final GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("Europe/Paris"));
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+
+            Log.d("COMPARE DATE", calendar.toString());
+            Log.d("COMPARE DATE", this.date.toString());
+
+            return this.date.equals(calendar.getTime());
+        }
+
+        return true;
+    }
+
+    public boolean isLabel() {
+        return this.encours == Rencontre.LABEL;
+    }
+
+    public boolean hasGoals() {
+        return (this.getScore1() + this.getScore2()) > 0;
+    }
+
+    public Cote getCote() {
+        return this.cote;
+    }
+
+    public void setCote(final Cote cote) {
+        this.cote = cote;
+    }
+
+    public URL getLink() {
+        return this.link;
+    }
+
+    public void setLink(final URL link) {
+        this.link = link;
+    }
+
 }

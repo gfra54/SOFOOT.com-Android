@@ -1,8 +1,8 @@
-/bin
-/.settings
-/.classpath
-/.project
+bin
+.settings
+.classpath
+.project
 **.DS_Store
 **.settings
-/gen
-/proguard
+gen
+proguard

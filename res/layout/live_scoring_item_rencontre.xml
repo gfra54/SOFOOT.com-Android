@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_list_item"
+    android:gravity="center_vertical"
+>
+    <TextView
+        android:id="@+id/rencontreEtat"
+        style="@style/LiveScoringInfoSmall"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:textIsSelectable="false" />
+    <TextView
+        style="@style/LiveScoringInfoBig"
+        android:id="@+id/rencontreScore"
+        android:layout_width="36dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rencontreEtat"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textIsSelectable="false" />
+
+    <ImageView
+        android:id="@+id/indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rencontreScore"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:id="@+id/rencontreLogoClub1"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:scaleType="fitStart"
+        android:layout_centerVertical="true" />
+    <ImageView
+        android:id="@+id/rencontreLogoClub2"
+        android:layout_width="@dimen/logoSize"
+        android:layout_height="@dimen/logoSize"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:scaleType="fitStart" />
+    <TextView
+        android:id="@+id/rencontreClub1"
+        style="@style/LiveScoringClubName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/rencontreScore"
+        android:layout_toRightOf="@id/rencontreLogoClub1"
+        android:gravity="left"
+        android:layout_centerVertical="true"
+        android:paddingLeft="@dimen/grid_unit"
+        android:paddingRight="@dimen/grid_unit"
+        android:textIsSelectable="false"
+        android:maxLines="1" />
+    <TextView
+        android:id="@+id/rencontreClub2"
+        style="@style/LiveScoringClubName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/rencontreLogoClub2"
+        android:layout_toRightOf="@id/rencontreScore"
+        android:layout_centerVertical="true"
+        android:gravity="right"
+        android:paddingLeft="@dimen/grid_unit"
+        android:paddingRight="@dimen/grid_unit"
+
+        android:textIsSelectable="false"
+        android:maxLines="1" />
+</RelativeLayout>

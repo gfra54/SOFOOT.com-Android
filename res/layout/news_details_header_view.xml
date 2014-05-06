@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+>
+
+    <TextView
+        android:id="@+id/surtitre"
+        style="@style/NewsDetailsSurtitre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/grid_unit"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/titre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/titleBackground"
+        android:padding="@dimen/grid_unit"
+        android:textIsSelectable="false" />
+
+    <!-- <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@color/titleBackground" 
+        android:orientation="horizontal" android:paddingBottom="@dimen/grid_unit" android:paddingLeft="@dimen/grid_unit" android:paddingRight="@dimen/grid_unit" 
+        > <TextView android:id="@+id/publication" style="@style/NewsDetailsDatePublication" android:layout_width="wrap_content" android:layout_height="wrap_content" 
+        android:textIsSelectable="false" /> <TextView android:id="@+id/nbComms" style="@style/NewsDetailsNbComms" android:layout_width="wrap_content" 
+        android:layout_height="wrap_content" android:layout_marginLeft="@dimen/grid_unit" android:drawableLeft="@drawable/ic_commentaire" 
+        android:visibility="gone" /> </LinearLayout> -->
+
+    <TextView
+        android:id="@+id/soustitre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/chapo"
+        style="@style/NewsDetailsChapo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/grid_unit"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/legende"
+        style="@style/SofootLegende"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/grid_unit"
+        android:layout_marginRight="@dimen/grid_unit"
+        android:layout_marginTop="@dimen/grid_unit"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/texte"
+        style="@style/SofootTexte"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/grid_unit"
+        android:layout_marginRight="@dimen/grid_unit"
+        android:layout_marginTop="@dimen/grid_unit"
+        android:textIsSelectable="true" />
+
+    <TextView
+        android:id="@+id/auteur"
+        style="@style/NewsDetailsAuteur"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:layout_marginLeft="@dimen/grid_unit"
+        android:layout_marginRight="@dimen/grid_unit"
+        android:layout_marginTop="10dp"
+        android:textIsSelectable="true" />
+
+    <FrameLayout
+        android:id="@+id/adViewContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    ></FrameLayout>
+
+    <TextView
+        style="@style/BlocSofootTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/grid_unit"
+        android:layout_marginRight="@dimen/grid_unit"
+        android:layout_marginTop="10dp"
+        android:text="@string/compte_sofoot" />
+
+    <TextView
+        style="@style/BlocSofootTexte"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/grid_unit"
+        android:layout_marginRight="@dimen/grid_unit"
+        android:text="@string/description_compte_sofoot" />
+
+    <ProgressBar
+        android:id="@android:id/progress"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left" />
+
+    <!-- Bouton non connecté -->
+
+    <Button
+        android:id="@+id/btn_creer_compte"
+        style="@style/Widget.Sofoot.Light.PrimaryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/grid_unit"
+        android:layout_marginTop="@dimen/grid_unit"
+        android:text="@string/creer_compte"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_login"
+        style="@style/Widget.Sofoot.Light.SecondaryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/grid_unit"
+        android:layout_marginTop="@dimen/grid_unit"
+        android:text="@string/login"
+        android:visibility="gone" />
+    <!-- Boutons connectés -->
+
+    <Button
+        android:id="@+id/btn_mon_compte"
+        style="@style/Widget.Sofoot.Light.TertiaryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/grid_unit"
+        android:layout_marginTop="@dimen/grid_unit"
+        android:text="@string/mon_compte"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_logout"
+        style="@style/Widget.Sofoot.Light.SecondaryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/grid_unit"
+        android:layout_marginTop="@dimen/grid_unit"
+        android:text="@string/logout"
+        android:visibility="gone" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="3dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="@dimen/grid_unit"
+        android:layout_marginRight="@dimen/grid_unit"
+        android:background="@color/sofootTitle" />
+
+</LinearLayout>

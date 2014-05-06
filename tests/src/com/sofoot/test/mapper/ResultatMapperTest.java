@@ -23,7 +23,7 @@ public class ResultatMapperTest extends AndroidTestCase
         this.criteria = Criteria.defaultCriteria();
         this.criteria.setParam("ligue", "L1");
         this.criteria.setParam("j", "12");
-        this.collection = ((Sofoot)this.getContext().getApplicationContext()).getResultatMapper().findAll(this.criteria);
+        this.collection = ((Sofoot)this.getContext().getApplicationContext()).getLiveScoringMapper().findAll(this.criteria);
     }
 
     public void testIfCollectionNotEmpty()

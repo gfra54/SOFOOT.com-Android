@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+>
+    <RelativeLayout
+        style="@style/CoteBandeau"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/grid_unit"
+    >
+        <TextView
+            android:id="@+id/coteText"
+            style="@style/CoteText"
+            android:textIsSelectable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/logo_betclic_black"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            style="@style/CoteDisclaimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/coteText"
+            android:layout_alignLeft="@id/coteText"
+            android:text="@string/betclic_disclaimer" />
+
+        <TextView
+            android:id="@+id/coteCodePromoText"
+            style="@style/CoteCodePromoText"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/betclic_code_promo" />
+
+        <TextView
+            android:id="@+id/coteCodePromo"
+            style="@style/CoteCodePromo"
+            android:textIsSelectable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/coteCodePromoText"
+            android:layout_alignRight="@id/coteCodePromoText" />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/ligueTitle"
+        style="@style/LigueTitle"
+        android:textIsSelectable="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp"
+        android:paddingLeft="@dimen/grid_unit"
+        android:paddingTop="15dp" />
+
+</LinearLayout>

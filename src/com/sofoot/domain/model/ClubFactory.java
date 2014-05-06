@@ -6,8 +6,9 @@ import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ClubFactory
-{
+import android.util.Log;
+
+public class ClubFactory {
     static public Club createFromJsonObject(final JSONObject json) throws JSONException, MalformedURLException {
 
         final Club club = new Club();
@@ -25,7 +26,11 @@ public class ClubFactory
         }
 
         if (json.has("logo")) {
-            club.setLogo(new URL(json.getString("logo")));
+            try {
+                club.setLogo(new URL(json.getString("logo")));
+            } catch (final MalformedURLException e) {
+                Log.wtf("ClubFactory", e);
+            }
         }
 
         return club;

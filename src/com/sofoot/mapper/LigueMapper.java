@@ -25,6 +25,7 @@ public class LigueMapper extends SofootWsMapper<Ligue> {
         try {
             final ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>(this.defaultWSParams);
             params.add(new BasicNameValuePair("mode", "ligues"));
+            params.add(new BasicNameValuePair("data", criteria.getParam("data")));
 
             final String result = this.gateway.fetchData("/ws.php", params);
             final JSONObject json = new JSONObject(result);

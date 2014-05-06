@@ -1,6 +1,7 @@
 package com.sofoot.domain.model;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -14,9 +15,7 @@ import android.view.Display;
 public class News extends com.sofoot.domain.Object {
 
     /*
-    public enum ImageSize {
-        SMALL, NORMAL, LARGE
-    }
+     * public enum ImageSize { SMALL, NORMAL, LARGE }
      */
 
     private int id;
@@ -25,7 +24,7 @@ public class News extends com.sofoot.domain.Object {
 
     private String surtitre;
 
-    private String titre;
+    private String titre = "";
 
     private String soustitre;
 
@@ -45,7 +44,9 @@ public class News extends com.sofoot.domain.Object {
 
     private String note;
 
-    private int commentaires;
+    private int nbCommentaires;
+
+    private ArrayList<Commentaire> commentaires;
 
     private int idParent;
 
@@ -55,7 +56,7 @@ public class News extends com.sofoot.domain.Object {
 
     private final Map<Integer, URL> thumbnails;
 
-    private String texte;
+    private String texte = "";
 
     public News() {
         this.images = new HashMap<Integer, URL>();
@@ -78,8 +79,7 @@ public class News extends com.sofoot.domain.Object {
         this.publication = publication;
     }
 
-    public boolean hasSurtitre()
-    {
+    public boolean hasSurtitre() {
         return this.surtitre != null;
     }
 
@@ -99,8 +99,7 @@ public class News extends com.sofoot.domain.Object {
         this.titre = titre;
     }
 
-    public boolean hasSoustitre()
-    {
+    public boolean hasSoustitre() {
         return this.soustitre != null;
     }
 
@@ -160,8 +159,7 @@ public class News extends com.sofoot.domain.Object {
         this.legende = legende;
     }
 
-    public boolean hasLegendeHome()
-    {
+    public boolean hasLegendeHome() {
         return this.legendeHome != null;
     }
 
@@ -197,11 +195,23 @@ public class News extends com.sofoot.domain.Object {
         this.note = note;
     }
 
-    public int getCommentaires() {
+    public int getNbCommentaires() {
+        return this.nbCommentaires;
+    }
+
+    public void setNbCommentaires(final int nbCommentaires) {
+        this.nbCommentaires = nbCommentaires;
+    }
+
+    public boolean hasCommentaire() {
+        return this.nbCommentaires > 0;
+    }
+
+    public ArrayList<Commentaire> getCommentaires() {
         return this.commentaires;
     }
 
-    public void setCommentaires(final int commentaires) {
+    public void setCommentaires(final ArrayList<Commentaire> commentaires) {
         this.commentaires = commentaires;
     }
 
@@ -229,7 +239,7 @@ public class News extends com.sofoot.domain.Object {
         this.thumbnails.put(size, url);
     }
 
-    public URL getThumbnail(final Display display){
+    public URL getThumbnail(final Display display) {
         final DisplayMetrics metrics = new DisplayMetrics();
         display.getMetrics(metrics);
 
@@ -248,7 +258,6 @@ public class News extends com.sofoot.domain.Object {
         return this.thumbnails.get(keys[0]);
     }
 
-
     public boolean hasImage() {
         return this.images.size() > 0;
     }
@@ -261,17 +270,17 @@ public class News extends com.sofoot.domain.Object {
         final DisplayMetrics metrics = new DisplayMetrics();
         display.getMetrics(metrics);
 
-        final int imageWidth = (int)(320 * metrics.density);
+        final int imageWidth = (int) (320 * metrics.density);
 
         final Integer[] keys = new Integer[this.images.size()];
         this.images.keySet().toArray(keys);
         Arrays.sort(keys, Collections.reverseOrder());
 
-        for (int i=0; i<keys.length; i++) {
-            Log.d("getImage", "Key : " + keys[i]);
+        for (final Integer key : keys) {
+            Log.d("getImage", "Key : " + key);
 
-            if (keys[i] <= imageWidth) {
-                return this.images.get(keys[i]);
+            if (key <= imageWidth) {
+                return this.images.get(key);
             }
         }
 
@@ -280,7 +289,7 @@ public class News extends com.sofoot.domain.Object {
 
     @Override
     public String toString() {
-        return "News #" + this.id + " " + this.titre + " : " + this.publication.toLocaleString();
+        return "News #" + this.id + " " + this.titre;
     }
 
     public String getTexte() {
@@ -290,6 +299,5 @@ public class News extends com.sofoot.domain.Object {
     public void setTexte(final String texte) {
         this.texte = texte;
     }
-
 
 }

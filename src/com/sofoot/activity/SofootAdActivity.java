@@ -2,72 +2,73 @@ package com.sofoot.activity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.google.ads.Ad;
-import com.google.ads.AdListener;
-import com.google.ads.AdRequest;
-import com.google.ads.AdRequest.ErrorCode;
-import com.google.ads.doubleclick.DfpAdView;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import com.sofoot.R;
+import com.sofoot.Sofoot;
+import com.sofoot.service.AdManager;
 
-abstract public class SofootAdActivity extends SofootActivity implements AdListener
-{
+abstract public class SofootAdActivity extends SofootActivity {
     final private static String LOG_TAG = "SofootAdActivity";
 
-    private DfpAdView adView;
+    private PublisherAdView adView;
 
     @Override
     protected void onCreate(final Bundle bundle, final int layoutResID) {
         super.onCreate(bundle, layoutResID);
+        this.injectAd();
+    }
 
-        this.adView = (DfpAdView)this.findViewById(R.id.adView);
+    protected void injectAd() {
+        this.injectDfpAd();
+    }
 
-        if (this.adView == null) {
-            Log.e(SofootAdActivity.LOG_TAG, "No DfpAdView !!!");
-            return;
-        }
+    protected void injectDfpAd() {
+        this.addAdViewInLayout(this.createAdBanner());
+        this.adView.loadAd(new PublisherAdRequest.Builder().build());
+    }
 
-        // Initiate a generic request to load it with an ad
-        final AdRequest adRequest = new AdRequest();
-        adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
-        this.adView.loadAd(adRequest);
+    public void hideDfpAd() {
+        this.adView.setVisibility(View.GONE);
+    }
+
+    public void showDfpAd() {
+        this.adView.setVisibility(View.VISIBLE);
+    }
+
+    protected PublisherAdView createAdBanner() {
+        this.adView = new PublisherAdView(this);
+        this.adView.setAdUnitId(this.getAdUnitId());
+        this.adView.setAdSizes(AdSize.BANNER, new AdSize(320, 50), new AdSize(240, 38), new AdSize(480, 75));
+
+        return this.adView;
+    }
+
+    protected String getAdUnitId() {
+        return this.getString(R.string.banner_unit_id);
+    }
+
+    protected void addAdViewInLayout(final PublisherAdView adView) {
+        ((ViewGroup) this.findViewById(R.id.mainLayout)).addView(adView);
+        Log.d(SofootAdActivity.LOG_TAG, "Add View In Layout");
+    }
+
+    protected AdManager getAdManager() {
+        return ((Sofoot) this.getApplicationContext()).getAdManager();
     }
 
     @Override
     public void onDestroy() {
+        Log.i(SofootAdActivity.LOG_TAG, "on Destroy");
+
         super.onDestroy();
 
         if (this.adView != null) {
             this.adView.destroy();
         }
     }
-
-    @Override
-    public void onDismissScreen(final Ad ad) {
-        Log.d(SofootAdActivity.LOG_TAG, "onDismissScreen");
-    }
-
-    @Override
-    public void onFailedToReceiveAd(final Ad add, final ErrorCode code) {
-        Log.d(SofootAdActivity.LOG_TAG, "Ad failed to received");
-
-    }
-
-    @Override
-    public void onLeaveApplication(final Ad ad) {
-        // TODO Auto-generated method stub
-        Log.d(SofootAdActivity.LOG_TAG, "onLeaveApplication");
-    }
-
-    @Override
-    public void onPresentScreen(final Ad ad) {
-        // TODO Auto-generated method stub
-        Log.d(SofootAdActivity.LOG_TAG, "onPresentScreen");
-    }
-
-    @Override
-    public void onReceiveAd(final Ad ad) {
-        Log.d(SofootAdActivity.LOG_TAG, "Ad received");
-    }
-
 }

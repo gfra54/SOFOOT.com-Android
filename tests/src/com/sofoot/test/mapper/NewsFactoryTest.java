@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import android.test.AndroidTestCase;
 
+import com.sofoot.domain.model.Commentaire;
 import com.sofoot.domain.model.News;
 import com.sofoot.domain.model.NewsFactory;
 
@@ -38,11 +39,14 @@ public class NewsFactoryTest extends AndroidTestCase {
     {
         final News news = NewsFactory.createFromJsonObject(this.json);
 
+        final Commentaire comm = news.getCommentaires().get(1);
+
         Assert.assertEquals(163852, news.getId());
         Assert.assertEquals("International - Match amical - Russie/USA (2-2)", news.getSurtitre());
         Assert.assertEquals("Klinsmann kiffe la Russie", news.getTitre());
         Assert.assertTrue(news.getTexte().startsWith("2-2 un peu chateux hier"));
-        //Assert.assertEquals("http://i.sofoot.com/IMG/img-jurgen-klinsmann-selectionneur-des-etats-unis-1352980068_x300_articles-163852.jpg", news.getImage(ImageSize.NORMAL).toString());
-        //Assert.assertEquals("http://i.sofoot.com/IMG/img-jurgen-klinsmann-selectionneur-des-etats-unis-1352980068_100_100_true_articles-163852.jpg", news.getThumbnail(ImageSize.SMALL).toString());
+        Assert.assertEquals("nononoway", comm.getAuteur());
+        Assert.assertEquals(14384, comm.getIdAuteur());
+        Assert.assertTrue(comm.getTexte().startsWith("Triste"));
     }
 }

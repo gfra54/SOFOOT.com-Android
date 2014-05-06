@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#00000000"
+    android:orientation="horizontal"
+    android:paddingRight="@dimen/grid_unit"
+    android:paddingLeft="@dimen/grid_unit"
+    android:baselineAligned="false"
+>
+    <RelativeLayout 
+        android:id="@+id/buts1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:layout_marginRight="18dp"
+    >
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/buts2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:layout_marginLeft="18dp"
+    >
+    </RelativeLayout>
+</LinearLayout>

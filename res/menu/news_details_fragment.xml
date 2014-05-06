@@ -14,17 +14,15 @@
     
     <item android:id="@+id/share"
           android:icon="@android:drawable/ic_menu_share"
-          android:title="Partager"
+          android:title="@string/menu_partager"
           android:showAsAction="ifRoom" />
     
     <item android:id="@+id/increaseFontSize"
-          android:icon="@android:drawable/ic_menu_upload"
-          android:title="Agrandir"
+          android:title="@string/menu_agrandir"
           android:showAsAction="never"/>
     
     <item android:id="@+id/decreaseFontSize"
-          android:icon="@android:drawable/ic_menu_agenda"
-          android:title="Réduire"
+          android:title="@string/menu_reduire"
           android:showAsAction="never" />
     
 </menu>

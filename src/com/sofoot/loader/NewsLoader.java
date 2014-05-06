@@ -19,7 +19,7 @@ public class NewsLoader extends SofootLoader<News> {
     @Override
     protected News doLoad() throws MapperException {
         Log.d(NewsLoader.LOG_TAG, "doLoad");
-        return ((Sofoot)this.getContext().getApplicationContext()).getNewsMapper().find(this.criteria);
+        return ((Sofoot) this.getContext().getApplicationContext()).getNewsMapper().find(this.criteria);
     }
 
 }

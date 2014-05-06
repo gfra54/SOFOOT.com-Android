@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/grid_unit"
+    android:visibility="gone"
+>
+    <Button
+        android:layout_gravity="center"
+        android:id="@+id/btn_all_comms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/display_all_comments"
+        style="@style/Widget.Sofoot.Light.TertiaryButton" />
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:id="@android:id/progress"
+        style="?android:attr/progressBarStyle" />
+</FrameLayout>

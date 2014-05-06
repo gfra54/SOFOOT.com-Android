@@ -1,29 +1,72 @@
 <resources>
-    
+
     <string name="sofoot">SO FOOT</string>
 
     <string name="app_name">@string/sofoot</string>
     <string name="app_version">1.1.0</string>
-    
+
     <string name="loader_error">Oops&#8230; une erreur s\'est produite.</string>
     <string name="no_data">Aucune donnée n\'est disponible.</string>
     <string name="unexpected_exception">Une erreur inattendue s\'est produite.</string>
-    
+
     <string name="empty_list_button_text">Réessayer</string>
-        
+
     <string name="share_via">Partager via</string>
     <string name="send_via">Envoyé via l\'appli SO FOOT</string>
-    
+
     <string name="updated_datetime_format">\'Mise à jour le\' dd/MM/yyyy \'à\' HH:mm</string>
-    
+
     <string name="resultats_libelle_journee_format">%de Journée</string>
-    
+
     <string name="classement_pts">Pts</string>
     <string name="classement_journee">J.</string>
     <string name="classement_gagne">G.</string>
     <string name="classement_nul">N.</string>
     <string name="classement_perdu">P.</string>
     <string name="classement_diff">Diff.</string>
-    
+
     <string name="menu_refresh">Rafraîchir</string>
+    <string name="menu_agrandir">Agrandir</string>
+    <string name="menu_partager">Partage</string>
+    <string name="menu_reduire">Réduire</string>
+
+    <string name="description_compte_sofoot">Un compte membre sur SOFOOT.com permet de participer activement à la vie du site. Avec votre
+        compte, vous pouvez commenter tous les articles du site, participer aux discussions du forum et gérer vos
+        abonnements à la newsletter SO FOOT.
+    </string>
+
+    <string name="mdp_perdu_question">Vous avez perdu votre mot de passe ?</string>
+    <string name="mdp_perdu_reponse">
+        Pas de panique. Suivez la
+        <a href="http://www.sofoot.com/mdp_lost.php">procédure de récupération du mot de passe</a>
+        et laissez vous aller.
+    </string>
+
+    <string name="mdp">Mot de passe</string>
+    <string name="identifiant">Identifiant</string>
+    <string name="compte_sofoot">VOTE COMPTE SUR SOFOOT.COM</string>
+    <string name="login">SE CONNECTER</string>
+    <string name="login_in">Connexion en cours &#8230;</string>
+    <string name="login_sofoot">SE CONNECTER A SOFOOT.COM</string>
+    <string name="login_error">Oops&#8230; une erreur s\'est produite lors de votre authentification.</string>
+    <string name="identifier">S\'identifier</string>
+    <string name="logout">SE DECONNECTER</string>
+    <string name="logout_success">Vous êtes déconnecté</string>
+    <string name="logout_error">Oops&#8230; une erreur s\'est produite lors de votre deconnexion.</string>
+    <string name="logout_in">Déconnexion en cours &#8230;</string>
+    <string name="mon_compte">MON COMPTE</string>
+    <string name="creer_compte_sofoot">CREER UN COMPTE MEMBRE SOFOOT.COM</string>
+    <string name="creer_compte">CREER UN COMPTE</string>
+
+    <string name="comments">Réactions</string>
+    <string name="write_comment">Commenter cet article</string>
+    <string name="send_comment">Envoi en cours &#8230;</string>
+    <string name="display_all_comments">Plus de réactions</string>
+
+    <string name="betclic_code_promo">CODE PROMO</string>
+    <string name="betclic_disclaimer">Cotes variables et valables jusqu\'au début du match</string>
+    <string name="betclic_bet">Pariez avec Betclic</string>
+    <string name="cote_1">1</string>
+    <string name="cote_N">N</string>
+    <string name="cote_2">2</string>
 </resources>

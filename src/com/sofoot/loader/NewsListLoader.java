@@ -14,13 +14,14 @@ public class NewsListLoader extends SofootLoader<Collection<News>> {
 
     public NewsListLoader(final Context context) {
         super(context);
-        this.criteria.setParam("rubrique", "1");
+        this.criteria.setParam("rubrique", "");
+        this.criteria.setParam("mot", "");
     }
 
     @Override
-    public Collection<News> doLoad() throws SofootException{
+    public Collection<News> doLoad() throws SofootException {
         Log.d(NewsListLoader.MY_LOG_TAG, "doLoad");
-        return ((Sofoot)this.getContext().getApplicationContext()).getNewsMapper().findAll(this.criteria);
+        return ((Sofoot) this.getContext().getApplicationContext()).getNewsMapper().findAll(this.criteria);
     }
 
     public void setRubrique(final String rubrique) {
@@ -29,6 +30,14 @@ public class NewsListLoader extends SofootLoader<Collection<News>> {
 
     public String getRubrique() {
         return this.criteria.getParam("rubrique");
+    }
+
+    public void setMot(final String mot) {
+        this.criteria.setParam("mot", mot);
+    }
+
+    public String getMot() {
+        return this.criteria.getParam("mot");
     }
 
     public void setLimit(final int limit) {

@@ -26,9 +26,20 @@ import com.sofoot.domain.Collection;
 import com.sofoot.loader.SofootLoader;
 import com.sofoot.utils.SofootAnalytics;
 
-abstract public class SofootListFragment<T extends Collection<?>> extends SherlockListFragment
-implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
-{
+/**
+ * Classe de base pour créer un ListFragment, elle se charge de : - récupérer un
+ * adapter à la création de l'activité - Ajouter l'adapter à la liste -
+ * initialiser le loader - écouter les évènement liées au loader et mettre à
+ * jour l'adapter en conséquence. - afficher une erreur si un problème survient
+ * lors du chargement des données - lance le tracking des pages
+ * 
+ * @author christophe.borsenberger@vosprojetsweb.pro
+ * 
+ */
+abstract public class SofootListFragment<T extends Collection<?>> extends SherlockListFragment implements
+        LoaderManager.LoaderCallbacks<T>, SofootAnalytics {
+
+    static final private String LOG_TAG = "SofootListFragment";
 
     static final int INTERNAL_EMPTY_ID = 0x00ff0001;
     static final int INTERNAL_PROGRESS_CONTAINER_ID = 0x00ff0002;
@@ -38,8 +49,7 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
 
     @SuppressWarnings("deprecation")
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-            final Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final Context context = this.getActivity();
 
         final FrameLayout root = new FrameLayout(context);
@@ -52,13 +62,12 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
         pframe.setVisibility(View.GONE);
         pframe.setGravity(Gravity.CENTER);
 
-        final ProgressBar progress = new ProgressBar(context, null,
-                android.R.attr.progressBarStyle);
-        pframe.addView(progress, new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        final ProgressBar progress = new ProgressBar(context, null, android.R.attr.progressBarStyle);
+        pframe.addView(progress, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        root.addView(pframe, new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+        root.addView(pframe, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
+                ViewGroup.LayoutParams.FILL_PARENT));
 
         // ------------------------------------------------------------------
 
@@ -66,7 +75,7 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
         lframe.setId(SofootListFragment.INTERNAL_LIST_CONTAINER_ID);
 
         final View emptyView = inflater.inflate(R.layout.list_empty_view, lframe, true);
-        this.emptyTextView = (TextView)emptyView.findViewById(R.id.emptyListTextView);
+        this.emptyTextView = (TextView) emptyView.findViewById(R.id.emptyListTextView);
 
         emptyView.findViewById(R.id.emptyListButton).setOnClickListener(new OnClickListener() {
 
@@ -76,99 +85,71 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
             }
         });
 
-
         /*
-        final TextView tv = new TextView(this.getActivity());
-        tv.setId(SofootListFragment.INTERNAL_EMPTY_ID);
-        tv.setGravity(Gravity.CENTER);
-        lframe.addView(tv, new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+         * final TextView tv = new TextView(this.getActivity());
+         * tv.setId(SofootListFragment.INTERNAL_EMPTY_ID);
+         * tv.setGravity(Gravity.CENTER); lframe.addView(tv, new
+         * FrameLayout.LayoutParams( ViewGroup.LayoutParams.FILL_PARENT,
+         * ViewGroup.LayoutParams.FILL_PARENT));
          */
 
         final ListView lv = new ListView(this.getActivity());
         lv.setId(android.R.id.list);
         lv.setDrawSelectorOnTop(false);
-        lframe.addView(lv, new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+        lframe.addView(lv, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
+                ViewGroup.LayoutParams.FILL_PARENT));
 
-        root.addView(lframe, new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+        root.addView(lframe, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
+                ViewGroup.LayoutParams.FILL_PARENT));
 
         // ------------------------------------------------------------------
 
-        root.setLayoutParams(new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+        root.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
+                ViewGroup.LayoutParams.FILL_PARENT));
 
         return root;
     }
-
 
     @Override
     public void setEmptyText(final CharSequence text) {
         this.emptyTextView.setText(text);
     }
 
-
-
-    final static private String LOG_TAG = "SofootListFragment";
-
     protected SofootAdapter<?> mAdapter;
-
-    @Override
-    public void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment is created " + this.toString());
-    }
-
 
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment activity created " + this.toString());
-
         this.mAdapter = this.getAdapter();
         this.setListAdapter(this.mAdapter);
 
-        //LoaderManager.enableDebugLogging(true);
+        // LoaderManager.enableDebugLogging(true);
 
         final LoaderManager loaderManager = this.getLoaderManager();
         loaderManager.initLoader(0, this.getArguments(), this);
     }
 
-
     @Override
     public void onStart() {
-        Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment started " + this.toString());
         super.onStart();
         this.trackPageView(EasyTracker.getTracker());
     }
 
     @Override
-    public void onResume() {
-        Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment resumed " + this.toString());
-        super.onResume();
-    }
-
-
-    @Override
-    public void onStop() {
-        Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment stoped " + this.toString());
-        super.onStop();
-    }
-
-    @Override
     public Loader<T> onCreateLoader(final int id, final Bundle args) {
         this.setListShownNoAnimation(false);
+        // Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment loader # " +
+        // id + "create ");
         return this.doCreateLoader(id, args);
     }
 
     @Override
     public void onLoadFinished(final Loader<T> loader, final T result) {
-        Log.d(SofootListFragment.LOG_TAG, "Sofoot list fragment load finished " + loader.toString());
+        // Log.d(SofootListFragment.LOG_TAG,
+        // "Sofoot list fragment loader finished " + loader.toString());
 
-        final SofootLoader<T> sofootLoader = (SofootLoader<T>)loader;
+        final SofootLoader<T> sofootLoader = (SofootLoader<T>) loader;
         this.displayLastException(sofootLoader);
 
         if (result != null) {
@@ -185,7 +166,8 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
         if (e != null) {
             if (e instanceof SofootException) {
                 this.setEmptyText(e.getLocalizedMessage());
-            } else {
+            }
+            else {
                 this.setEmptyText(this.getString(R.string.unexpected_exception) + " : " + e.getLocalizedMessage());
             }
         }
@@ -200,8 +182,9 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
     }
 
     protected void updateLastLoadTime(final SofootLoader<T> sofootLoader) {
+        Log.d(SofootListFragment.LOG_TAG, "loader updateLastLoadTime");
         if (this.getActivity() instanceof SofootActivity) {
-            ((SofootActivity)this.getActivity()).setHeaderUpdatedTime(sofootLoader.getLastLoadingTime());
+            ((SofootActivity) this.getActivity()).setHeaderUpdatedTime(sofootLoader.getLastLoadingTime());
         }
     }
 
@@ -211,8 +194,7 @@ implements LoaderManager.LoaderCallbacks<T>, SofootAnalytics
         this.mAdapter.clear();
     }
 
-    public void reload()
-    {
+    public void reload() {
         this.getLoaderManager().restartLoader(0, this.getArguments(), this);
     }
 

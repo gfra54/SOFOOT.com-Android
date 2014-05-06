@@ -1,6 +1,5 @@
 package com.sofoot.activity;
 
-
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -9,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
@@ -16,36 +16,37 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 
 import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import com.sofoot.R;
-import com.sofoot.fragment.LiguesFragment;
+import com.sofoot.Sofoot;
+import com.sofoot.fragment.BetClicFragment;
+import com.sofoot.fragment.ExtraMenuFragment;
 import com.sofoot.fragment.NewsListFragment;
 
-public class MainActivity extends SofootAdActivity  {
+public class MainActivity extends SofootAdActivity {
 
     private TabHost mTabHost;
-    ViewPager  mViewPager;
+    ViewPager mViewPager;
     TabsAdapter mTabsAdapter;
 
-    final private static String LOG_TAG = "TabsActivity";
+    final private static String LOG_TAG = "MainActivity";
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.main_activity);
 
-
-        this.mTabHost = (TabHost)this.findViewById(android.R.id.tabhost);
+        this.mTabHost = (TabHost) this.findViewById(android.R.id.tabhost);
         this.mTabHost.setup();
 
-        this.mViewPager = (ViewPager)this.findViewById(R.id.pager);
+        this.mViewPager = (ViewPager) this.findViewById(R.id.pager);
 
         this.mTabsAdapter = new TabsAdapter(this, this.mTabHost, this.mViewPager);
 
         final Bundle args1 = new Bundle();
         args1.putString("rubrique", "2");
-        this.mTabsAdapter.addTab(
-                this.mTabHost.newTabSpec("la_une").setIndicator(this.buildTabIndicator("La une", R.drawable.ic_la_une)),
-                NewsListFragment.class, args1);
-
+        this.mTabsAdapter
+                .addTab(this.mTabHost.newTabSpec("la_une").setIndicator(
+                        this.buildTabIndicator("La une", R.drawable.ic_la_une)), NewsListFragment.class, args1);
 
         final Bundle args2 = new Bundle();
         args2.putString("rubrique", "1");
@@ -53,24 +54,40 @@ public class MainActivity extends SofootAdActivity  {
                 this.mTabHost.newTabSpec("news").setIndicator(this.buildTabIndicator("News", R.drawable.ic_news)),
                 NewsListFragment.class, args2);
 
+        final Bundle args5 = new Bundle();
+        this.mTabsAdapter.addTab(
+                this.mTabHost.newTabSpec("sports_betting").setIndicator(
+                        this.buildTabIndicator("Paris sportifs", R.drawable.ic_paris_sportifs)), BetClicFragment.class,
+                args5);
 
         final Bundle args3 = new Bundle();
-        args3.putBoolean("resultats", true);
         this.mTabsAdapter.addTab(
-                this.mTabHost.newTabSpec("choix_ligue_resultats").setIndicator(this.buildTabIndicator("Scores en direct", R.drawable.ic_resultats)),
-                LiguesFragment.class, args3);
+                this.mTabHost.newTabSpec("extra_menu").setIndicator(
+                        this.buildTabIndicator("Scores et classement", R.drawable.ic_resultats)),
+                ExtraMenuFragment.class, args3);
 
-        final Bundle args4 = new Bundle();
-        args4.putBoolean("classement", true);
-        this.mTabsAdapter.addTab(
-                this.mTabHost.newTabSpec("choix_ligue_classement").setIndicator(this.buildTabIndicator("Classements", R.drawable.ic_classements)),
-                LiguesFragment.class, args4);
-
-        this.showHeaderUpdatedTime();
+        /*
+         * final Bundle args3 = new Bundle(); args3.putString("data",
+         * LiguesFragment.LIVE_SCORING); this.mTabsAdapter.addTab(
+         * this.mTabHost.newTabSpec("choix_ligue_resultats").setIndicator(
+         * this.buildTabIndicator("Scores en direct", R.drawable.ic_resultats)),
+         * LiguesFragment.class, args3); final Bundle args4 = new Bundle();
+         * args4.putString("data", LiguesFragment.CLASSEMENT);
+         * this.mTabsAdapter.addTab(
+         * this.mTabHost.newTabSpec("choix_ligue_classement").setIndicator(
+         * this.buildTabIndicator("Classements", R.drawable.ic_classements)),
+         * LiguesFragment.class, args4);
+         */
 
         if (savedInstanceState != null) {
             this.mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
         }
+    }
+
+    @Override
+    protected void addAdViewInLayout(final PublisherAdView adView) {
+        final ViewGroup layout = (ViewGroup) this.findViewById(R.id.mainLayout);
+        layout.addView(adView, layout.getChildCount() - 1);
     }
 
     private View buildTabIndicator(final String text, final int ic) {
@@ -97,9 +114,8 @@ public class MainActivity extends SofootAdActivity  {
         return super.onOptionsItemSelected(item);
     }
 
-
-    public static class TabsAdapter extends FragmentPagerAdapter
-    implements TabHost.OnTabChangeListener, ViewPager.OnPageChangeListener {
+    public static class TabsAdapter extends FragmentPagerAdapter implements TabHost.OnTabChangeListener,
+            ViewPager.OnPageChangeListener {
         private final Context mContext;
         private final TabHost mTabHost;
         private final ViewPager mViewPager;
@@ -168,6 +184,27 @@ public class MainActivity extends SofootAdActivity  {
         public void onTabChanged(final String tabId) {
             final int position = this.mTabHost.getCurrentTab();
             this.mViewPager.setCurrentItem(position);
+
+            final SofootAdActivity activity = (SofootAdActivity) this.mContext;
+
+            // BetClick
+            if (position == 2) {
+                activity.hideDfpAd();
+                return;
+            }
+            // Orange
+            if (position == 3) {
+                try {
+                    if (((Sofoot) activity.getApplication()).getAdManager().displayOrangeAd()) {
+                        activity.hideDfpAd();
+                        return;
+                    }
+                } catch (final Exception e) {
+                    Log.wtf(MainActivity.LOG_TAG, e);
+                }
+            }
+
+            activity.showDfpAd();
         }
 
         @Override
@@ -192,7 +229,5 @@ public class MainActivity extends SofootAdActivity  {
         public void onPageScrollStateChanged(final int state) {
         }
     }
-
-
 
 }

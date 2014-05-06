@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="interstitial_unit_id">/9339935/Interstitiel_appli</string>
-    <string name="banner_unit_id">/9339935/Bloc_appli</string>   
+    <string name="banner_unit_id">/9339935/Bloc_appli</string>
+    <string name="bloc_onglet_classement">/9339935/bloc_onglet_Classement</string>
+    <string name="betclic_bloc_unit_id">/9339935/bloc_onglet_betClic</string>
+    <string name="betclic_mg_unit_id">/9339935/Bloc_Appli_MG_Betclic</string>
+    <string name="betclic_bloc_news_details_unit_id">/9339935/bloc_pieddepage_BetClic</string>
 </resources>

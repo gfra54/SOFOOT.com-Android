@@ -7,11 +7,10 @@ import android.util.Log;
 import com.sofoot.SofootException;
 import com.sofoot.domain.Criteria;
 
-public abstract class SofootLoader<T> extends AsyncTaskLoader<T>
-{
+public abstract class SofootLoader<T> extends AsyncTaskLoader<T> {
     final static public String LOG_TAG = "SofootLoader";
 
-    protected long cacheTTL = 60 * 30 * 1000;
+    protected long cacheTTL = 30 * 60 * 1000; // 30 minutes
 
     protected long lastLoadingTime;
 
@@ -66,7 +65,6 @@ public abstract class SofootLoader<T> extends AsyncTaskLoader<T>
 
         this.isRunning = false;
     }
-
 
     public boolean isDataValid() {
         final long delta = (System.currentTimeMillis() - this.lastLoadingTime);
