@@ -8,19 +8,20 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 import com.google.analytics.tracking.android.Tracker;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import com.sofoot.R;
+import com.sofoot.Sofoot;
 import com.sofoot.activity.LiguesActivity;
 import com.sofoot.activity.SportsBettingEditoActivity;
+import com.sofoot.service.AdManager;
 import com.sofoot.utils.SofootAnalytics;
 
 public class BetClicFragment extends SherlockFragment implements SofootAnalytics, OnItemClickListener {
@@ -29,13 +30,13 @@ public class BetClicFragment extends SherlockFragment implements SofootAnalytics
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-
-        this.setHasOptionsMenu(true);
-
         final View v = inflater.inflate(R.layout.list_fragment, container, false);
 
         this.createList(v);
         this.createAdBloc(v);
+
+        final AdManager adManager = ((Sofoot) this.getActivity().getApplication()).getAdManager();
+        adManager.injectAdInView((ImageView) v.findViewById(R.id.orangeAd), adManager.getSportsBettingOptions());
 
         return v;
     }
@@ -60,10 +61,11 @@ public class BetClicFragment extends SherlockFragment implements SofootAnalytics
         return adView;
     }
 
-    @Override
-    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
-        inflater.inflate(R.menu.betclic_universe, menu);
-    }
+    /*
+     * @Override public void onCreateOptionsMenu(final Menu menu, final
+     * MenuInflater inflater) { inflater.inflate(R.menu.betclic_universe, menu);
+     * }
+     */
 
     @Override
     public void trackPageView(final Tracker easyTracker) {

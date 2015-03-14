@@ -6,20 +6,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.view.View.OnClickListener;
 
 import com.sofoot.R;
 import com.sofoot.fragment.NewsDetailsFragment;
 
-public class NewsDetailsActivity extends SofootAdActivity implements OnClickListener {
+public class NewsDetailsActivity extends SofootWideSpaceActivity {
     private MyAdapter mAdapter;
 
     private ViewPager mPager;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState, R.layout.viewpager_activity);
+        super.onCreate(savedInstanceState, R.layout.viewpager_ad_activity);
 
         this.mAdapter = new MyAdapter(this.getSupportFragmentManager(), this.getIntent().getExtras()
                 .getParcelableArray("newsMetas"));
@@ -27,6 +25,7 @@ public class NewsDetailsActivity extends SofootAdActivity implements OnClickList
         this.mPager = (ViewPager) this.findViewById(R.id.viewPager);
         this.mPager.setAdapter(this.mAdapter);
         this.mPager.setCurrentItem(this.getIntent().getExtras().getInt("position"));
+
     }
 
     private class MyAdapter extends FragmentStatePagerAdapter {
@@ -53,23 +52,4 @@ public class NewsDetailsActivity extends SofootAdActivity implements OnClickList
             return this.newsMetas.length;
         }
     }
-
-    @Override
-    public void onClick(final View view) {
-
-        final int count = this.mAdapter.getCount();
-        final int currentItem = this.mPager.getCurrentItem();
-
-        if (view == this.headerNextButton) {
-            if (currentItem < count) {
-                this.mPager.setCurrentItem(currentItem + 1);
-            }
-        }
-        else if (view == this.headerPrevButton) {
-            if (currentItem > 0) {
-                this.mPager.setCurrentItem(currentItem - 1);
-            }
-        }
-    }
-
 }

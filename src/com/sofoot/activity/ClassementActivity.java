@@ -10,7 +10,7 @@ import android.support.v4.view.ViewPager;
 import com.sofoot.R;
 import com.sofoot.fragment.ClassementListFragment;
 
-public class ClassementActivity extends SofootAdActivity {
+public class ClassementActivity extends OrangeActivity {
     private MyAdapter mAdapter;
 
     private ViewPager mPager;
@@ -49,13 +49,6 @@ public class ClassementActivity extends SofootAdActivity {
             final Fragment f = new ClassementListFragment();
             f.setArguments(args);
             return f;
-        }
-    }
-
-    @Override
-    protected void injectAd() {
-        if (this.getAdManager().displayOrangeAd() == false) {
-            this.injectDfpAd();
         }
     }
 }

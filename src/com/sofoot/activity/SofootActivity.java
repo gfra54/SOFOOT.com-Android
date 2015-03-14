@@ -15,8 +15,6 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.sofoot.R;
 
 abstract public class SofootActivity extends SherlockFragmentActivity {
-    protected View headerNextButton;
-    protected View headerPrevButton;
 
     protected View headerUpdatedTime;
 

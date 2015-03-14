@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sofoot.R;
@@ -25,7 +24,7 @@ import com.sofoot.fragment.LiveScoringFragment;
  * @author christophe.borsenberger@vosprojetsweb.pro
  * 
  */
-public class LiveScoringActivity extends SofootAdActivity implements OnClickListener, OnPageChangeListener {
+public class LiveScoringActivity extends OrangeActivity implements OnClickListener, OnPageChangeListener {
 
     final static String LOG_TAG = "ResultatsActivity";
 
@@ -116,15 +115,5 @@ public class LiveScoringActivity extends SofootAdActivity implements OnClickList
     public void onPageSelected(final int position) {
         // this.journee.setText(String.format(this.getString(R.string.resultats_libelle_journee_format),
         // (position+1)));
-    }
-
-    @Override
-    protected void injectAd() {
-        if (this.getAdManager().displayOrangeAd()) {
-            this.getAdManager().injectOrangeAdInView((ImageView) this.findViewById(R.id.orangeAd));
-            return;
-        }
-
-        this.injectDfpAd();
     }
 }

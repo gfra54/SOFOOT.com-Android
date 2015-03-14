@@ -3,11 +3,10 @@ package com.sofoot.activity;
 import android.os.Bundle;
 import android.widget.ImageView;
 
-import com.actionbarsherlock.view.Menu;
 import com.sofoot.R;
 import com.sofoot.fragment.LiguesFragment;
 
-public class LiguesActivity extends SofootAdActivity {
+public class LiguesActivity extends SofootDfpActivity {
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -41,27 +40,24 @@ public class LiguesActivity extends SofootAdActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        if (this.isForCote()) {
-            return this.getAdManager().addBetClickItem(menu, this.getSupportMenuInflater());
-        }
-
-        return false;
-    }
-
-    @Override
     protected void injectAd() {
-        // Betclic : no ad
+        // Sports betting ?
         if (this.isForCote()) {
-            return;
+            if (this.getAdManager().displayAd(this.getAdManager().getSportsBettingOptions())) {
+                this.getAdManager().injectAdInView((ImageView) this.findViewById(R.id.orangeAd),
+                        this.getAdManager().getSportsBettingOptions());
+                return;
+            }
+        }
+        else {
+            // Orange Ad?
+            if (this.getAdManager().displayAd(this.getAdManager().getOrangeOptions())) {
+                this.getAdManager().injectAdInView((ImageView) this.findViewById(R.id.orangeAd),
+                        this.getAdManager().getOrangeOptions());
+                return;
+            }
         }
 
-        // Orange Ad?
-        if (this.getAdManager().displayOrangeAd()) {
-            this.getAdManager().injectOrangeAdInView((ImageView) this.findViewById(R.id.orangeAd));
-            return;
-        }
-
-        this.injectDfpAd();
+        this.injectBannerAd();
     }
 };

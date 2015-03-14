@@ -22,8 +22,9 @@ import com.sofoot.Sofoot;
 import com.sofoot.fragment.BetClicFragment;
 import com.sofoot.fragment.ExtraMenuFragment;
 import com.sofoot.fragment.NewsListFragment;
+import com.sofoot.service.AdManager;
 
-public class MainActivity extends SofootAdActivity {
+public class MainActivity extends SofootWideSpaceActivity {
 
     private TabHost mTabHost;
     ViewPager mViewPager;
@@ -34,6 +35,8 @@ public class MainActivity extends SofootAdActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.main_activity);
+
+        final AdManager adManager = ((Sofoot) this.getApplication()).getAdManager();
 
         this.mTabHost = (TabHost) this.findViewById(android.R.id.tabhost);
         this.mTabHost.setup();
@@ -54,11 +57,13 @@ public class MainActivity extends SofootAdActivity {
                 this.mTabHost.newTabSpec("news").setIndicator(this.buildTabIndicator("News", R.drawable.ic_news)),
                 NewsListFragment.class, args2);
 
-        final Bundle args5 = new Bundle();
-        this.mTabsAdapter.addTab(
-                this.mTabHost.newTabSpec("sports_betting").setIndicator(
-                        this.buildTabIndicator("Paris sportifs", R.drawable.ic_paris_sportifs)), BetClicFragment.class,
-                args5);
+        if (adManager.displayAd(adManager.getSportsBettingOptions()) == true) {
+            final Bundle args5 = new Bundle();
+            this.mTabsAdapter.addTab(
+                    this.mTabHost.newTabSpec("sports_betting").setIndicator(
+                            this.buildTabIndicator("Paris sportifs", R.drawable.ic_paris_sportifs)),
+                    BetClicFragment.class, args5);
+        }
 
         final Bundle args3 = new Bundle();
         this.mTabsAdapter.addTab(
@@ -84,7 +89,6 @@ public class MainActivity extends SofootAdActivity {
         }
     }
 
-    @Override
     protected void addAdViewInLayout(final PublisherAdView adView) {
         final ViewGroup layout = (ViewGroup) this.findViewById(R.id.mainLayout);
         layout.addView(adView, layout.getChildCount() - 1);
@@ -185,26 +189,23 @@ public class MainActivity extends SofootAdActivity {
             final int position = this.mTabHost.getCurrentTab();
             this.mViewPager.setCurrentItem(position);
 
+            Log.d(MainActivity.LOG_TAG, "on Tab Changed : " + tabId);
+
             final SofootAdActivity activity = (SofootAdActivity) this.mContext;
+            final AdManager adManager = ((Sofoot) activity.getApplication()).getAdManager();
 
             // BetClick
-            if (position == 2) {
-                activity.hideDfpAd();
+            if (tabId.equals("sports_betting") && adManager.displayAd(adManager.getSportsBettingOptions())) {
+                activity.hideAdBanner();
                 return;
             }
             // Orange
-            if (position == 3) {
-                try {
-                    if (((Sofoot) activity.getApplication()).getAdManager().displayOrangeAd()) {
-                        activity.hideDfpAd();
-                        return;
-                    }
-                } catch (final Exception e) {
-                    Log.wtf(MainActivity.LOG_TAG, e);
-                }
+            if (tabId.equals("extra_menu") && adManager.displayAd(adManager.getOrangeOptions())) {
+                activity.hideAdBanner();
+                return;
             }
 
-            activity.showDfpAd();
+            activity.showAdBanner();
         }
 
         @Override

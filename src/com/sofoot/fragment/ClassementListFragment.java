@@ -15,6 +15,7 @@ import com.sofoot.domain.Collection;
 import com.sofoot.domain.model.Classement;
 import com.sofoot.domain.model.Ligue;
 import com.sofoot.loader.ClassementLoader;
+import com.sofoot.service.AdManager;
 
 public class ClassementListFragment extends SofootListFragment<Collection<Classement>> {
 
@@ -35,8 +36,8 @@ public class ClassementListFragment extends SofootListFragment<Collection<Classe
 
         super.onActivityCreated(savedInstanceState);
 
-        ((Sofoot) this.getActivity().getApplication()).getAdManager().injectOrangeAdInView(
-                (ImageView) header.findViewById(R.id.orangeAd));
+        final AdManager adManager = ((Sofoot) this.getActivity().getApplication()).getAdManager();
+        adManager.injectAdInView((ImageView) header.findViewById(R.id.orangeAd), adManager.getOrangeOptions());
     }
 
     @Override

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import com.sofoot.R;
 import com.sofoot.fragment.NewsListFragment;
 
-public class SportsBettingEditoActivity extends BetClicActivity {
+public class SportsBettingEditoActivity extends SportsBettingActivity {
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -33,5 +33,4 @@ public class SportsBettingEditoActivity extends BetClicActivity {
             this.getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, newsList).commit();
         }
     }
-
 };

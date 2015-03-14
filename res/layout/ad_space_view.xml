@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:widespace="http://schemas.android.com/apk/res/com.sofoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+>
+    <com.widespace.AdSpace
+        android:id="@+id/ad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        widespace:sid="@string/widespace_banner_sid"
+        widespace:autostart="true"
+        widespace:autoupdate="false"
+        android:layout_gravity="top" />
+
+</RelativeLayout>

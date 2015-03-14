@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>    
-    <item type="id" name="thumbnail"/>
-    <item type="id" name="bitmapUrl"></item>
-    <item type="id" name="bitmap"></item>
-    
+<resources>
+    <item
+        type="id"
+        name="thumbnail" />
+    <item
+        type="id"
+        name="bitmapUrl"
+    ></item>
+    <item
+        type="id"
+        name="bitmap"
+    ></item>
+
+
+
     <string name="url_creer_compte">http://www.sofoot.com/signup.php</string>
     <string name="url_mon_compte">http://www.sofoot.com/profil.php</string>
-    
+
 </resources>

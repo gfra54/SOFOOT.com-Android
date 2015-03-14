@@ -73,7 +73,7 @@ public class NewsFactory {
         if (StringUtils.isJsonFieldNotEmpty(json, "id_rubrique") == true) {
             news.setIdRubrique(json.getInt("id_rubrique"));
         }
-        if (StringUtils.isJsonFieldNotEmpty(json, "comms") == true) {
+        if (json.has("comms") == true) {
             final JSONArray comms = json.getJSONArray("comms");
             final int nbComms = comms.length();
             final ArrayList<Commentaire> commentaires = new ArrayList<Commentaire>(nbComms);

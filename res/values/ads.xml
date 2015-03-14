@@ -7,4 +7,6 @@
     <string name="betclic_bloc_unit_id">/9339935/bloc_onglet_betClic</string>
     <string name="betclic_mg_unit_id">/9339935/Bloc_Appli_MG_Betclic</string>
     <string name="betclic_bloc_news_details_unit_id">/9339935/bloc_pieddepage_BetClic</string>
+
+    <string name="widespace_banner_sid">acec4c9e-1ad6-459a-a571-24e34def1942</string>
 </resources>

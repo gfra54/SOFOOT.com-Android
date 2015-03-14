@@ -3,7 +3,6 @@ package com.sofoot;
 import java.net.URL;
 
 import org.apache.http.HttpHost;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ActivityManager;
@@ -224,10 +223,6 @@ public class Sofoot extends Application {
 
     public void setOptions(final JSONObject jsonObject) {
         this.options = jsonObject;
-    }
-
-    public JSONObject getOrangeOptions() throws JSONException {
-        return this.options.getJSONObject("options").getJSONObject("orange");
     }
 
     public AdManager getAdManager() {

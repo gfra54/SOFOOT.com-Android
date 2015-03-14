@@ -15,9 +15,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.sofoot.R;
 import com.sofoot.Sofoot;
 import com.sofoot.loader.BitmapLoader;
 import com.sofoot.loader.BitmapLoaderCallbacks;
@@ -32,31 +29,37 @@ public class AdManager {
         this.application = application;
     }
 
-    public boolean displayOrangeAd() {
+    public JSONObject getSportsBettingOptions() {
         try {
-            return this.application.getOrangeOptions().getInt("display") == 1;
+            return this.application.getOptions().getJSONObject("options").getJSONObject("paris-sportifs");
+        } catch (final Exception e) {
+            return new JSONObject();
+        }
+    }
+
+    public JSONObject getOrangeOptions() {
+        try {
+            return this.application.getOptions().getJSONObject("options").getJSONObject("orange");
+        } catch (final Exception e) {
+            return new JSONObject();
+        }
+    }
+
+    public boolean displayAd(final JSONObject options) {
+        try {
+            return options.getInt("display") == 1;
         } catch (final Exception e) {
             return false;
         }
     }
 
-    public boolean addBetClickItem(final Menu menu, final MenuInflater inflater) {
-        inflater.inflate(R.menu.betclic_universe, menu);
-        return true;
-    }
-
-    public void injectOrangeAdInView(final ImageView view) {
-
+    public void injectAdInView(final ImageView view, final JSONObject options) {
         try {
-            if (this.displayOrangeAd() == false) {
-                return;
+            if (this.displayAd(options) == true) {
+                view.setTag(options);
+                BitmapLoader.getInstance(this.application).load(this.getAdImageUrl(options.getJSONObject("image")),
+                        new AdBitmapLoaderCallbacks(view));
             }
-
-            final JSONObject options = this.application.getOrangeOptions();
-            view.setTag(options);
-
-            BitmapLoader.getInstance(this.application).load(this.getAdImageUrl(options.getJSONObject("image")),
-                    new AdBitmapLoaderCallbacks(view));
         } catch (final Exception e) {
             Log.wtf(AdManager.LOG_TAG, e);
         }

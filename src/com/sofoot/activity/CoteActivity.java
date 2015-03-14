@@ -12,7 +12,7 @@ import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import com.sofoot.R;
 import com.sofoot.fragment.CoteFragment;
 
-public class CoteActivity extends BetClicActivity {
+public class CoteActivity extends SportsBettingActivity {
     private MyAdapter mAdapter;
 
     private ViewPager mPager;
@@ -30,11 +30,10 @@ public class CoteActivity extends BetClicActivity {
         this.mPager.setCurrentItem(this.getIntent().getExtras().getInt("position"));
     }
 
-    @Override
     protected void addAdViewInLayout(final PublisherAdView adView) {
         final LinearLayout mainLayout = (LinearLayout) this.findViewById(R.id.mainLayout);
         final int index = mainLayout.indexOfChild(this.headerUpdatedTime) + 1;
-        mainLayout.addView(this.createAdBanner(), index);
+        mainLayout.addView(adView, index);
     }
 
     @Override
