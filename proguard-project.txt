@@ -72,12 +72,13 @@
 
 -dontwarn com.google.ads.**
 
-
 -keep class android.support.v4.app.** { *; }
 -keep interface android.support.v4.app.** { *; }
+
 -keep class com.actionbarsherlock.** { *; }
 -keep interface com.actionbarsherlock.** { *; }
--keep public class com.widespace.** {*;}
--keep public class com.sofoot.** {*;}
+
+-keep class com.widespace.** {*;}
+-keep interface com.widespace.** {*;}
 
 -keepattributes *Annotation*
